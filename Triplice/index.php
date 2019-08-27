@@ -3,9 +3,9 @@
     require 'controleur/controleur.php';
     try
     {
-        if(isset($_GET['action']))
+        if(isset($_GET['view']))
         {
-            switch($_GET['action'])
+            switch($_GET['view'])
             {
                 case 'accueil':
                     accueil();
