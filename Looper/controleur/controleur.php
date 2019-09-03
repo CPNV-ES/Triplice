@@ -1,14 +1,14 @@
 <?php
-    require 'modele/modele.php';
+    require 'modele/Modele.php';
     
-    function accueil()
+    function home()
     {
-        require 'vue/accueil.php';
+        require 'vue/Home.php';
     }
 
-    function erreur($message)
+    function error($message)
     {
-        require 'vue/erreur.php';
+        require 'vue/Error.php';
     }
 
     function Manage()

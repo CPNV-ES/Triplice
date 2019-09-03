@@ -7,11 +7,11 @@
         {
             switch($_GET['view'])
             {
-                case 'accueil':
-                    accueil();
+                case 'home':
+                    home();
                     break;
-                case 'erreur':
-                    erreur();
+                case 'error':
+                    error();
                     break;
                 
                 case 'Manage':
@@ -24,13 +24,13 @@
                     Take();
                     break;
                 default:
-                    erreur('La page que vous cherchez est introuvable.');
+                    error('404, NOT FOUND.');
                     break;
             }
         }
         else
         {
-            accueil();
+            home();
         }
     }
     catch(exception $e)
