@@ -1,16 +1,16 @@
 <?php
-    $titre='Create an exercise';
-    ob_start();
+$title = 'Create an exercise';
+ob_start();
 ?>
 
-<form method="post">
-    <label for="title">Title</label>
-    <input type="text" name="title" id="title" required>
+    <form action="looper?view=modify" method="post">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" required>
 
-    <button>Create</button>
-</form>
+        <button type="submit">Create</button>
+    </form>
 
 <?php
-    $contenu=ob_get_clean();
-    require 'Gabarit.php';
+$content = ob_get_clean();
+require 'Gabarit.php';
 ?>

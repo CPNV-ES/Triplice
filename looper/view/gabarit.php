@@ -1,12 +1,12 @@
 <html>
-    <head>
-        <title><?= $titre ?></title>
-    </head>
-    <body>
-        <div id="header">
+<head>
+    <title><?= $title ?></title>
+</head>
+<body>
+<div id="header">
 
-        </div>
-        <h1><?= $titre ?></h1>
-        <?= $contenu ?>
-    </body>
+</div>
+<h1><?= $title ?></h1>
+<?= $content ?>
+</body>
 </html>

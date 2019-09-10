@@ -1,30 +1,35 @@
 <?php
-    require 'model/model.php';
-    
-    function home()
-    {
-        require 'view/home.php';
-    }
+require 'model/model.php';
 
-    function error($message)
-    {
-        require 'view/error.php';
-    }
+function home()
+{
+    require 'view/home.php';
+}
 
-    function manage()
-    {
-        require 'view/manage.php';
-    }
-    
 
-    function create()
-    {
-        require 'view/create.php';
-    }
-    
+function create()
+{
+    require 'view/create.php';
+}
 
-    function take()
-    {
-        require 'view/take.php';
-    }
-    
+function modify()
+{
+    require 'view/modify.php';
+}
+
+
+function manage()
+{
+    require 'view/manage.php';
+}
+
+function take()
+{
+    require 'view/take.php';
+}
+
+
+function error($message)
+{
+    require 'view/error.php';
+}

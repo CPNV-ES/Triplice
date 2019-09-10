@@ -1,8 +1,8 @@
 <?php
-    $titre='manage.php';
-    ob_start();
+$title = 'manage.php';
+ob_start();
 ?>
 <?php
-    $contenu=ob_get_clean();
-    require 'Gabarit.php';
+$content = ob_get_clean();
+require 'Gabarit.php';
 ?>
