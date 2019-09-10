@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require 'controleur/controleur.php';
+    require 'controller/controller.php';
     try
     {
         if(isset($_GET['view']))
@@ -10,18 +10,19 @@
                 case 'home':
                     home();
                     break;
+
+                case 'manage':
+                    manage();
+                    break;
+                case 'create':
+                    create();
+                    break;
+                case 'take':
+                    take();
+                    break;
+
                 case 'error':
                     error();
-                    break;
-                
-                case 'Manage':
-                    Manage();
-                    break;
-                case 'Create':
-                    Create();
-                    break;
-                case 'Take':
-                    Take();
                     break;
                 default:
                     error('404, NOT FOUND.');

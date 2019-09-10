@@ -1,5 +1,5 @@
 <?php
-    $titre='Create.php';
+    $titre='take.php';
     ob_start();
 ?>
 <?php

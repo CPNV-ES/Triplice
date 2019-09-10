@@ -1,5 +1,5 @@
 <?php
-    $titre='accueil.php';
+    $titre='manage.php';
     ob_start();
 ?>
 <?php
