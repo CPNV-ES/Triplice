@@ -1,5 +1,6 @@
 <?php
 require 'model/model.php';
+require 'controller/Database.php';
 
 function home()
 {
