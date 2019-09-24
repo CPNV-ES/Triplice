@@ -8,8 +8,6 @@ class Database
 
     protected static function dbConnection()
     {
-        $pdo = new PDO(Database::$dsn, Database::$user, Database::$password);
-
         try {
             $pdo = new PDO(Database::$dsn, Database::$user, Database::$password);
             return $pdo;
@@ -23,7 +21,7 @@ class Database
         $pdo = Database::dbConnection();
 
         $query =
-            'INSERT INTO exercises
+            'INSERT INTO exercises(name, fkExerciseStatus)
             VALUES (?, 1)';
 
         $pdo->prepare($query)->execute([$exerciseName]);
