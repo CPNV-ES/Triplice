@@ -1,40 +1,14 @@
 <?php
     session_start();
-    require 'controleur/controleur.php';
-    try
-    {
-        if(isset($_GET['view']))
-        {
-            switch($_GET['view'])
-            {
-                case 'home':
-                    home();
-                    break;
-                case 'error':
-                    error();
-                    break;
-                
-                case 'Manage':
-                    Manage();
-                    break;
-                case 'Create':
-                    Create();
-                    break;
-                case 'Take':
-                    Take();
-                    break;
-                default:
-                    error('404, NOT FOUND.');
-                    break;
-            }
-        }
-        else
-        {
-            home();
-        }
-    }
-    catch(exception $e)
-    {
-        echo $e->getMessage();
-    }
+    include('router.php');
+
+    router::add("/", "HomeController@index");
+    router::add("/home", "HomeController@index");
+    router::add("/exercise/[0-9]*/", "HomeController@exercise");
+    router::add("/error", "HomeController@error");
+
+    router::run();
+
+
+
 ?>
