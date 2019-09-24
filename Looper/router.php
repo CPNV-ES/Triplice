@@ -1,4 +1,11 @@
 <?php
+/**
+ * @name Router
+ *
+ * @Author  VIEIRA Diogo
+ * @Helper  VIQUERAT Killian
+ * @Date    24.09.2019
+ */
 class router
 {
     private $url; // Contiendra l'URL sur laquelle on souhaite se rendre
@@ -16,13 +23,13 @@ class router
 
     static function run()
     {
-        $regex="\/[0-9]*\/";
-        preg_match()
+        $regex="#exercise\/[0-9]*\/#";
+
         $url = parse_url($_SERVER['REQUEST_URI'])['path'];
         echo $url."<br><br>";
         foreach (self::$routes as $route)
         {
-            if($route["route"]===$url)
+            if($route["route"]===$url || preg_match($regex,$url))
             {
                 self::execute($route["function"]);
                 echo "<br>".$route["function"];
@@ -30,23 +37,13 @@ class router
             }
         }
     }
-    /*
-    //killian
-    public function do($function){
+    private function execute($function){
         $controller=explode('@',$function);
-        $dir= explode('/', $controller[0]);
-        $class=array_pop($dir);
+        $dir= explode('/', $controller[0])[0];
+        $class=explode('/', $controller[0])[1];
         $controller[0]=$controller[0].'.php';
         include("$controller[0]");
         $method=$controller[1];
         $class::$method();
-    }
-    */
-    private function execute($function){
-        $controller=explode('@',$function);
-        $dir= explode('/', $controller[0]);
-        $controller[0]=$controller[0].'.php';
-        include("$controller[0]");
-        $controller[1]();
     }
 }
