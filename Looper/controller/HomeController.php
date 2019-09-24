@@ -11,8 +11,12 @@ class HomeController
     {
         require "view/Error.php";
     }
+    static function modif($id)
+    {
+        require "view/Manage.php";
+    }
 
-    public function exercise()
+    public function exercise($id)
     {
         require "view/Manage.php";
     }
