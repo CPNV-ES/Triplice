@@ -15,6 +15,7 @@ function create()
 
 function modify()
 {
+    Database::createExercise($_POST['title']);
     require 'view/modify.php';
 }
 

@@ -8,8 +8,10 @@ class Database
 
     protected static function dbConnection()
     {
+        $pdo = new PDO(Database::$dsn, Database::$user, Database::$password);
+
         try {
-            $pdo = new PDO(Database::$dsn, Database::user, Database::password);
+            $pdo = new PDO(Database::$dsn, Database::$user, Database::$password);
             return $pdo;
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
