@@ -22,7 +22,7 @@ ob_start();
     New question
 </h2>
 <form action="looper?view=modify" method="post">
-    <label for="title">Label</label>
+    <label for="label">Label</label>
     <input type="text" name="label" id="label" required>
 
     <label for="answerType">Answer type</label>

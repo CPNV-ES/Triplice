@@ -9,7 +9,7 @@ class Database
     protected static function dbConnection()
     {
         try {
-            $pdo = new PDO(Database::$dsn, Database::$user, Database::$password);
+            $pdo = new PDO(self::$dsn, self::$user, self::$password);
             return $pdo;
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
@@ -26,6 +26,13 @@ class Database
             ;';
         $pdo->prepare($query)->execute([$exerciseName]);
 
+        return self::getExerciseId($exerciseName);
+    }
+
+    public static function getExerciseId($exerciseName)
+    {
+        $pdo = Database::dbConnection();
+
         $query =
             'SELECT idExercice 
             FROM exercises
@@ -36,8 +43,18 @@ class Database
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseName]);
         $exerciseId = $statement->fetch()[0];
-        
+
         return $exerciseId;
     }
 
+    public static function addQuestion($exerciseId, $label, $idQuestionType)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'INSERT INTO questions(label, fkExercise, fkQuestionType)
+            VALUES (?, ?, ?)
+            ;';
+        $pdo->prepare($query)->execute([$label, $exerciseId, $idQuestionType]);
+    }
 }
