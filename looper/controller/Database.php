@@ -22,8 +22,22 @@ class Database
 
         $query =
             'INSERT INTO exercises(name, fkExerciseStatus)
-            VALUES (?, 1)';
-
+            VALUES (?, 1)
+            ;';
         $pdo->prepare($query)->execute([$exerciseName]);
+
+        $query =
+            'SELECT idExercice 
+            FROM exercises
+            WHERE exercises.name = ?
+            ORDER by idExercice DESC
+            LIMIT 1
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseName]);
+        $exerciseId = $statement->fetch()[0];
+        
+        return $exerciseId;
     }
+
 }

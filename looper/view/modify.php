@@ -1,5 +1,5 @@
 <?php
-$title = 'Modify an exercise';
+$title = 'Modify exercise '.$exerciseName.' ('.$exerciseId.')';
 ob_start();
 ?>
 

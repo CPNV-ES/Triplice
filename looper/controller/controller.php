@@ -15,7 +15,8 @@ function create()
 
 function modify()
 {
-    Database::createExercise($_POST['title']);
+    $exerciseName = $_POST['title'];
+    $exerciseId = Database::createExercise($exerciseName);
     require 'view/modify.php';
 }
 
