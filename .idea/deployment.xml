@@ -5,7 +5,7 @@
       <paths name="local">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$/Looper" web="/" />
           </mappings>
         </serverdata>
       </paths>
