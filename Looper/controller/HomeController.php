@@ -1,5 +1,6 @@
 <?php
 require 'model/HomeModel.php';
+
 class HomeController
 {
     static function index()
@@ -16,7 +17,7 @@ class HomeController
         require "view/Manage.php";
     }
 
-    public function exercise($id)
+    static function exercise($params)
     {
         require "view/Manage.php";
     }

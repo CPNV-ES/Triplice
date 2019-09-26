@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include('router.php');
+    include('model/router.php');
 
     router::add("/", "HomeController@index");
     router::add("/home", "HomeController@index");
