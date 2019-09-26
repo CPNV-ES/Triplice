@@ -29,7 +29,6 @@ class router
             'function' => self::$dirController."/".$function
         ));
     }
-
     /**
      * run
      *
@@ -47,19 +46,17 @@ class router
         {
             //replace "/", id and text by regex define to top of function
             $regex='^'.str_replace(array("/","id","text"),array("\/",$idRegex,$textRegex),$route["route"]).'$';
-
             //when route match with url
             if(preg_match("#".$regex."#",$url,$matches))
             {
                 $arraySorted=self::sortArray($route["route"],$matches);
                 self::execute($route["function"],$arraySorted);
-                break;
+                exit;
             }
         }
         //when we have nothing in the route
         self::execute(self::$dirController."/HomeController@error",null);
     }
-
     /**
      * sortArray
      *
@@ -76,7 +73,6 @@ class router
         $route=explode("/",$route);
         $arraySorted=array();
         $iParams=0;
-
         //search on the route the text "id" or "text" and before data is associated with value of params
         for($iRoute=0;$iRoute<count($route);$iRoute++)
             if($route[$iRoute]=="id" || $route[$iRoute]=="text")
@@ -84,7 +80,6 @@ class router
 
         return $arraySorted;
     }
-
     /**
      * execute
      *
@@ -98,6 +93,7 @@ class router
         $class=explode('/', $controller[0])[1];
         $controller[0]=$controller[0].'.php';
         include("$controller[0]");
+
         $method=$controller[1];
         if( empty($param) || count($param)>=1 )
             //convert $parm to object for easier use
@@ -105,5 +101,4 @@ class router
         else
             $class::$method();
     }
-
 }

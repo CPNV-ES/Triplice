@@ -9,7 +9,4 @@
     router::add("/error", "HomeController@error");
 
     router::run();
-
-
-
 ?>
