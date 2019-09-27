@@ -1,5 +1,5 @@
 <?php
     require 'controller/Controller.php';
-    include('controller/RouteController.php');
-    RouteController::addRoutes();
+    require 'library/Router.php';
+    include('Routes.php');
 ?>

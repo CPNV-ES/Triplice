@@ -1,11 +1,11 @@
 <?php
 
 
-router::add("/", "HomeController@index");
-router::add("/home", "HomeController@index");
-router::add("/exercise/id", "HomeController@exercise");
-router::add("/exercise/id/modif", "HomeController@modif");
-router::add("/manage", "ManageController@index");
-router::add("/error", "HomeController@error");
+Router::add("/", "HomeController@index");
+Router::add("/home", "HomeController@index");
+Router::add("/exercise/id", "HomeController@exercise");
+Router::add("/exercise/id/modif", "HomeController@modif");
+Router::add("/manage", "ManageController@index");
+Router::add("/error", "HomeController@error");
 
-router::run();
+Router::run();
