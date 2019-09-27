@@ -24,7 +24,7 @@ function modify()
 {
     $exerciseName = $_POST['title'];
     $exerciseId = Database::createExercise($exerciseName);
-    require 'view/modify.php';
+    require 'view/Modify.php';
 }
 
 
