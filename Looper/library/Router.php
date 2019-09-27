@@ -7,7 +7,7 @@
  * @Helper  VIQUERAT Killian
  * @Date    24.09.2019
  */
-class Router
+class router
 {
     private static $routes = array(); // Contiendra la liste des routes
     private static $dirController="controller"; //dossier de tous nos controlleurs
