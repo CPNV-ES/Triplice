@@ -42,8 +42,12 @@ class Router
         $textRegex="([A-Za-z]+)";
         //get current url
         $url = parse_url($_SERVER['REQUEST_URI'])['path'];
+        if(substr($url,-1)!="/")
+            $url.="/";
         foreach (self::$routes as $route)
         {
+            if(substr($route["route"],-1)!="/")
+                $route["route"].="/";
             //replace "/", id and text by regex define to top of function
             $regex='^'.str_replace(array("/","id","text"),array("\/",$idRegex,$textRegex),$route["route"]).'$';
             //when route match with url
