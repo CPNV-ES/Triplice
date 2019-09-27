@@ -1,9 +1,9 @@
 <?php
-    $titre='erreur.php';
-    ob_start();
+$title = 'erreur.php';
+ob_start();
 ?>
-<h1>ERREUR 404</h1>
+    <h1><?= $message ?></h1>
 <?php
-    $contenu=ob_get_clean();
-    require 'Gabarit.php';
+$content = ob_get_clean();
+require 'gabarit.php';
 ?>

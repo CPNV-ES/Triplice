@@ -1,8 +1,8 @@
 <?php
-    $titre='Take.php';
-    ob_start();
+$title = 'take.php';
+ob_start();
 ?>
 <?php
-    $contenu=ob_get_clean();
-    require 'Gabarit.php';
+$content = ob_get_clean();
+require 'gabarit.php';
 ?>

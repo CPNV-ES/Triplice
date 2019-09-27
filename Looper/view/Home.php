@@ -1,8 +1,13 @@
 <?php
-    $titre='accueil.php';
-    ob_start();
+$title = 'Accueil';
+ob_start();
 ?>
+
+    <a href='looper?view=create'>
+        Create Exercise
+    </a>
+
 <?php
-    $contenu=ob_get_clean();
-    require 'Gabarit.php';
+$content = ob_get_clean();
+require 'gabarit.php';
 ?>
