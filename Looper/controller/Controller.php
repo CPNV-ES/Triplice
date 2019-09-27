@@ -3,9 +3,9 @@ require 'model/HomeModel.php';
 
 class Controller
 {
-    public function index()
+    static function error()
     {
-        require "view/Home.php";
+        require "view/Error.php";
     }
 }
 
