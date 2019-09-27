@@ -7,7 +7,7 @@
  * @Helper  VIQUERAT Killian
  * @Date    24.09.2019
  */
-class router
+class Router
 {
     private static $routes = array(); // Contiendra la liste des routes
     private static $dirController="controller"; //dossier de tous nos controlleurs
@@ -42,8 +42,12 @@ class router
         $textRegex="([A-Za-z]+)";
         //get current url
         $url = parse_url($_SERVER['REQUEST_URI'])['path'];
+        if(substr($url,-1)!="/")
+            $url.="/";
         foreach (self::$routes as $route)
         {
+            if(substr($route["route"],-1)!="/")
+                $route["route"].="/";
             //replace "/", id and text by regex define to top of function
             $regex='^'.str_replace(array("/","id","text"),array("\/",$idRegex,$textRegex),$route["route"]).'$';
             //when route match with url
