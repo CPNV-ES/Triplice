@@ -62,7 +62,7 @@ class Router
      *
      * Sort all parameters of route and associated with previous name of the route
      *
-     * @param $route route has match wit URL
+     * @param $route route has match with URL
      * @param $params parameters of our URL
      * @return array return an array sorted with associated names
      */
