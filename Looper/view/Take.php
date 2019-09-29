@@ -1,8 +1,7 @@
 <?php
-$title = 'take.php';
-ob_start();
+    $title = $titleClass = 'take';
+    $titleSection="Take an exercise";
 ?>
-<?php
-$content = ob_get_clean();
-require 'gabarit.php';
-?>
+<div class="section exercise">
+    lol
+</div>
