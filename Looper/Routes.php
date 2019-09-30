@@ -1,6 +1,5 @@
 <?php
 
-
 Router::add("/", "HomeController@index");
 Router::add("/home", "HomeController@index");
 Router::add("/exercise/create", "ExerciseController@create");
