@@ -5,7 +5,7 @@ class ExerciseController extends Controller
 {
     static function create()
     {
-        return View::render("ExerciCreate");
+        return View::render("Exercise/Create");
     }
 
     static function take()
