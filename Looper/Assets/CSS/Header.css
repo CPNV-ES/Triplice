@@ -18,24 +18,22 @@ Home section
  */
 .home{
     text-align: center;
-    line-height: 1.2;
 }
 .home h1
 {
     font-size: 3.6em;
     letter-spacing: 1.1rem;
-    padding: 0% 40%;
+    line-height: 1.2;
+    margin-top: 0;
 }
 #content
 {
-    margin-top: 21em;
+    margin-top: 19em;
 }
 
 /*
 take, create, manage sections by size of screen
  */
-
-
 @media (min-width: 900px) {
     .take + #content
     {
@@ -67,11 +65,6 @@ take, create, manage sections by size of screen
     {
         margin-top: 5em;
     }
-    .section.exercise
-    {
-        display: flex;
-        justify-content: center;
-    }
     #navbar.take,#navbar.create,#navbar.manage
     {
         height: 5em;
@@ -83,8 +76,14 @@ take, create, manage sections by size of screen
         left: 0;
         right: 0;
     }
-    .section h1
+    .section.title h1
     {
         padding-left: 10%;
+    }
+    .take .section
+    {
+        max-width: 90%;
+        margin: 0 auto;
+        display: flex;
     }
 }
