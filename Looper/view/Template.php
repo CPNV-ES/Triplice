@@ -1,7 +1,9 @@
 <html>
 <head>
     <title><?= @$title ?></title>
-    <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/header.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Style.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Header.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Exercise.css"/>
 </head>
 <body>
 <div id="navbar" class="<?= @$titleClass ?> ">
@@ -12,7 +14,13 @@
         <h1><?= @$titleSection?></h1>
     </div>
 </div>
-<?= $content ?>
+<diV id="content">
+    <?php for($i=0; $i<100; $i++): ?>
+    <?= $content ?>
+    <br>
+    <?php endfor; ?>
+
+</diV>
 
 
 </body>

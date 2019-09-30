@@ -2,12 +2,12 @@
 $title = $titleClass = 'home';
 $titleSection = "Exercise Looper";
 ?>
-<div class="container">
-
-    <a href='/exercise/create'>
-        Create Exercise
-    </a>
-    <a href='/exercise/take'>
-        Take Exercise
-    </a>
-</div>
+<a class="homeChild create" href='/exercise/create'>
+    Create an exercise
+</a>
+<a class="homeChild take" href='/exercise/take'>
+    Take an exercise
+</a>
+<a class="homeChild manage" href='/exercise/Manage'>
+    Manage Exercises
+</a>
