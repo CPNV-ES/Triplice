@@ -51,7 +51,7 @@ class Router
             //replace "/", id and text by regex define to top of function
             $regex='^'.str_replace(array("/","id","text"),array("\/",$idRegex,$textRegex),$route["route"]).'$';
             //when route match with url
-            if(preg_match("#".$regex."#",$url,$matches))
+            if(preg_match(strtolower("#".$regex."#"),strtolower($url),$matches))
             {
                 $arraySorted=self::sortArray($route["route"],$matches);
                 self::execute($route["function"],$arraySorted);

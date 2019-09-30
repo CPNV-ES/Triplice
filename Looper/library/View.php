@@ -23,6 +23,6 @@ class View
         ob_start();
         require self::$dir.$view.self::$ext;
         $content = ob_get_clean();
-        require 'view/Gabarit.php';
+        require 'view/Template.php';
     }
 }
