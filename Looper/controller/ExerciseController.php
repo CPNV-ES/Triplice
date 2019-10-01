@@ -8,6 +8,11 @@ class ExerciseController extends Controller
         return View::render("Exercise/Create");
     }
 
+    static function newExercise()
+    {
+
+    }
+
     static function take()
     {
         return View::render("Take");
