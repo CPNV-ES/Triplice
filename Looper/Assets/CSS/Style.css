@@ -30,7 +30,7 @@ a {
  flex the content!
  */
 #content {
-    align-items: center;
+    align-items: flex-start;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -60,7 +60,7 @@ label {
     font-size: 25px;
 }
 
-input {
+input, select {
     min-width: 300px;
     width: 100%;
     margin: 5px 0px 15px 0px;
@@ -77,6 +77,15 @@ button {
     padding: 5px 10px;
 
     background-color: #9b4dca;
+}
+
+.questionsTable {
+    width: 400px;
+    margin: 0px 10px 0px 0px;
+}
+
+.newQuestionForm {
+
 }
 
 /*
