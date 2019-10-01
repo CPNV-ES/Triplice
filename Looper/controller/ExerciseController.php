@@ -6,6 +6,10 @@ class ExerciseController extends Controller
     {
         View::render("Exercise/Create");
     }
+    static function new()
+    {
+        return View::render("Exercise/Take");
+    }
 
     static function newExercise()
     {
@@ -26,6 +30,8 @@ class ExerciseController extends Controller
 
     static function take()
     {
-        View::render("Take");
+        Database::informations("Triplice","SC-C332-PC14");
+        Database::credentials("Triplice","Triplice");
+        return View::render("Take", Database::getAnsweringExercises());
     }
 }

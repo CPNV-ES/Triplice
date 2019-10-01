@@ -7,7 +7,7 @@
  */
 class Database
 {
-    protected static $dsn;
+    private static $dsn;
     private static $credentials;
 
     public static function informations($dbName,$ip)
@@ -16,12 +16,12 @@ class Database
     }
     public static function credentials($user ,$password)
     {
-        self::$credentials= "$user, $password";
+        self::$credentials=(object)array("user"=>$user,"password"=>$password);
     }
     protected static function dbConnection()
     {
         try {
-            $pdo = new PDO(self::$dsn, self::$credentials);
+            $pdo = new PDO(self::$dsn, self::$credentials->user, self::$credentials->password);
             return $pdo;
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
@@ -68,5 +68,21 @@ class Database
             VALUES (?, ?, ?)
             ;';
         $pdo->prepare($query)->execute([$label, $exerciseId, $idQuestionType]);
+    }
+
+    public static function getAnsweringExercises()
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT `name`,`idExercise`
+            FROM Exercises
+            INNER JOIN Exercisestatus 
+                ON idExerciseStatus=fkExerciseStatus 
+            WHERE `status` LIKE "Answering";';
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $exercises = $statement->fetchAll();
+        return $exercises;
     }
 }
