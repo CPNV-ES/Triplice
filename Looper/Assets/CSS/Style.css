@@ -11,15 +11,12 @@ Color by section
  */
 .take {
     background-color: #9b4dca;
-    color: white;
 }
 .create {
     background-color: #e0a458;
-    color: white;
 }
 .manage {
     background-color: #419d78;
-    color: white;
 }
 
 /*
@@ -42,6 +39,7 @@ a {
 .homeChild
 {
     text-align: center;
+    color: white;
     margin: 10px;
     height: 40px;
     padding-top: 20px;

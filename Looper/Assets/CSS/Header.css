@@ -1,7 +1,6 @@
 
 #navbar
 {
-    background-color: #9b4dca;
     color: white;
     width: 100%;
     z-index: 1;
@@ -18,6 +17,7 @@ Home section
  */
 .home{
     text-align: center;
+    background-color: #9b4dca;
 }
 .home h1
 {
