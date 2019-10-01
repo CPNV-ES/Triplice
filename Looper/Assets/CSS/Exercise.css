@@ -1,1 +1,10 @@
-
+.section.exercise
+{
+    background-color: #c9c9c9;
+    text-align: center;
+    margin: 10px;
+    width: 25%;
+    height: 40px;
+    padding-top: 20px;
+    border-radius: 5px;
+}
