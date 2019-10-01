@@ -35,11 +35,11 @@ Home section
 take, create, manage sections by size of screen
  */
 @media (min-width: 900px) {
-    .take + #content
+    .take + #content,.create + #content,.manage + #content
     {
         margin-top: 7em;
     }
-    .take .section
+    .take .section, .create .section, .manage .section
     {
         max-width: 60%;
         margin: 0 auto;
@@ -65,7 +65,7 @@ take, create, manage sections by size of screen
     {
         margin-top: 5em;
     }
-    #navbar.take,#navbar.create,#navbar.manage
+    #navbar.take, #navbar.create, #navbar.manage
     {
         height: 5em;
         display: block;
@@ -80,7 +80,7 @@ take, create, manage sections by size of screen
     {
         padding-left: 10%;
     }
-    .take .section
+    .take .section, .manage .section, .create .section
     {
         max-width: 90%;
         margin: 0 auto;
