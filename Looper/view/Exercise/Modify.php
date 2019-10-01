@@ -1,7 +1,8 @@
 <?php
-$title = 'Modify exercise '.$exerciseName.' ('.$exerciseId.')';
+$title = 'Modify exercise ';
+//.$exerciseName.' ('.$exerciseId.')';
+$titleSection = 'Modify an exercise';
 ?>
-
 <h2>
     Questions
 </h2>

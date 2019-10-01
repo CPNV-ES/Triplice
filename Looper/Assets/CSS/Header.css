@@ -39,7 +39,7 @@ take, create, manage sections by size of screen
     {
         margin-top: 7em;
     }
-    .take .section, .create .section, .manage .section
+    .take .section, .create .section, .manage .section, .modify .section
     {
         max-width: 60%;
         margin: 0 auto;

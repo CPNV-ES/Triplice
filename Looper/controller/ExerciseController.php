@@ -4,21 +4,28 @@ class ExerciseController extends Controller
 {
     static function create()
     {
-        return View::render("Exercise/Create");
+        View::render("Exercise/Create");
     }
 
     static function newExercise()
     {
-        $id = null;
-
         if (isset($_POST["title"]))
         {
-            $id = Database::createExercise($_POST["title"]);
+            $exerciseName = $_POST["title"];
+            // TODO : update once database fix received
+            $exerciseId = 0;
+            //$exerciseId = Database::createExercise($_POST["title"]);
+            self::modify();
         }
+    }
+
+    static function modify()
+    {
+        View::render("Exercise/Modify");
     }
 
     static function take()
     {
-        return View::render("Take");
+        View::render("Take");
     }
 }

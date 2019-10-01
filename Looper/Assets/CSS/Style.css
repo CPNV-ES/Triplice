@@ -12,7 +12,7 @@ Color by section
 .take {
     background-color: #9b4dca;
 }
-.create {
+.create, .modify {
     background-color: #e0a458;
 }
 .manage {
