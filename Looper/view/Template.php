@@ -6,7 +6,7 @@
     <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Exercise.css"/>
 </head>
 <body>
-<div id="navbar" class="<?= @$titleClass ?> ">
+<div id="navbar" class="<?= @$title ?> ">
     <div class="section title">
         <a href="/">
             <img src="../Assets/Pictures/logo.png">
