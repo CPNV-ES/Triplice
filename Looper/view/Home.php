@@ -1,5 +1,5 @@
 <?php
-$title = $titleClass = 'home';
+$title = 'home';
 $titleSection = "Exercise<br>Looper";
 ?>
 <a class="homeChild create" href='/exercise/create'>
