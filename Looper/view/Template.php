@@ -15,11 +15,7 @@
     </div>
 </div>
 <diV id="content">
-    <?php for ($i = 0; $i < 100; $i++): ?>
-        <?= $content ?>
-        <br>
-    <?php endfor; ?>
-
+    <?= $content ?>
 </diV>
 
 
