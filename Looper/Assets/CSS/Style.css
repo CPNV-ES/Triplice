@@ -1,32 +1,31 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-body
-{
+
+body {
     font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-size: 20px;
     margin: 0;
 }
+
 /*
 Color by section
  */
-
-.take
-{
+.take {
     background-color: #9b4dca;
     color: white;
 }
-.create
-{
+.create {
     background-color: #e0a458;
     color: white;
 }
-.manage
-{
+.manage {
     background-color: #419d78;
     color: white;
 }
+
 /*
 disable link decoration
  */
-a{
+a {
     text-decoration: none;
 }
 
@@ -53,6 +52,36 @@ a{
     background-color: grey;
 }
 /*
+form display
+ */
+form {
+    width: 600px;
+}
+
+label {
+    font-size: 25px;
+}
+
+input {
+    min-width: 300px;
+    width: 100%;
+    margin: 5px 0px 15px 0px;
+    border-radius: 3px;
+    border-color: rgba(149, 150, 151, 0.55);
+    font-size: 20px;
+}
+
+button {
+    font-size: 20px;
+    color: white;
+    border-radius: 3px;
+    border-color: transparent;
+    padding: 5px 10px;
+
+    background-color: #9b4dca;
+}
+
+/*
 for large screen, display 3 buttons.
  */
 @media (min-width: 900px) {
@@ -60,6 +89,7 @@ for large screen, display 3 buttons.
         width: 25%;
     }
 }
+
 /*
 for small screen, display 1 button.
  */

@@ -35,7 +35,7 @@ Home section
 take, create, manage sections by size of screen
  */
 @media (min-width: 900px) {
-    .take + #content,.create + #content,.manage + #content
+    .take + #content, .create + #content, .manage + #content
     {
         margin-top: 7em;
     }

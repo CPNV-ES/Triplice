@@ -10,6 +10,7 @@ class View
 {
     private static $dir="view/";
     private static $ext=".php";
+
     /**
      * render
      *
