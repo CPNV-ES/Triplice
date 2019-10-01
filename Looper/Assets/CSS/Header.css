@@ -1,0 +1,89 @@
+
+#navbar
+{
+    background-color: #9b4dca;
+    color: white;
+    width: 100%;
+    z-index: 1;
+    top:0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 10px 0;
+    position: fixed;
+}
+
+/*
+Home section
+ */
+.home{
+    text-align: center;
+}
+.home h1
+{
+    font-size: 3.6em;
+    letter-spacing: 1.1rem;
+    line-height: 1.2;
+    margin-top: 0;
+}
+#content
+{
+    margin-top: 19em;
+}
+
+/*
+take, create, manage sections by size of screen
+ */
+@media (min-width: 900px) {
+    .take + #content,.create + #content,.manage + #content
+    {
+        margin-top: 7em;
+    }
+    .take .section, .create .section, .manage .section
+    {
+        max-width: 60%;
+        margin: 0 auto;
+        display: flex;
+    }
+    .section .title
+    {
+        height: 100%;
+    }
+    .section.title h1
+    {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .section .title img {
+        position: absolute;
+    }
+}
+
+@media (max-width: 899px)
+{
+    #content
+    {
+        margin-top: 5em;
+    }
+    #navbar.take, #navbar.create, #navbar.manage
+    {
+        height: 5em;
+        display: block;
+        position: fixed;
+        width: 100%;
+        z-index: 1;
+        top:0;
+        left: 0;
+        right: 0;
+    }
+    .section.title h1
+    {
+        padding-left: 10%;
+    }
+    .take .section, .manage .section, .create .section
+    {
+        max-width: 90%;
+        margin: 0 auto;
+        display: flex;
+    }
+}
