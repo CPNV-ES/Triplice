@@ -39,7 +39,18 @@ a {
     flex-direction: row;
     flex-wrap: wrap;
 }
-
+.homeChild
+{
+    text-align: center;
+    margin: 10px;
+    height: 40px;
+    padding-top: 20px;
+    border-radius: 5px;
+}
+.homeChild:hover
+{
+    background-color: grey;
+}
 /*
 form display
  */
@@ -75,12 +86,7 @@ for large screen, display 3 buttons.
  */
 @media (min-width: 900px) {
     .homeChild {
-        text-align: center;
-        margin: 10px;
         width: 25%;
-        height: 40px;
-        padding-top: 20px;
-        border-radius: 5px;
     }
 }
 
@@ -89,11 +95,6 @@ for small screen, display 1 button.
  */
 @media (max-width: 899px) {
     .homeChild {
-        text-align: center;
-        margin: 10px;
         width: 100%;
-        height: 40px;
-        padding-top: 20px;
-        border-radius: 5px;
     }
 }

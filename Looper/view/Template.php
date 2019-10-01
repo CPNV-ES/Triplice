@@ -17,7 +17,5 @@
 <diV id="content">
     <?= $content ?>
 </diV>
-
-
 </body>
 </html>
