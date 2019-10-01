@@ -1,7 +1,6 @@
 
 #navbar
 {
-    background-color: #9b4dca;
     color: white;
     width: 100%;
     z-index: 1;
@@ -18,6 +17,7 @@ Home section
  */
 .home{
     text-align: center;
+    background-color: #9b4dca;
 }
 .home h1
 {
@@ -35,11 +35,11 @@ Home section
 take, create, manage sections by size of screen
  */
 @media (min-width: 900px) {
-    .take + #content,.create + #content,.manage + #content
+    .take + #content, .create + #content, .manage + #content
     {
         margin-top: 7em;
     }
-    .take .section, .create .section, .manage .section
+    .take .section, .create .section, .manage .section, .modify .section
     {
         max-width: 60%;
         margin: 0 auto;

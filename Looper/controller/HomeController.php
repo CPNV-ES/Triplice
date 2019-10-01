@@ -11,16 +11,16 @@ class HomeController extends Controller
 {
     static function index()
     {
-        return View::render("Home");
+        View::render("Home");
     }
 
     static function modif($params)
     {
-        return View::render("Exercise/Modify");
+        View::render("Exercise/Modify");
     }
 
     static function exercise($params)
     {
-       return View::render("Exercise/Manage",$params);
+       View::render("Exercise/Manage",$params);
     }
 }
