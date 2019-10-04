@@ -13,6 +13,9 @@
         case "manage": ?>
             <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Manage.css"/>
     <?php break;
+        case "error": ?>
+            <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Error.css"/>
+    <?php break;
     case "modify": ?>
         <link rel="stylesheet" media="screen" type="text/css" href="../../Assets/CSS/Create.css"/>
     <?php break;

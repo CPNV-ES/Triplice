@@ -59,7 +59,7 @@ class Router
             }
         }
         //when we have nothing in the route
-        self::execute(self::$dirController."/HomeController@error",null);
+        self::execute(self::$dirController."/HomeController@error",(object)array("error"=>"Error 404 | page not found","message"=>$_SERVER['HTTP_HOST'].$url));
     }
     /**
      * sortArray

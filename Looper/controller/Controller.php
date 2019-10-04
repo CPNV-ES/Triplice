@@ -1,8 +1,8 @@
 <?php
 class Controller
 {
-    static function error()
+    static function error($params)
     {
-        return View::render("Error");
+        return View::render("Error",$params);
     }
 }
