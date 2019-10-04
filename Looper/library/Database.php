@@ -10,14 +10,16 @@ class Database
     private static $dsn;
     private static $credentials;
 
-    public static function informations($dbName,$ip)
+    public static function informations($dbName, $ip)
     {
-        self::$dsn= "mysql:dbname=$dbName;host=$ip";
+        self::$dsn = "mysql:dbname=$dbName;host=$ip";
     }
-    public static function credentials($user ,$password)
+
+    public static function credentials($user, $password)
     {
-        self::$credentials=(object)array("user"=>$user,"password"=>$password);
+        self::$credentials = (object)array("user" => $user, "password" => $password);
     }
+
     protected static function dbConnection()
     {
         try {
@@ -54,9 +56,41 @@ class Database
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseName]);
-        $exerciseId = $statement->fetch()[0];
+        $exerciseId = $statement->fetch()["idExercise"];
 
         return $exerciseId;
+    }
+
+    public static function getExercise($exerciseId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT * 
+            FROM exercises
+            WHERE idExercise = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $exercise = $statement->fetch();
+
+        return $exercise;
+    }
+
+    public static function getQuestions($exerciseId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT * 
+            FROM questions
+            WHERE fkExercise = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $exercise = $statement;
+
+        return $exercise;
     }
 
     public static function addQuestion($exerciseId, $label, $idQuestionType)

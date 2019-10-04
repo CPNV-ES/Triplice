@@ -1,5 +1,5 @@
 <?php
-$title="lol"; ?>
+$title = "lol"; ?>
 <br>
 <br>
 <?= $params->exercise ?>

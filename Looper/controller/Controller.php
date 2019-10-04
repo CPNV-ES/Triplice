@@ -1,4 +1,5 @@
 <?php
+
 class Controller
 {
     static function error()
@@ -8,7 +9,7 @@ class Controller
 
     static function databaseInformations()
     {
-        Database::informations("Triplice","SC-C332-PC14");
-        Database::credentials("Triplice","Triplice");
+        Database::informations("Triplice", "SC-C332-PC14");
+        Database::credentials("Triplice", "Triplice");
     }
 }

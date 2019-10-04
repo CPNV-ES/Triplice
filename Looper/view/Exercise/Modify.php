@@ -1,10 +1,15 @@
 <?php
 $title = 'modify';
-//.$exerciseName.' ('.$exerciseId.')';
-$titleSection = 'Modify an exercise';
+
+$exerciseId = $params->exercise;
+Controller::databaseInformations();
+$exercise = Database::getExercise($exerciseId);
+$questions = Database::getQuestions($exerciseId);
+
+$titleSection = 'Modify Exercise : '.$exercise['name'].' ('.$exerciseId.')';
+
 ?>
 <div class="questionsTable">
-    <p>Params : <?= $params->exercise ?></p>
     <h2>
         Questions
     </h2>
