@@ -16,10 +16,14 @@ class ExerciseController extends Controller
         if (isset($_POST["title"]))
         {
             $exerciseName = $_POST["title"];
-            // TODO : update once database fix received
-            $exerciseId = 0;
-            //$exerciseId = Database::createExercise($_POST["title"]);
+            self::databaseInformations();
+            $exerciseId = Database::createExercise($exerciseName);
+
+            // go to modify view
             self::modify();
+        }
+        else {
+            self::error();
         }
     }
 
@@ -30,8 +34,7 @@ class ExerciseController extends Controller
 
     static function take()
     {
-        Database::informations("Triplice","SC-C332-PC14");
-        Database::credentials("Triplice","Triplice");
+        self::databaseInformations();
         return View::render("Take", Database::getAnsweringExercises());
     }
 }
