@@ -20,14 +20,14 @@ class ExerciseController extends Controller
             $exerciseId = Database::createExercise($exerciseName);
 
             // go to modify view
-            self::modify();
+            self::modify($exerciseId);
         }
         else {
             self::error();
         }
     }
 
-    static function modify()
+    static function modify($params)
     {
         View::render("Exercise/Modify");
     }

@@ -1,9 +1,10 @@
 <?php
-$title = 'Modify exercise ';
+$title = 'modify';
 //.$exerciseName.' ('.$exerciseId.')';
 $titleSection = 'Modify an exercise';
 ?>
 <div class="questionsTable">
+    <p>Params : <?= $params->exercise ?></p>
     <h2>
         Questions
     </h2>
