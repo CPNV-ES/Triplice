@@ -1,5 +1,7 @@
 <?php
 
+use http\Params;
+
 class ExerciseController extends Controller
 {
     static function create()
@@ -17,10 +19,9 @@ class ExerciseController extends Controller
         {
             $exerciseName = $_POST["title"];
             self::databaseInformations();
-            $exerciseId = Database::createExercise($exerciseName);
+            $params = (object)array("exercise"=>Database::createExercise($exerciseName));
 
-            // go to modify view
-            self::modify($exerciseId);
+            self::modify($params);
         }
         else {
             self::error();
@@ -29,7 +30,7 @@ class ExerciseController extends Controller
 
     static function modify($params)
     {
-        View::render("Exercise/Modify");
+        View::render("Exercise/Modify", $params);
     }
 
     static function take()

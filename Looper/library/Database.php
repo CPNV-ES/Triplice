@@ -46,10 +46,10 @@ class Database
         $pdo = Database::dbConnection();
 
         $query =
-            'SELECT idExercice 
+            'SELECT idExercise 
             FROM exercises
             WHERE exercises.name = ?
-            ORDER by idExercice DESC
+            ORDER by idExercise DESC
             LIMIT 1
             ;';
         $statement = $pdo->prepare($query);
