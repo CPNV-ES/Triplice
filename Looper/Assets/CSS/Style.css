@@ -8,12 +8,12 @@ body
 Color by section
  */
 
-.take
+.home, .take
 {
     background-color: #9b4dca;
     color: white;
 }
-.create
+.create, .modify
 {
     background-color: #e0a458;
     color: white;

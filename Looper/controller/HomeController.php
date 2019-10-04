@@ -13,14 +13,4 @@ class HomeController extends Controller
     {
         return View::render("Home");
     }
-
-    static function modif($params)
-    {
-        return View::render("Exercise/Modify");
-    }
-
-    static function exercise($params)
-    {
-       return View::render("Exercise/Manage",$params);
-    }
 }
