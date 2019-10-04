@@ -1,12 +1,10 @@
 <?php
 $title = 'modify';
 
-$exerciseId = $params->exercise;
-Controller::databaseInformations();
-$exercise = Database::getExercise($exerciseId);
-$questions = Database::getQuestions($exerciseId);
+$exercise = $params->exercise;
+$questions = $params->questions;
 
-$titleSection = 'Modify Exercise : '.$exercise['name'].' ('.$exerciseId.')';
+$titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $exercise['idExercise'] . ')';
 
 ?>
 <div class="questionsTable">
@@ -21,6 +19,12 @@ $titleSection = 'Modify Exercise : '.$exercise['name'].' ('.$exerciseId.')';
         </tr>
         </thead>
         <tbody>
+        <?php foreach ($questions as $question): ?>
+            <tr>
+                <td><?= $question['label'] ?></td>
+                <td><?= $question['type'] ?></td>
+            </tr>
+        <?php endforeach; ?>
 
         </tbody>
     </table>

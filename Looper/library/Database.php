@@ -82,8 +82,10 @@ class Database
         $pdo = Database::dbConnection();
 
         $query =
-            'SELECT * 
+            'SELECT *
             FROM questions
+            LEFT JOIN questiontypes
+            ON questions.fkQuestionType = questiontypes.idQuestionType
             WHERE fkExercise = ?
             ;';
         $statement = $pdo->prepare($query);

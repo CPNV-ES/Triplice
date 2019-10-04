@@ -30,6 +30,12 @@ class ExerciseController extends Controller
 
     static function modify($params)
     {
+        Controller::databaseInformations();
+
+        $exerciseId = $params->exercise;
+        $params->exercise = Database::getExercise($exerciseId);
+        $params->questions = Database::getQuestions($exerciseId);
+
         View::render("Exercise/Modify", $params);
     }
 
