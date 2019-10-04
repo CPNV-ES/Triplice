@@ -1,7 +1,6 @@
 
 #navbar
 {
-    background-color: #9b4dca;
     color: white;
     width: 100%;
     z-index: 1;
@@ -61,9 +60,9 @@ take, create, manage sections by size of screen
 
 @media (max-width: 899px)
 {
-    #content
+    .take + #content,.create + #content,.manage + #content
     {
-        margin-top: 5em;
+        margin-top: 7em;
     }
     #navbar.take, #navbar.create, #navbar.manage
     {

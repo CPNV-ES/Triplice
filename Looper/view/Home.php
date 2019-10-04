@@ -2,12 +2,12 @@
 $title = 'home';
 $titleSection = "Exercise<br>Looper";
 ?>
-<a class="homeChild create" href='/exercise/create'>
+<a class="homeChild create" href='/create'>
     Create an exercise
 </a>
-<a class="homeChild take" href='/exercise/take'>
+<a class="homeChild take" href='/take'>
     Take an exercise
 </a>
-<a class="homeChild manage" href='/exercise/Manage'>
+<a class="homeChild manage" href='/Manage'>
     Manage Exercises
 </a>

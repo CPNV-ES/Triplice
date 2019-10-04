@@ -1,0 +1,27 @@
+body
+{
+    background-color: rgba(255, 0, 0, 0.05);;
+}
+#content
+{
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin: 20em auto;
+    width: 510px;
+    box-sizing: border-box;
+}
+#msg
+{
+    display: block;
+    background-color: rgba(255, 0, 0, 0.2);
+    padding: 50px;
+    border-radius: 20px;
+    opacity: .5;
+    word-break: break-word;
+}
+#msg h1
+{
+    padding-bottom: 5px;
+    border-bottom: rgba(128,121,121,0.5) 2px solid;
+}

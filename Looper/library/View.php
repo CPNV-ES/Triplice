@@ -17,7 +17,7 @@ class View
      * add Gabarit on our page and show it.
      *
      * @param $view our page with html
-     * @param null $params datas returned by url
+     * @param null $params datas returned by url or our methods
      */
     static function render($view, $params=null)
     {

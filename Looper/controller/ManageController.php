@@ -1,10 +1,10 @@
 <?php
-
+require 'model/ManageModel.php';
 
 class ManageController extends Controller
 {
-    function index()
+    static function index()
     {
-        require "view/Manage.php";
+        return view::render("Exercise/Manage",getExercises());
     }
 }

@@ -3,17 +3,17 @@ body
 {
     font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     margin: 0;
+    background-color: rgba(222, 222, 222, 0.2);
 }
 /*
 Color by section
  */
-
-.take
+.home, .take
 {
     background-color: #9b4dca;
     color: white;
 }
-.create
+.create, .modify
 {
     background-color: #e0a458;
     color: white;
@@ -21,6 +21,11 @@ Color by section
 .manage
 {
     background-color: #419d78;
+    color: white;
+}
+.error
+{
+    background-color: rgba(214, 5, 12, 0.74);
     color: white;
 }
 /*

@@ -9,13 +9,11 @@ class ExerciseController extends Controller
     }
     static function new()
     {
-        return View::render("Exercise/Take");
+        return View::render("Exercise/Modify");
     }
 
     static function take()
     {
-        Database::informations("Triplice","SC-C332-PC14");
-        Database::credentials("Triplice","Triplice");
         return View::render("Take", Database::getAnsweringExercises());
     }
 }

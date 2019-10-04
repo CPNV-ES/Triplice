@@ -1,9 +1,25 @@
 <html>
 <head>
     <title><?= @$title ?></title>
-    <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Style.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Header.css"/>
-    <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Exercise.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Style.css"/>
+    <?php switch( @$title ) :
+        case "take":?>
+            <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Take.css"/>
+    <?php break;
+        case "create": ?>
+            <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Create.css"/>
+    <?php break;
+        case "manage": ?>
+            <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Manage.css"/>
+    <?php break;
+        case "error": ?>
+            <link rel="stylesheet" media="screen" type="text/css" href="../Assets/CSS/Error.css"/>
+    <?php break;
+    case "modify": ?>
+        <link rel="stylesheet" media="screen" type="text/css" href="../../Assets/CSS/Create.css"/>
+    <?php break;
+    endswitch; ?>
 </head>
 <body>
 <div id="navbar" class="<?= @$title ?> ">

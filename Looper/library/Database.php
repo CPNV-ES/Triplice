@@ -8,20 +8,16 @@
 class Database
 {
     private static $dsn;
-    private static $credentials;
+    private static $ip="SC-C332-PC14";
+    private static $dbName="Triplice";
+    private static $user="Triplice";
+    private static $password="Triplice";
 
-    public static function informations($dbName,$ip)
-    {
-        self::$dsn= "mysql:dbname=$dbName;host=$ip";
-    }
-    public static function credentials($user ,$password)
-    {
-        self::$credentials=(object)array("user"=>$user,"password"=>$password);
-    }
     protected static function dbConnection()
     {
+        self::$dsn= "mysql:dbname=".self::$dbName.";host=".self::$ip;
         try {
-            $pdo = new PDO(self::$dsn, self::$credentials->user, self::$credentials->password);
+            $pdo = new PDO(self::$dsn, self::$user, self::$password);
             return $pdo;
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
