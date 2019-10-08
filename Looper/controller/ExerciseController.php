@@ -38,6 +38,12 @@ class ExerciseController extends Controller
         self::databaseInformations();
 
         $exerciseId = $params->exercise;
+
+        if(isset($_POST['label']))
+        {
+            Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
+        }
+
         $params->exercise = Database::getExercise($exerciseId);
         $params->questions = Database::getQuestions($exerciseId);
         $params->questionTypes = Database::getQuestionTypes();

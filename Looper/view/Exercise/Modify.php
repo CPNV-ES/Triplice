@@ -37,7 +37,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
     <h2>
         New question
     </h2>
-    <form action='/exercise/<?php $idExercise ?>/newQuestion' method="post">
+    <form action='/exercise/<?= $idExercise; ?>/modify' method="post">
         <label for="label">Label</label>
         <input type="text" name="label" id="label" required>
 
