@@ -66,6 +66,10 @@ class Database
         $pdo->prepare($query)->execute([$label, $exerciseId, $idQuestionType]);
     }
 
+    /**
+     * Search all exercises with the "Answering" status
+     * @return array all Answering exercises
+     */
     public static function getAnsweringExercises()
     {
         $pdo = Database::dbConnection();
@@ -78,7 +82,51 @@ class Database
             WHERE `status` LIKE "Answering";';
         $statement = $pdo->prepare($query);
         $statement->execute();
-        $exercises = $statement->fetchAll();
+        $exercises = $statement->fetchAll(PDO::FETCH_CLASS);
+        return $exercises;
+    }
+
+    /**
+     * search all exercises status on database
+     * @return array with all status on database
+     */
+    private static function getStatusExercices()
+    {
+        $pdo = Database::dbConnection();
+        $query =
+            'SELECT `status`
+            FROM Exercisestatus;';
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $exercises = $statement->fetchAll(PDO::FETCH_CLASS);
+        return $exercises;
+    }
+
+    /**
+     * search all exercises on database and save on array all exercises by status
+     * @return array with all exercises by status
+     */
+    public static function getAllExercises()
+    {
+        $pdo = Database::dbConnection();
+        $exerciseStatus=self::getStatusExercices();
+        $exercises=array();
+        //get exercises by status an save it in array
+        for($i=0;$i<count($exerciseStatus);$i++)
+        {
+            $query =
+                "SELECT `name`,`idExercise`
+            FROM Exercises
+            INNER JOIN Exercisestatus 
+                ON idExerciseStatus=fkExerciseStatus 
+            WHERE `status` LIKE '".$exerciseStatus[$i]->status."';";
+            $statement = $pdo->prepare($query);
+            $statement->execute();
+            //save all exercises with the same status on array
+            $exercises[$exerciseStatus[$i]->status]=$statement->fetchAll(PDO::FETCH_CLASS);
+
+        }
+
         return $exercises;
     }
 }

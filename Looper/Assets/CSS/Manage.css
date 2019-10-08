@@ -52,3 +52,11 @@
     border-bottom: #e1e1e1 1px solid;
 
 }
+.ico
+{
+    color: #9b4dca ;
+}
+.ico:hover
+{
+    color: #606c76;
+}
