@@ -18,7 +18,6 @@ class ExerciseController extends Controller
         if (isset($_POST["title"]))
         {
             $exerciseName = $_POST["title"];
-            self::databaseInformations();
             $params = (object)array("exercise"=>Database::createExercise($exerciseName));
 
             self::modify($params);
@@ -35,8 +34,6 @@ class ExerciseController extends Controller
 
     static function modify($params)
     {
-        self::databaseInformations();
-
         $exerciseId = $params->exercise;
 
         if(isset($_POST['label']))
