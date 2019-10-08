@@ -163,7 +163,7 @@ class Database
         for($i=0;$i<count($exerciseStatus);$i++)
         {
             $query =
-                "SELECT `name`,`idExercise`
+                "SELECT `name`,`idExercise` as `id`
             FROM Exercises
             INNER JOIN Exercisestatus 
                 ON idExerciseStatus=fkExerciseStatus 

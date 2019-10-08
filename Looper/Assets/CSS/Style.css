@@ -6,17 +6,21 @@ body {
     margin: 0;
     background-color: rgba(222, 222, 222, 0.2);
 }
-
+a{
+    text-decoration: none;
+}
 /*
 Color by section
  */
 .home, .take
 {
     background-color: #9b4dca;
+    color: white;
 }
 .create, .modify
 {
     background-color: #e0a458;
+    color: white;
 }
 .manage {
     background-color: #419d78;
@@ -55,44 +59,6 @@ a {
 .homeChild:hover
 {
     background-color: grey;
-}
-/*
-form display
- */
-form {
-    width: 600px;
-}
-
-label {
-    font-size: 25px;
-}
-
-input, select {
-    min-width: 300px;
-    width: 100%;
-    margin: 5px 0px 15px 0px;
-    border-radius: 3px;
-    border-color: rgba(149, 150, 151, 0.55);
-    font-size: 20px;
-}
-
-button {
-    font-size: 20px;
-    color: white;
-    border-radius: 3px;
-    border-color: transparent;
-    padding: 5px 10px;
-
-    background-color: #9b4dca;
-}
-
-.questionsTable {
-    width: 400px;
-    margin: 0px 10px 0px 0px;
-}
-
-.newQuestionForm {
-
 }
 
 /*

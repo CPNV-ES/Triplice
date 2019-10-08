@@ -8,11 +8,6 @@ class ExerciseController extends Controller
     {
         View::render("Exercise/Create");
     }
-    static function new()
-    {
-        return View::render("Exercise/Modify");
-    }
-
     static function newExercise()
     {
         if (isset($_POST["title"]))

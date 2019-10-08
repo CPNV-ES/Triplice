@@ -11,26 +11,18 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
 
 ?>
 <div class="questionsTable">
-    <h2>
-        Questions
-    </h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Question</th>
-            <th>Answer type</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($questions as $question): ?>
-            <tr>
-                <td><?= $question['label'] ?></td>
-                <td><?= $question['type'] ?></td>
-            </tr>
-        <?php endforeach; ?>
+    <h1>Questions</h1>
+    <div class="row title">
+        <div class="label">Question</div>
+        <div class="label">Answer type</div>
+    </div>
 
-        </tbody>
-    </table>
+    <?php foreach ($questions as $question): ?>
+        <div class="row title">
+            <div class="label"><?= $question['label'] ?></div>
+            <div class="type"><?= $question['type'] ?></div>
+        </div>
+    <?php endforeach; ?>
 </div>
 
 <div class="newQuestionForm">
