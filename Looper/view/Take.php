@@ -6,7 +6,7 @@
     <?php foreach ($params as $exercise): $exercise=(object)$exercise?>
         <div class="card">
             <div class="title"><?=$exercise->name?></div>
-            <a class="cmdExercise take" href="/Exercise/<?=$exercise->idExercise?>/">Take it</a>
+            <a class="cmdExercise take" href="/Exercise/<?=$exercise->idExercise?>/take">Take it</a>
         </div>
     <?php endforeach; ?>
 <?php else: ?>
