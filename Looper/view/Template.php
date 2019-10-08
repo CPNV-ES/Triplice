@@ -30,8 +30,8 @@
         <h1><?= @$titleSection ?></h1>
     </div>
 </div>
-<diV id="content">
+<div id="content">
     <?= $content ?>
-</diV>
+</div>
 </body>
 </html>
