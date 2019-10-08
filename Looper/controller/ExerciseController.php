@@ -28,13 +28,19 @@ class ExerciseController extends Controller
         }
     }
 
+    static function newQuestion($params)
+    {
+        $exerciseId = $params->exercise;
+    }
+
     static function modify($params)
     {
-        Controller::databaseInformations();
+        self::databaseInformations();
 
         $exerciseId = $params->exercise;
         $params->exercise = Database::getExercise($exerciseId);
         $params->questions = Database::getQuestions($exerciseId);
+        $params->questionTypes = Database::getQuestionTypes();
 
         View::render("Exercise/Modify", $params);
     }

@@ -106,6 +106,20 @@ class Database
         $pdo->prepare($query)->execute([$label, $exerciseId, $idQuestionType]);
     }
 
+    public static function getQuestionTypes()
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questiontypes';
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $questionTypes = $statement;
+
+        return $questionTypes;
+    }
+
     public static function getAnsweringExercises()
     {
         $pdo = Database::dbConnection();

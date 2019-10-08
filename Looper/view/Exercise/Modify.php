@@ -3,8 +3,11 @@ $title = 'modify';
 
 $exercise = $params->exercise;
 $questions = $params->questions;
+$questionTypes = $params->questionTypes;
 
-$titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $exercise['idExercise'] . ')';
+$idExercise = $exercise['idExercise'];
+
+$titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . ')';
 
 ?>
 <div class="questionsTable">
@@ -34,15 +37,15 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $exercise['idE
     <h2>
         New question
     </h2>
-    <form action="looper?view=modify" method="post">
+    <form action='/exercise/<?php $idExercise ?>/newQuestion' method="post">
         <label for="label">Label</label>
         <input type="text" name="label" id="label" required>
 
         <label for="answerType">Answer type</label>
-        <select name="answerType" id="answerType">
-            <option value="single">Single line text</option>
-            <option value="list">List of single lines</option>
-            <option value="multi">Multi-line text</option>
+        <select name="idAnswerType" id="idAnswerType">
+            <?php foreach ($questionTypes as $questionType): ?>
+                <option value="<?= $questionType['idQuestionType'] ?>"><?= $questionType['type'] ?></option>
+            <?php endforeach; ?>
         </select>
 
         <button type="submit">Create field</button>
