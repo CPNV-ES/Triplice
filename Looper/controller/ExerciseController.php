@@ -8,19 +8,17 @@ class ExerciseController extends Controller
     {
         View::render("Exercise/Create");
     }
-    static function new()
-    {
-        return View::render("Exercise/Modify");
-    }
 
     static function newExercise()
     {
         if (isset($_POST["title"]))
         {
             $exerciseName = $_POST["title"];
-            $params = (object)array("exercise"=>Database::createExercise($exerciseName));
+            $exerciseId = Database::createExercise($exerciseName);
 
-            self::modify($params);
+            // redirect to modify page
+            header("Location: ".$exerciseId."/modify");
+            exit();
         }
         else {
             self::error();
