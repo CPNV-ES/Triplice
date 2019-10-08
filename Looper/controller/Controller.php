@@ -1,4 +1,5 @@
 <?php
+
 class Controller
 {
     static function error($params)

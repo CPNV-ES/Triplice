@@ -42,17 +42,51 @@ class Database
         $pdo = Database::dbConnection();
 
         $query =
-            'SELECT idExercice 
+            'SELECT idExercise 
             FROM exercises
             WHERE exercises.name = ?
-            ORDER by idExercice DESC
+            ORDER by idExercise DESC
             LIMIT 1
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseName]);
-        $exerciseId = $statement->fetch()[0];
+        $exerciseId = $statement->fetch()["idExercise"];
 
         return $exerciseId;
+    }
+
+    public static function getExercise($exerciseId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT * 
+            FROM exercises
+            WHERE idExercise = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $exercise = $statement->fetch();
+
+        return $exercise;
+    }
+
+    public static function getQuestions($exerciseId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            LEFT JOIN questiontypes
+            ON questions.fkQuestionType = questiontypes.idQuestionType
+            WHERE fkExercise = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $exercise = $statement;
+
+        return $exercise;
     }
 
     public static function addQuestion($exerciseId, $label, $idQuestionType)
@@ -64,6 +98,20 @@ class Database
             VALUES (?, ?, ?)
             ;';
         $pdo->prepare($query)->execute([$label, $exerciseId, $idQuestionType]);
+    }
+
+    public static function getQuestionTypes()
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questiontypes';
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $questionTypes = $statement;
+
+        return $questionTypes;
     }
 
     /**
