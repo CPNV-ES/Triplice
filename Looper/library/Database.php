@@ -100,6 +100,17 @@ class Database
         $pdo->prepare($query)->execute([$label, $exerciseId, $idQuestionType]);
     }
 
+    public static function deleteQuestion($idQuestion)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'DELETE FROM questions 
+            WHERE idQuestion = ?;';
+
+        $pdo->prepare($query)->execute([$idQuestion]);
+    }
+
     public static function getQuestionTypes()
     {
         $pdo = Database::dbConnection();
