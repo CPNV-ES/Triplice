@@ -8,28 +8,21 @@ class ExerciseController extends Controller
     {
         View::render("Exercise/Create");
     }
-    static function new()
-    {
-        return View::render("Exercise/Modify");
-    }
 
     static function newExercise()
     {
         if (isset($_POST["title"]))
         {
             $exerciseName = $_POST["title"];
-            $params = (object)array("exercise"=>Database::createExercise($exerciseName));
+            $exerciseId = Database::createExercise($exerciseName);
 
-            self::modify($params);
+            // redirect to modify page
+            header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+            exit();
         }
         else {
             self::error();
         }
-    }
-
-    static function newQuestion($params)
-    {
-        $exerciseId = $params->exercise;
     }
 
     static function modify($params)
@@ -46,6 +39,22 @@ class ExerciseController extends Controller
         $params->questionTypes = Database::getQuestionTypes();
 
         View::render("Exercise/Modify", $params);
+    }
+
+    static function deleteQuestion($params)
+    {
+        $exerciseId = $params->exercise;
+        $questionId = $params->question;
+        Database::deleteQuestion($questionId);
+
+        // redirect to modify page
+        header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+        exit();
+    }
+
+    static function modifyQuestion()
+    {
+        // TODO
     }
 
     static function take()

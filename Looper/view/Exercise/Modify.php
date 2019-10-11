@@ -19,6 +19,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
         <tr>
             <th>Question</th>
             <th>Answer type</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,16 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
             <tr>
                 <td><?= $question['label'] ?></td>
                 <td><?= $question['type'] ?></td>
+                <td>
+                    <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/modify"
+                       title="Modify question">
+                        <div class="fa fa-edit ico"></div>
+                    </a>
+                    <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/delete"
+                       title="Delete question">
+                        <div class="fas fa-trash ico"></div>
+                    </a>
+                </td>
             </tr>
         <?php endforeach; ?>
 
