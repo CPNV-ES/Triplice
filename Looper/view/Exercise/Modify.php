@@ -13,7 +13,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
 <div class="questionsTable">
     <h1>Questions</h1>
     <div class="row title">
-        <div class="label"><h2>Questions</h2>
+        <div class="label">Question</div>
         <div class="label">Answer type</div>
     </div>
 
