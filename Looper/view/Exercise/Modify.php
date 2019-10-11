@@ -11,23 +11,12 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
 
 ?>
 <div class="questionsTable">
-    <h2>
-        Questions
-    </h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Question</th>
-            <th>Answer type</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
+    <h1>Questions</h1>
+    <div class="row title">
+        <div class="label">Question</div>
+        <div class="label">Answer type</div>
+    </div>
         <?php foreach ($questions as $question): ?>
-            <tr>
-                <td><?= $question['label'] ?></td>
-                <td><?= $question['type'] ?></td>
-                <td>
                     <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/modify"
                        title="Modify question">
                         <div class="fa fa-edit ico"></div>
@@ -36,12 +25,18 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
                        title="Delete question">
                         <div class="fas fa-trash ico"></div>
                     </a>
+        <?php endforeach; ?>
+            <tr>
+                <td>
                 </td>
             </tr>
-        <?php endforeach; ?>
 
-        </tbody>
-    </table>
+    <?php foreach ($questions as $question): ?>
+        <div class="row title">
+            <div class="label"><?= $question['label'] ?></div>
+            <div class="type"><?= $question['type'] ?></div>
+        </div>
+    <?php endforeach; ?>
 </div>
 
 <div class="newQuestionForm">
