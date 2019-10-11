@@ -23,11 +23,11 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
             <div class="type">
                 <div class="questionType"><?= $question['type'] ?></div>
                 <div>
-                    <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/modify"
+                    <a href="/exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/modify"
                        title="Modify question">
                         <div class="fa fa-edit ico"></div>
                     </a>
-                    <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/delete"
+                    <a href="/exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/delete"
                        title="Delete question">
                         <div class="fas fa-trash ico"></div>
                     </a>
