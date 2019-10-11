@@ -63,6 +63,7 @@ button:hover
     width: 90%;
     margin-left: 5%;
     display: flex;
+    justify-content: space-between;
     padding-bottom: 0.5em;
     margin-bottom: 0.5em;
     border-bottom: #e1e1e1 1px solid;
@@ -73,6 +74,16 @@ button:hover
     box-sizing: border-box;
     word-break: break-word;
     display: flex;
+    justify-content: left;
     padding-left: 0.5em;
-    width: 50%;
+}
+
+.type {
+    width: 30%;
+    flex-shrink: 0;
+    justify-content: right;
+}
+
+.questionType {
+    margin-right: 10px;
 }

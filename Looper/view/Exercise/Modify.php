@@ -13,23 +13,25 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
 <div class="questionsTable">
     <h1>Questions</h1>
     <div class="row title">
-        <div class="label">Question</div>
+        <div class="label"><h2>Questions</h2>
         <div class="label">Answer type</div>
     </div>
 
     <?php foreach ($questions as $question): ?>
         <div class="row title">
             <div class="label"><?= $question['label'] ?></div>
-            <div class="type"><?= $question['type'] ?></div>
-            <div>
-                <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/modify"
-                   title="Modify question">
-                    <div class="fa fa-edit ico"></div>
-                </a>
-                <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/delete"
-                   title="Delete question">
-                    <div class="fas fa-trash ico"></div>
-                </a>
+            <div class="type">
+                <div class="questionType"><?= $question['type'] ?></div>
+                <div>
+                    <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/modify"
+                       title="Modify question">
+                        <div class="fa fa-edit ico"></div>
+                    </a>
+                    <a href="exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/delete"
+                       title="Delete question">
+                        <div class="fas fa-trash ico"></div>
+                    </a>
+                </div>
             </div>
         </div>
     <?php endforeach; ?>
