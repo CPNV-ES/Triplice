@@ -31,7 +31,14 @@ class ExerciseController extends Controller
 
         if(isset($_POST['label']))
         {
-            Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
+            if(!isset($_POST['idQuestionToModify']))
+            {
+                Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
+            }
+            else
+            {
+                Database::modifyQuestion($_POST['idQuestionToModify'], $_POST['label'], $_POST['idAnswerType']);
+            }
         }
 
         $params->modifyQuestion = False;

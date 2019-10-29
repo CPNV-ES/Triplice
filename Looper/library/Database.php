@@ -117,6 +117,19 @@ class Database
         $pdo->prepare($query)->execute([$label, $exerciseId, $idQuestionType]);
     }
 
+    public static function modifyQuestion($questionId, $label, $idQuestionType)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'UPDATE questions
+            SET label = ?, fkQuestionType = ?
+            WHERE idQuestion = ?
+            ;';
+
+        $pdo->prepare($query)->execute([$label, $idQuestionType, $questionId]);
+    }
+
     public static function deleteQuestion($idQuestion)
     {
         $pdo = Database::dbConnection();

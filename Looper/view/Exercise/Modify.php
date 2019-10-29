@@ -8,9 +8,11 @@ $questionTypes = $params->questionTypes;
 $modifyQuestion = $params->modifyQuestion;
 $questionToModify = null;
 $questionLabel = '';
+$submitButtonText = 'Create field';
 if ($modifyQuestion) {
     $questionToModify = $params->questionToModify;
     $questionLabel = $questionToModify['label'];
+    $submitButtonText = 'Modify question';
 }
 
 $idExercise = $exercise['idExercise'];
@@ -70,11 +72,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
         <?php endif; ?>
 
         <button type="submit">
-            <?php if (!$modifyQuestion): ?>
-                Create field
-            <?php else: ?>
-                Modify Question
-            <?php endif; ?>
+            <?= $submitButtonText ?>
         </button>
     </form>
 </div>
