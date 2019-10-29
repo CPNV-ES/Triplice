@@ -47,7 +47,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
     <?php endforeach; ?>
 
     <div class="buttonRow">
-        <button>
+        <button onclick="window.location.href = 'http://<?= $_SERVER["HTTP_HOST"] ?>/exercise/<?= $idExercise ?>/completeExercise';">
             Complete and be ready for answers
         </button>
     </div>
@@ -76,6 +76,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
             <input type="text" name="idQuestionToModify" id="idQuestionToModify"
                    value="<?= $questionToModify['idQuestion'] ?>" required hidden>
         <?php endif; ?>
+
 
         <button type="submit">
             <?= $submitButtonText ?>

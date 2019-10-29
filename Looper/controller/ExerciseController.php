@@ -72,6 +72,11 @@ class ExerciseController extends Controller
         exit();
     }
 
+    static function completeExercise($params)
+    {
+
+    }
+
     static function take()
     {
         return View::render("Take", Database::getAnsweringExercises());
