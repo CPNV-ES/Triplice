@@ -54,7 +54,11 @@ class ExerciseController extends Controller
 
     static function modifyQuestion()
     {
-        // TODO
+        $exerciseId = $params->exercise;
+        $questionId = $params->question;
+
+        // TODO : display question
+        View::render("Exercise/Modify", $params);
     }
 
     static function take()

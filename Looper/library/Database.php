@@ -81,6 +81,7 @@ class Database
             LEFT JOIN questiontypes
             ON questions.fkQuestionType = questiontypes.idQuestionType
             WHERE fkExercise = ?
+            ORDER BY idQuestion
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseId]);
