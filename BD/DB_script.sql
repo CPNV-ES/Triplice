@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `triplice`.`exerciseStatus` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `triplice`.`exercises` (
   `idExercice` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `name` TEXT NOT NULL,
   `fkExerciseStatus` INT NOT NULL,
   PRIMARY KEY (`idExercice`),
   CONSTRAINT `fk_exercises_exerciseStatus1`

@@ -27,6 +27,9 @@
             <img src="/Assets/Pictures/logo.png">
         </a>
         <h1><?= @$titleSection ?></h1>
+        <?php if( isset($details) && !empty($details) ) :?>
+            <p><?=$details?></p>
+        <?php endif; ?>
     </div>
 </div>
 <div id="content">

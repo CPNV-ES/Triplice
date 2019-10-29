@@ -7,7 +7,8 @@ $questionTypes = $params->questionTypes;
 
 $idExercise = $exercise['idExercise'];
 
-$titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . ')';
+$titleSection = 'Modify Exercise '.$idExercise.' :';
+$details = $exercise['name'];
 
 ?>
 <div class="questionsTable">
