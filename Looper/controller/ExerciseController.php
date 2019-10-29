@@ -29,6 +29,7 @@ class ExerciseController extends Controller
     {
         $exerciseId = $params->exercise;
 
+        // delete/modify question if the action has been selected
         if(isset($_POST['label']))
         {
             if(!isset($_POST['idQuestionToModify']))
@@ -39,6 +40,10 @@ class ExerciseController extends Controller
             {
                 Database::modifyQuestion($_POST['idQuestionToModify'], $_POST['label'], $_POST['idAnswerType']);
             }
+
+            // redirect to modify page, to avoid resending post at the refresh of the page
+            header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+            exit();
         }
 
         $params->modifyQuestion = False;
