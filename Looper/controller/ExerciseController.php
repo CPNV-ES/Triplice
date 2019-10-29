@@ -34,6 +34,14 @@ class ExerciseController extends Controller
             Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
         }
 
+        $params->modifyQuestion = False;
+        if (isset($params->question))
+        {
+            $questionId = $params->question;
+            $params->modifyQuestion = True;
+            $params->questionToModify = Database::getQuestion($questionId);
+        }
+
         $params->exercise = Database::getExercise($exerciseId);
         $params->questions = Database::getQuestions($exerciseId);
         $params->questionTypes = Database::getQuestionTypes();
@@ -50,15 +58,6 @@ class ExerciseController extends Controller
         // redirect to modify page
         header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
         exit();
-    }
-
-    static function modifyQuestion()
-    {
-        $exerciseId = $params->exercise;
-        $questionId = $params->question;
-
-        // TODO : display question
-        View::render("Exercise/Modify", $params);
     }
 
     static function take()

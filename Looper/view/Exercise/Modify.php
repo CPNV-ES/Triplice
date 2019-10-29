@@ -5,6 +5,14 @@ $exercise = $params->exercise;
 $questions = $params->questions;
 $questionTypes = $params->questionTypes;
 
+$modifyQuestion = $params->modifyQuestion;
+$questionToModify = null;
+$questionLabel = '';
+if ($modifyQuestion) {
+    $questionToModify = $params->questionToModify;
+    $questionLabel = $questionToModify['label'];
+}
+
 $idExercise = $exercise['idExercise'];
 
 $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . ')';
@@ -43,16 +51,31 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
     </h2>
     <form action='/exercise/<?= $idExercise; ?>/modify' method="post">
         <label for="label">Label</label>
-        <input type="text" name="label" id="label" required>
+        <input type="text" name="label" id="label" value="<?= $questionLabel ?>" required>
 
         <label for="answerType">Answer type</label>
         <select name="idAnswerType" id="idAnswerType">
             <?php foreach ($questionTypes as $questionType): ?>
-                <option value="<?= $questionType['idQuestionType'] ?>"><?= $questionType['type'] ?></option>
+                <option value="<?= $questionType['idQuestionType'] ?>"
+                    <?php if ($modifyQuestion && $questionType['idQuestionType'] == $questionToModify['fkQuestionType']): ?>
+                        selected
+                    <?php endif; ?>
+                ><?= $questionType['type'] ?></option>
             <?php endforeach; ?>
         </select>
 
-        <button type="submit">Create field</button>
+        <?php if ($modifyQuestion): ?>
+            <input type="text" name="idQuestionToModify" id="idQuestionToModify"
+                   value="<?= $questionToModify['idQuestion'] ?>" required hidden>
+        <?php endif; ?>
+
+        <button type="submit">
+            <?php if (!$modifyQuestion): ?>
+                Create field
+            <?php else: ?>
+                Modify Question
+            <?php endif; ?>
+        </button>
     </form>
 </div>
 

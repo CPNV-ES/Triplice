@@ -90,6 +90,22 @@ class Database
         return $exercise;
     }
 
+    public static function getQuestion ($questionId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            WHERE idQuestion = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$questionId]);
+        $question = $statement;
+
+        return $question->fetch();
+    }
+
     public static function addQuestion($exerciseId, $label, $idQuestionType)
     {
         $pdo = Database::dbConnection();
