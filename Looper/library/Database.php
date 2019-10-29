@@ -8,14 +8,14 @@
 class Database
 {
     private static $dsn;
-    private static $ip="SC-C332-PC14";
-    private static $dbName="Triplice";
-    private static $user="Triplice";
-    private static $password="Triplice";
+    private static $ip = "SC-C332-PC14";
+    private static $dbName = "Triplice";
+    private static $user = "Triplice";
+    private static $password = "Triplice";
 
     protected static function dbConnection()
     {
-        self::$dsn= "mysql:dbname=".self::$dbName.";host=".self::$ip;
+        self::$dsn = "mysql:dbname=" . self::$dbName . ";host=" . self::$ip;
         try {
             $pdo = new PDO(self::$dsn, self::$user, self::$password);
             return $pdo;
@@ -90,7 +90,7 @@ class Database
         return $exercise;
     }
 
-    public static function getQuestion ($questionId)
+    public static function getQuestion($questionId)
     {
         $pdo = Database::dbConnection();
 
@@ -139,6 +139,28 @@ class Database
             WHERE idQuestion = ?;';
 
         $pdo->prepare($query)->execute([$idQuestion]);
+    }
+
+    public static function questionsCount($idExercise)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT COUNT(idQuestion)
+                FROM questions
+                WHERE fkExercise = ?;';
+
+        $statement = $pdo->prepare($query);
+        $statement->execute([$idExercise]);
+        $questionsCount = $statement->fetch()[0];
+
+        // return the number
+        return $questionsCount;
+    }
+
+    public static function updateExerciseStatus($idExercise, $idStatus)
+    {
+        // TODO
     }
 
     public static function getQuestionTypes()
@@ -198,21 +220,20 @@ class Database
     public static function getAllExercises()
     {
         $pdo = Database::dbConnection();
-        $exerciseStatus=self::getStatusExercices();
-        $exercises=array();
+        $exerciseStatus = self::getStatusExercices();
+        $exercises = array();
         //get exercises by status an save it in array
-        for($i=0;$i<count($exerciseStatus);$i++)
-        {
+        for ($i = 0; $i < count($exerciseStatus); $i++) {
             $query =
                 "SELECT `name`,`idExercise` as `id`
             FROM Exercises
             INNER JOIN Exercisestatus 
                 ON idExerciseStatus=fkExerciseStatus 
-            WHERE `status` LIKE '".$exerciseStatus[$i]->status."';";
+            WHERE `status` LIKE '" . $exerciseStatus[$i]->status . "';";
             $statement = $pdo->prepare($query);
             $statement->execute();
             //save all exercises with the same status on array
-            $exercises[$exerciseStatus[$i]->status]=$statement->fetchAll(PDO::FETCH_CLASS);
+            $exercises[$exerciseStatus[$i]->status] = $statement->fetchAll(PDO::FETCH_CLASS);
 
         }
 

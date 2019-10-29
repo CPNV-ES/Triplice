@@ -74,7 +74,18 @@ class ExerciseController extends Controller
 
     static function completeExercise($params)
     {
+        $exerciseId = $params->exercise;
+        $questionsCount = Database::questionsCount($exerciseId);
 
+        if($questionsCount > 0)
+        {
+            // TODO : change exercise status, then redirect to manage page
+        }
+        else{
+            // redirect to modify page
+            header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+            exit();
+        }
     }
 
     static function take()

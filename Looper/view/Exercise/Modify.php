@@ -77,11 +77,9 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'];
                    value="<?= $questionToModify['idQuestion'] ?>" required hidden>
         <?php endif; ?>
 
-
         <button type="submit">
             <?= $submitButtonText ?>
         </button>
-
     </form>
 </div>
 
