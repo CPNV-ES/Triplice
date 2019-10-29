@@ -2,7 +2,8 @@
 form display
  */
 form {
-    width: 600px;
+    width: 90%;
+    margin-left: 5%;
 }
 
 label {

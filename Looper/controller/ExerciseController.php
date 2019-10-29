@@ -47,4 +47,10 @@ class ExerciseController extends Controller
     {
         return View::render("Take", Database::getAnsweringExercises());
     }
+
+    static function results($params)
+    {
+        $exerciseId = $params->exercise;
+        View::render("Exercise/Result", $params);
+    }
 }
