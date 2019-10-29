@@ -45,6 +45,12 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
             </div>
         </div>
     <?php endforeach; ?>
+
+    <div class="buttonRow">
+        <button>
+            Complete and be ready for answers
+        </button>
+    </div>
 </div>
 
 <div class="newQuestionForm">
@@ -74,6 +80,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'] . ' (' . $idExercise . 
         <button type="submit">
             <?= $submitButtonText ?>
         </button>
+
     </form>
 </div>
 

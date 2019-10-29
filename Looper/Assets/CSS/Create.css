@@ -28,12 +28,12 @@ button {
     background-color: #9b4dca;
     cursor: pointer;
 }
-button:hover
-{
+
+button:hover {
     background-color: grey;
 }
-#content
-{
+
+#content {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -44,22 +44,20 @@ button:hover
 }
 
 @media (min-width: 900px) {
-    .questionsTable
-    {
-        width:  calc(100%/2 - 60px);
-        margin: 0 10px;
-    }
-}
-@media (max-width: 899px) {
-    .questionsTable
-    {
-        width:  80%;
+    .questionsTable {
+        width: calc(100% / 2 - 60px);
         margin: 0 10px;
     }
 }
 
-.questionsTable .row
-{
+@media (max-width: 899px) {
+    .questionsTable {
+        width: 80%;
+        margin: 0 10px;
+    }
+}
+
+.questionsTable .row {
     width: 90%;
     margin-left: 5%;
     display: flex;
@@ -67,10 +65,16 @@ button:hover
     padding-bottom: 0.5em;
     margin-bottom: 0.5em;
     border-bottom: #e1e1e1 1px solid;
-
 }
-.label,.type
-{
+
+.buttonRow {
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.label, .type {
     box-sizing: border-box;
     word-break: break-word;
     display: flex;
@@ -87,3 +91,4 @@ button:hover
 .questionType {
     margin-right: 10px;
 }
+
