@@ -79,7 +79,12 @@ class ExerciseController extends Controller
 
         if($questionsCount > 0)
         {
-            // TODO : change exercise status, then redirect to manage page
+            // update exercise status to 'answering'
+            Database::updateExerciseStatus($exerciseId, 2);
+
+            // redirect to modify page
+            header("Location: http://".$_SERVER['HTTP_HOST']."/manage");
+            exit();
         }
         else{
             // redirect to modify page

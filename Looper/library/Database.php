@@ -160,7 +160,15 @@ class Database
 
     public static function updateExerciseStatus($idExercise, $idStatus)
     {
-        // TODO
+        $pdo = Database::dbConnection();
+
+        $query =
+            'UPDATE exercises
+            SET fkExerciseStatus = ?
+            WHERE idExercise = ?
+            ;';
+
+        $pdo->prepare($query)->execute([$idStatus, $idExercise]);
     }
 
     public static function getQuestionTypes()
