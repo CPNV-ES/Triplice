@@ -127,6 +127,12 @@ class ExerciseController extends Controller
      */
     static function takeExercise($params)
     {
-        return View::render("Take", Database::getAnsweringExercises());
+        // TODO logic
+        $exerciseId = $params->exercise;
+        $exercise = Database::getExercise($exerciseId);
+        $params->exercise = $exercise;
+
+        // TODO new view
+        return View::render("Exercise/TakeExercise", $params);
     }
 }

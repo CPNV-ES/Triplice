@@ -4,8 +4,7 @@
     <link rel="stylesheet" media="screen" type="text/css" href="/Assets/CSS/Header.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="/Assets/CSS/Style.css"/>
     <?php switch (@$title) :
-        case "take":
-            ?>
+        case "take": ?>
             <link rel="stylesheet" media="screen" type="text/css" href="/Assets/CSS/Take.css"/>
             <?php break;
         case "modify": ?>
