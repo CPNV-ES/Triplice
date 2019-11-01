@@ -20,18 +20,18 @@ $titleSection = "manage an exercise";
                             </a>
                             <?php break;
                         case "Answering": ?>
-                            <a href="./Exercise/<?= $exercise->id ?>/results" title="Show results">
+                            <a href="./exercise/<?= $exercise->id ?>/results" title="Show results">
                                 <div class="fa fa-chart-bar ico"></div>
                             </a>
-                            <a href="./Exercise/<?= $exercise->id ?>/close" title="Close exercise">
+                            <a href="./exercise/<?= $exercise->id ?>/close" title="Close exercise">
                                 <div class="far fa-window-close ico"></div>
                             </a>
                             <?php break;
                         case "Closed": ?>
-                            <a href="./Exercise/<?= $exercise->id ?>/results" title="Show results">
+                            <a href="./exercise/<?= $exercise->id ?>/results" title="Show results">
                                 <div class="fa fa-chart-bar ico"></div>
                             </a>
-                            <a href="./Exercise/<?= $exercise->id ?>/delete" title="Delete exercise">
+                            <a href="./exercise/<?= $exercise->id ?>/delete" title="Delete exercise">
                                 <div class="fas fa-trash ico"></div>
                             </a>
                             <?php break;

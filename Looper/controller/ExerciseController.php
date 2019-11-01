@@ -89,6 +89,7 @@ class ExerciseController extends Controller
 
     /**
      * change the status of an exercise to 'answering', then redirect to the manage page
+     * if the exercise has no questions, does not change the exercise, then redirect to the exercise page
      * @param $params contains exercise, the id of the exercise
      */
     static function completeExercise($params)
