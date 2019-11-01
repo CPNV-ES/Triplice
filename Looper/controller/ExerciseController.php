@@ -120,4 +120,13 @@ class ExerciseController extends Controller
     {
         return View::render("Take", Database::getAnsweringExercises());
     }
+
+    /**
+     * renders the takeExercise view
+     * @param $params contains exercise, the id of the exercise
+     */
+    static function takeExercise($params)
+    {
+        return View::render("Take", Database::getAnsweringExercises());
+    }
 }
