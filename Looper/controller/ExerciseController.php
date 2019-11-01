@@ -4,11 +4,17 @@ use http\Params;
 
 class ExerciseController extends Controller
 {
+    /**
+     * renders the create view
+     */
     static function create()
     {
         View::render("Exercise/Create");
     }
 
+    /**
+     * create a new exercise according to POST data, then go to the modify page of the exercise
+     */
     static function newExercise()
     {
         if (isset($_POST["title"]))
@@ -25,6 +31,11 @@ class ExerciseController extends Controller
         }
     }
 
+    /**
+     * renders the modify view,
+     * if POST data has been sent, delete/modify an exercise accordingly
+     * @param $params contains exercise, the id of the exercise
+     */
     static function modify($params)
     {
         $exerciseId = $params->exercise;
@@ -61,6 +72,10 @@ class ExerciseController extends Controller
         View::render("Exercise/Modify", $params);
     }
 
+    /**
+     * delete a question, then redirect to the page of the exercise
+     * @param $params contains exercise, the id of the exercise, and question, the id of the question
+     */
     static function deleteQuestion($params)
     {
         $exerciseId = $params->exercise;
@@ -72,6 +87,11 @@ class ExerciseController extends Controller
         exit();
     }
 
+    /**
+     * change the status of an exercise to 'answering', then redirect to the manage page
+     * if the exercise has no questions, does not change the exercise, then redirect to the exercise page
+     * @param $params contains exercise, the id of the exercise
+     */
     static function completeExercise($params)
     {
         $exerciseId = $params->exercise;
@@ -80,7 +100,7 @@ class ExerciseController extends Controller
         if($questionsCount > 0)
         {
             // update exercise status to 'answering'
-            Database::updateExerciseStatus($exerciseId, 2);
+            Database::modifyExerciseStatus($exerciseId, 2);
 
             // redirect to modify page
             header("Location: http://".$_SERVER['HTTP_HOST']."/manage");
@@ -93,6 +113,9 @@ class ExerciseController extends Controller
         }
     }
 
+    /**
+     * renders the take view
+     */
     static function take()
     {
         return View::render("Take", Database::getAnsweringExercises());

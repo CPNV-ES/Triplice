@@ -11,6 +11,8 @@ Router::add("/exercise/id/completeExercise", "ExerciseController@completeExercis
 Router::add("/take", "ExerciseController@take");
 Router::add("/exercise/take", "ExerciseController@take");
 Router::add("/manage", "ManageController@index");
+Router::add("/exercise/id/delete", "ManageController@deleteExercise");
+Router::add("/exercise/id/close", "ManageController@closeExercise");
 Router::add("/error", "HomeController@error");
 
 Router::run();
