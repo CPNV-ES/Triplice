@@ -12,8 +12,8 @@ $titleSection="manage an exercise";
         <div>
             <?php switch($key):
                 case "Building": ?>
-                <a href="./Exercise/<?=$exercise->id?>/edit" title="Edit exercise"><div class="fa fa-edit ico"></div></a>
-                <a href="./Exercise/<?=$exercise->id?>/delete" title="Delete exercise"><div class="fas fa-trash ico"></div></a>
+                <a href="./exercise/<?=$exercise->id?>/manage" title="Edit exercise"><div class="fa fa-edit ico"></div></a>
+                <a href="./exercise/<?=$exercise->id?>/delete" title="Delete exercise"><div class="fas fa-trash ico"></div></a>
             <?php break;
             case "Answering": ?>
                 <a href="./Exercise/<?=$exercise->id?>/results" title="Show results"><div class="fa fa-chart-bar ico"></div></a>
