@@ -35,7 +35,7 @@ Home section
 take, create, manage sections by size of screen
  */
 @media (min-width: 900px) {
-    .take + #content, .create + #content, .manage + #content
+    .take + #content, .create + #content, .manage + #content, .modify + #content
     {
         margin-top: 7em;
     }
@@ -44,6 +44,10 @@ take, create, manage sections by size of screen
         max-width: 60%;
         margin: 0 auto;
         display: flex;
+    }
+    .modify .title
+    {
+        font-size: 13px;
     }
     .section .title
     {
@@ -61,11 +65,11 @@ take, create, manage sections by size of screen
 
 @media (max-width: 899px)
 {
-    .take + #content,.create + #content,.manage + #content
+    .take + #content,.create + #content,.manage + #content,.modify + #content
     {
         margin-top: 7em;
     }
-    #navbar.take, #navbar.create, #navbar.manage
+    #navbar.take, #navbar.create, #navbar.manage, #navbar.modify
     {
         height: 5em;
         display: block;
@@ -76,11 +80,16 @@ take, create, manage sections by size of screen
         left: 0;
         right: 0;
     }
+
+    .modify .title
+    {
+        font-size: 13px;
+    }
     .section.title h1
     {
         padding-left: 10%;
     }
-    .take .section, .manage .section, .create .section
+    .take .section, .manage .section, .create .section, .modify .section
     {
         max-width: 90%;
         margin: 0 auto;

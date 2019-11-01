@@ -17,7 +17,7 @@ $titleSection="manage an exercise";
             <?php break;
             case "Answering": ?>
                 <a href="./Exercise/<?=$exercise->id?>/results" title="Show results"><div class="fa fa-chart-bar ico"></div></a>
-                <a href="./Exercise/<?=$exercise->id?>/close"  title="Close exercise"><div class="far fa-window-close"></div></a>
+                <a href="./Exercise/<?=$exercise->id?>/close"  title="Close exercise"><div class="far fa-window-close ico"></div></a>
             <?php break;
             case "Closed": ?>
                 <a href="./Exercise/<?=$exercise->id?>/results" title="Show results"><div class="fa fa-chart-bar ico"></div></a>

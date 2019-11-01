@@ -29,9 +29,29 @@ class ExerciseController extends Controller
     {
         $exerciseId = $params->exercise;
 
+        // delete/modify question if the action has been selected
         if(isset($_POST['label']))
         {
-            Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
+            if(!isset($_POST['idQuestionToModify']))
+            {
+                Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
+            }
+            else
+            {
+                Database::modifyQuestion($_POST['idQuestionToModify'], $_POST['label'], $_POST['idAnswerType']);
+            }
+
+            // redirect to modify page, to avoid resending post at the refresh of the page
+            header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+            exit();
+        }
+
+        $params->modifyQuestion = False;
+        if (isset($params->question))
+        {
+            $questionId = $params->question;
+            $params->modifyQuestion = True;
+            $params->questionToModify = Database::getQuestion($questionId);
         }
 
         $params->exercise = Database::getExercise($exerciseId);
@@ -52,9 +72,25 @@ class ExerciseController extends Controller
         exit();
     }
 
-    static function modifyQuestion()
+    static function completeExercise($params)
     {
-        // TODO
+        $exerciseId = $params->exercise;
+        $questionsCount = Database::questionsCount($exerciseId);
+
+        if($questionsCount > 0)
+        {
+            // update exercise status to 'answering'
+            Database::updateExerciseStatus($exerciseId, 2);
+
+            // redirect to modify page
+            header("Location: http://".$_SERVER['HTTP_HOST']."/manage");
+            exit();
+        }
+        else{
+            // redirect to modify page
+            header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+            exit();
+        }
     }
 
     static function take()

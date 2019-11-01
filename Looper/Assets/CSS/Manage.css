@@ -10,7 +10,6 @@
     {
         width:  calc(100%/3 - 60px);
         margin: 0 10px;
-    //border: black 1px solid;
     }
 }
 @media (max-width: 899px) {
@@ -18,7 +17,6 @@
     {
         width:  80%;
         margin: 0 10px;
-    //border: black 1px solid;
     }
 }
 
@@ -51,12 +49,4 @@
     margin-bottom: 0.5em;
     border-bottom: #e1e1e1 1px solid;
 
-}
-.ico
-{
-    color: #9b4dca ;
-}
-.ico:hover
-{
-    color: #606c76;
 }
