@@ -91,6 +91,21 @@ class Database
     }
 
     /**
+     * delete an exercise
+     * @param int $exerciseId id of the exercise
+     */
+    public static function deleteExercise($exerciseId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'DELETE FROM exercises 
+            WHERE idExercise = ?;';
+
+        $pdo->prepare($query)->execute([$exerciseId]);
+    }
+
+    /**
      * get all questions of an exercise
      * @param int $exerciseId id of the exercise
      * @return array questions of the exercise
