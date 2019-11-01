@@ -51,6 +51,10 @@ class ExerciseController extends Controller
     static function results($params)
     {
         $exerciseId = $params->exercise;
+
+        $params->exercise = Database::getExercise($exerciseId);
+        $params->questions = Database::getQuestions($exerciseId);
+        $params->results = Database::getResultsExercise($exerciseId);
         View::render("Exercise/Result", $params);
     }
 }
