@@ -79,12 +79,7 @@ for small screen, display 1 button.
         width: 100%;
     }
 }
-
-.ico
+.title
 {
-    color: #9b4dca ;
-}
-.ico:hover
-{
-    color: #606c76;
+    width: 85%;
 }
