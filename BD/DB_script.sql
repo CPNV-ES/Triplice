@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS `triplice`.`exerciseStatus` (
 -- Table `triplice`.`exercises`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `triplice`.`exercises` (
-  `idExercice` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `idExercise` INT NOT NULL AUTO_INCREMENT,
+  `name` TEXT NOT NULL,
   `fkExerciseStatus` INT NOT NULL,
-  PRIMARY KEY (`idExercice`),
+  PRIMARY KEY (`idExercise`),
   CONSTRAINT `fk_exercises_exerciseStatus1`
     FOREIGN KEY (`fkExerciseStatus`)
     REFERENCES `triplice`.`exerciseStatus` (`idExerciseStatus`)
@@ -52,12 +52,12 @@ CREATE TABLE IF NOT EXISTS `triplice`.`questionTypes` (
 CREATE TABLE IF NOT EXISTS `triplice`.`questions` (
   `idQuestion` INT NOT NULL AUTO_INCREMENT,
   `label` TEXT NOT NULL,
-  `fkExercice` INT NOT NULL,
+  `fkExercise` INT NOT NULL,
   `fkQuestionType` INT NOT NULL,
   PRIMARY KEY (`idQuestion`),
   CONSTRAINT `fk_questions_exercises1`
-    FOREIGN KEY (`fkExercice`)
-    REFERENCES `triplice`.`exercises` (`idExercice`)
+    FOREIGN KEY (`fkExercise`)
+    REFERENCES `triplice`.`exercises` (`idExercise`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_questions_questionTypes1`

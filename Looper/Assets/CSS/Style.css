@@ -5,6 +5,7 @@ body {
     font-size: 20px;
     margin: 0;
     background-color: rgba(222, 222, 222, 0.2);
+    color : #606c76;
 }
 a{
     text-decoration: none;
@@ -22,7 +23,7 @@ Color by section
     background-color: #e0a458;
     color: white;
 }
-.manage {
+.manage, .results {
     background-color: #419d78;
 }
 .error
@@ -64,7 +65,7 @@ a {
 /*
 for large screen, display 3 buttons.
  */
-@media (min-width: 900px) {
+@media (min-width: 700px) {
     .homeChild {
         width: 25%;
     }
@@ -73,7 +74,7 @@ for large screen, display 3 buttons.
 /*
 for small screen, display 1 button.
  */
-@media (max-width: 899px) {
+@media (max-width: 699px) {
     .homeChild {
         width: 100%;
     }

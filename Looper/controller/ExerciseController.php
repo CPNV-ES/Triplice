@@ -120,4 +120,30 @@ class ExerciseController extends Controller
     {
         return View::render("Take", Database::getAnsweringExercises());
     }
+
+    static function resultsByExercise($params)
+    {
+        $params->exerciseId =$params->exercise;
+        $params->exercise = Database::getExercise($params->exerciseId)['name'];
+        $params->questions = Database::getQuestions($params->exerciseId);
+        $params->results = Database::getResultsExercise($params->exerciseId);
+        View::render("Exercise/ResultByExercise", $params);
+    }
+    static function resultsByQuestion($params)
+    {
+        $params->questionId = $params->results;
+        $params->exerciseId =$params->exercise;
+        $params->exercise = Database::getExercise($params->exerciseId)['name'];
+        $params->question = Database::getQuestionName($params->questionId);
+        $params->results = Database::getResultsByQuestion($params->exerciseId, $params->results);
+        View::render("Exercise/ResultByQuestion", $params);
+    }
+    static function resultsByUser($params)
+    {
+        $params->userId = $params->user;
+        $params->exerciseId =$params->exercise;
+        $params->exercise = Database::getExercise($params->exerciseId)['name'];
+        $params->results = Database::getResultsByUser($params->exerciseId,$params->userId);
+        View::render("Exercise/ResultByUser", $params);
+    }
 }

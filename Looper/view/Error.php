@@ -1,5 +1,6 @@
 <?php
 $title = 'error';
+$titleSection = "Have you a problem?";
 ?>
 <div id="msg">
     <h1><?=@$params->error?></h1>

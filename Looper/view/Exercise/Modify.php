@@ -17,7 +17,8 @@ if ($modifyQuestion) {
 
 $idExercise = $exercise['idExercise'];
 
-$titleSection = 'Modify Exercise : ' . $exercise['name'];
+$titleSection = 'Modify Exercise '.$idExercise.' :';
+$details = $exercise['name'];
 
 ?>
 <div class="questionsTable">
