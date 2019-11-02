@@ -15,7 +15,9 @@ class ExerciseController extends Controller
             $exerciseName = $_POST["title"];
             $params = (object)array("exercise"=>Database::createExercise($exerciseName));
 
-            self::modify($params);
+            unset($_POST);
+            $id=$params->exercise;
+            header("Location: /exercise/$id/modify");
         }
         else {
             self::error();
@@ -34,6 +36,8 @@ class ExerciseController extends Controller
         if(isset($_POST['label']))
         {
             Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
+            unset($_POST);
+            header("Location: /exercise/$exerciseId/modify");
         }
 
         $params->exercise = Database::getExercise($exerciseId);

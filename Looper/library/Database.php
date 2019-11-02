@@ -177,48 +177,6 @@ class Database
         return $exercises;
     }
 
-    /**
-     * Get all answers of exercise
-     * @param $id
-     * @return all answers of specific exercise
-     */
-    public static function getResultsExercise($id)
-    {
-        $pdo = Database::dbConnection();
-        $query =   "SELECT takes.idTake AS userID, takes.saveTime AS user, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
-                    FROM answers
-                    INNER JOIN questions on answers.fkQuestion = questions.idQuestion
-                    INNER JOIN takes ON takes.idTake = answers.fkTake
-                    INNER JOIN exercises on exercises.idExercise = questions.fkExercise
-                    WHERE exercises.idExercise=$id ORDER BY userID";
-        $statement = $pdo->prepare($query);
-        $statement->execute();
-        $data = $statement->fetchAll(PDO::FETCH_CLASS);
-
-        array_push($data,"");//add a empty line for save a last user in the next foreach;
-
-        $results=array();
-        $lastID=0;
-        foreach ($data as $value)
-        {
-            if($lastID!=$value->userID)//when new user, add the last user on results array
-            {
-                if(!$lastID==null)// not add user on the first iteration, because it not exists
-                    array_push($results,$user);
-
-                $i=0;
-                $user=new stdClass();
-                $lastID=$value->userID;
-                $user->id=$value->userID;
-                $user->name=$value->user;
-            }
-            $user->question->$i->label=$value->question;
-            $user->question->$i->answer=$value->answer;
-            $i++;
-        }
-
-        return $results;
-    }
     public static function getQuestionName($idQuestion)
     {
         $pdo = Database::dbConnection();
@@ -231,78 +189,107 @@ class Database
         $question = $statement->fetch();
         return $question;
     }
+    /**
+     * Get all answers of exercise
+     * @param $id
+     * @return all answers of specific exercise
+     */
+    public static function getResultsExercise($id)
+    {
+        $pdo = Database::dbConnection();
+        $query =   "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+                    FROM answers
+                    INNER JOIN questions on answers.fkQuestion = questions.idQuestion
+                    INNER JOIN takes ON takes.idTake = answers.fkTake
+                    INNER JOIN exercises on exercises.idExercise = questions.fkExercise
+                    WHERE exercises.idExercise=$id ORDER BY id";
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_CLASS);
+
+        return self::usersQuestionsOfExercise($data);
+    }
+
+    /**
+     * search on satabase all answers for specific question
+     * @param $idExercise
+     * @param $idQuestion
+     * @return object array with users and their answer for the question
+     */
     public static function getResultsByQuestion($idExercise, $idQuestion)
     {
         $pdo = Database::dbConnection();
-        $query =   "SELECT takes.idTake AS userID, takes.saveTime AS user, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+        $query =   "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
                     FROM answers
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
                     INNER JOIN exercises on exercises.idExercise = questions.fkExercise
-                    WHERE exercises.idExercise=$idExercise and questions.idQuestion=$idQuestion ORDER BY userID";
+                    WHERE exercises.idExercise=$idExercise and questions.idQuestion=$idQuestion ORDER BY id";
         $statement = $pdo->prepare($query);
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_CLASS);
 
-        array_push($data,"");//add a empty line for save a last user in the next foreach;
-
-        $results=array();
-        $lastID=0;
-        foreach ($data as $value)
-        {
-            if($lastID!=$value->userID)//when new user, add the last user on results array
-            {
-                if(!$lastID==null)// not add user on the first iteration, because it not exists
-                    array_push($results,$user);
-
-                $i=0;
-                $user=new stdClass();
-                $lastID=$value->userID;
-                $user->id=$value->userID;
-                $user->name=$value->user;
-            }
-            $user->question->$i->label=$value->question;
-            $user->question->$i->answer=$value->answer;
-            $i++;
-        }
-
-        return $results;
+        return self::usersQuestionsOfExercise($data);
     }
+
+    /**
+     * Search all answers of user for question
+     * @param $idExercise
+     * @param $idUser
+     * @return object array with user's answers
+     */
     public static function getResultsByUser($idExercise, $idUser)
     {
         $pdo = Database::dbConnection();
-        $query =   "SELECT takes.idTake AS userID, takes.saveTime AS user, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+        $query =   "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
                     FROM answers
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
                     INNER JOIN exercises on exercises.idExercise = questions.fkExercise
-                    WHERE exercises.idExercise=$idExercise and takes.idTake=$idUser ORDER BY userID";
+                    WHERE exercises.idExercise=$idExercise and takes.idTake=$idUser ORDER BY id";
         $statement = $pdo->prepare($query);
         $statement->execute();
-        $data = $statement->fetchAll(PDO::FETCH_CLASS);
+        $data = $statement->fetchAll(PDO::FETCH_CLASS); //return an array with id, name, question, answer
 
-        array_push($data,"");//add a empty line for save a last user in the next foreach;
+        return self::usersQuestionsOfExercise($data);
 
-        $results=array();
-        $lastID=0;
-        foreach ($data as $value)
+    }
+
+    /**
+     * sorts all the objects in the table to create a table containing all the answers to questions by user
+     * @param $obj <- array of objects with id, name and question with answer
+     * @return $users <- array objects with questions and answers by user
+     */
+    private static function usersQuestionsOfExercise($obj)
+    {
+        $users=array();
+        $lastID='0';
+        $index=0;
+        $user=new stdClass();
+        foreach ($obj as $value)
         {
-            if($lastID!=$value->userID)//when new user, add the last user on results array
+            if($lastID!=$value->id)//when new user
             {
-                if(!$lastID==null)// not add user on the first iteration, because it not exists
-                    array_push($results,$user);
+                if($lastID!=0)// not add user on the first iteration, because it's empty
+                {
+                    array_push($users,$user);
+                }
 
-                $i=0;
+                $index=0;
                 $user=new stdClass();
-                $lastID=$value->userID;
-                $user->id=$value->userID;
-                $user->name=$value->user;
+                $user->id=$value->id;
+                $user->name=$value->name;
             }
-            $user->question->$i->label=$value->question;
-            $user->question->$i->answer=$value->answer;
-            $i++;
+            $user->question[$index]=new stdClass();//our question contain label and answer object
+            $user->question[$index]->label=$value->question;
+            $user->question[$index]->answer=$value->answer;
+            $index++;
+            $lastID=$value->id;
+            if( !next( $obj ) ) { //when the last loop, add user on users array
+                array_push($users,$user);
+            }
         }
 
-        return $results;
+        return $users;
     }
 }
