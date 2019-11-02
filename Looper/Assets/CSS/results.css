@@ -1,6 +1,8 @@
 table
 {
-    width: 85%;
+    position: absolute;
+    left: 5%;
+    width: 90%;
     text-align: left;
 }
 th
