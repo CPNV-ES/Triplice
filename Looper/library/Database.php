@@ -8,7 +8,7 @@
 class Database
 {
     private static $dsn;
-    private static $ip = "SC-C332-PC14";
+    private static $ip = "localhost";
     private static $dbName = "Triplice";
     private static $user = "Triplice";
     private static $password = "Triplice";
@@ -64,7 +64,7 @@ class Database
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseName]);
-        $exerciseId = $statement->fetch()["idExercise"];
+        $exerciseId = $statement->fetch();
 
         return $exerciseId;
     }
