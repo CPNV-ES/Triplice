@@ -93,7 +93,7 @@ take, create, manage sections by size of screen
     {
         margin-top: 7em;
     }
-    #navbar.results, #navbar.take, #navbar.create, #navbar.manage, #navbar.modify
+    #navbar.results, #navbar.take, #navbar.create, #navbar.manage, #navbar.modify, #navbar.results
     {
         height: 5em;
         display: block;
@@ -104,14 +104,14 @@ take, create, manage sections by size of screen
         left: 0;
         right: 0;
     }
-    .error .section h1, .take .section h1, .manage .section h1, .create .section h1, .modify .section h1
+    .error .section h1, .take .section h1, .manage .section h1, .create .section h1, .modify .section h1, .results .section h1
     {
         margin: auto;
         max-height: 36px;
         font-size: 160%;
     }
 
-    .modify .title
+    .modify .title, .results .title
     {
         font-size: 13px;
     }
@@ -120,7 +120,7 @@ take, create, manage sections by size of screen
         padding-left: 10%;
     }
 
-    .modify .section.title h1
+    .modify .section.title h1, .results .section.title h1
     {
         max-height: 60px;
         margin: auto;
@@ -131,7 +131,7 @@ take, create, manage sections by size of screen
         max-height: 60px;
         margin: auto;
     }
-    .error .section, .take .section, .manage .section, .create .section, .modify .section
+    .results .section,.error .section, .take .section, .manage .section, .create .section, .modify .section
     {
         max-width: 90%;
         margin: 0 auto;
@@ -140,7 +140,7 @@ take, create, manage sections by size of screen
 }
 @media (max-width: 500px)
 {
-    .error .section h1, .take .section h1, .manage .section h1, .create .section h1, .modify .section h1
+    .results .section h1,.error .section h1, .take .section h1, .manage .section h1, .create .section h1, .modify .section h1
     {
         margin: auto;
         max-height: 36px;
