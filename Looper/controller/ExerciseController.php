@@ -77,4 +77,20 @@ class ExerciseController extends Controller
         $params->results = Database::getResultsByUser($params->exerciseId,$params->userId);
         View::render("Exercise/ResultByUser", $params);
     }
+
+    /**
+     * renders the takeExercise view
+     * @param $params contains exercise, the id of the exercise
+     */
+    static function takeExercise($params)
+    {
+        $exerciseId = $params->exercise;
+        $exercise = Database::getExercise($exerciseId);
+        $questions = Database::getQuestions($exerciseId);
+
+        $params->exerciseName = $exercise['name'];
+        $params->questions = $questions;
+
+        return View::render("Exercise/TakeExercise", $params);
+    }
 }
