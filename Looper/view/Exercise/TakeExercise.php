@@ -8,16 +8,17 @@ $questions = $params->questions;
 
 $titleSection = "Exercise : " . $exerciseName;
 ?>
-<form>
+<form class="cardContainer">
     <?php foreach ($questions as $question): ?>
         <div class="card">
             <div class="title"><?= $question['label'] ?></div>
             <?php switch ($question['fkQuestionType']):
                 case 1: ?>
+                    <input name="<?= $question['idQuestion'] ?>" type="text">
                     <?php break;
-                case 2: ?>
-                    <?php break;
+                case 2:
                 case 3: ?>
+                    <textarea name="<?= $question['idQuestion'] ?>"></textarea>
                     <?php break;
             endswitch; ?>
         </div>
