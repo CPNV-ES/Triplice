@@ -9,6 +9,8 @@ $questions = $params->questions;
 $titleSection = "Exercise : " . $exerciseName;
 ?>
 <form class="cardContainer">
+    <p>If you want to come back later, you can submit your answers and save the link of the page.</p>
+
     <?php foreach ($questions as $question): ?>
         <div class="card">
             <div class="title"><?= $question['label'] ?></div>
@@ -23,4 +25,9 @@ $titleSection = "Exercise : " . $exerciseName;
             endswitch; ?>
         </div>
     <?php endforeach; ?>
+    <div class="card">
+        <button class="cmdExercise take" type="submit">
+            Save
+        </button>
+    </div>
 </form>
