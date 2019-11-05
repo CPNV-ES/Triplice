@@ -1,7 +1,7 @@
 <?php
 $title = 'results';
 $titleSection = "Exercise : ";
-$details = $params->exercise;
+$details = "<a href='/exercise/$params->exerciseId/results'>$params->exercise</a>";
 
 ?>
 <h1><?= $params->results[0]->name ?></h1>

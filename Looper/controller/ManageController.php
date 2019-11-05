@@ -5,7 +5,12 @@ class ManageController extends Controller
 {
     static function index()
     {
-        return view::render("Exercise/Manage",Database::getAllExercises());
+        $params->exercises = Database::getAllExercises();
+        foreach ($params->exercises['Building'] as $exercise)
+        {
+                $exercise->count=Database::questionsCount($exercise->id);
+        }
+        return view::render("Exercise/Manage",$params);
     }
 
     /**

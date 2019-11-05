@@ -83,3 +83,19 @@ for small screen, display 1 button.
 {
     width: 85%;
 }
+.fa-times
+{
+    color: red;
+}
+.fa-check,.fa-check-double
+{
+    color: #419d78;
+}
+.row .title
+{
+    width: 75%;
+}
+.center
+{
+    text-align: center;
+}

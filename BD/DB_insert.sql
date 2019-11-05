@@ -1,7 +1,7 @@
 USE `Triplice`;
 
 -- ----------------------------------
--- Exercice status
+-- Exercise status
 -- ----------------------------------
 INSERT INTO exerciseStatus(`status`) 
 VALUES
@@ -10,7 +10,7 @@ VALUES
 	("Closed");
 
 -- ----------------------------------
--- 3 News exercices 
+-- 3 News exercides 
 -- ----------------------------------
 INSERT INTO exercises(`name`,fkExerciseStatus) 
 VALUES
@@ -28,9 +28,9 @@ VALUES
 	("List of single lines");
 
 -- ----------------------------------
--- Create questions for exercices
+-- Create questions for exercises
 -- ----------------------------------
-INSERT INTO questions(`label`,fkExercice,fkQuestionType) 
+INSERT INTO questions(`label`,fkExercise,fkQuestionType) 
 VALUES
 	("(a+b)(a-b)=",1,3),
 	("1+1=",2,1),
