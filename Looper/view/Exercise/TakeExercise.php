@@ -3,12 +3,13 @@
 // for now, take the same css as the take page
 $title = 'take';
 
+$idExercise = $params->exercise;
 $exerciseName = $params->exerciseName;
 $questions = $params->questions;
 
 $titleSection = "Exercise : " . $exerciseName;
 ?>
-<form class="cardContainer">
+<form action='/exercise/<?= $idExercise; ?>/submit' method="post">
     <p>If you want to come back later, you can submit your answers and save the link of the page.</p>
 
     <?php foreach ($questions as $question): ?>
