@@ -130,6 +130,32 @@ class Database
     }
 
     /**
+     * get all questions of a take and their answers
+     * @param int $takeId id of the take
+     * @return array questions of the take with answers
+     */
+    public static function getQuestionsAndAnswers($takeId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            LEFT JOIN questiontypes
+            ON questions.fkQuestionType = questiontypes.idQuestionType
+            INNER JOIN answers
+            ON answers.fkQuestion = questions.idQuestion
+            WHERE answers.fkTake = ?
+            ORDER BY idQuestion
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$takeId]);
+        $questions = $statement;
+
+        return $questions;
+    }
+
+    /**
      * get a question
      * @param int $questionId id of the question
      * @return object question
@@ -336,6 +362,17 @@ class Database
             VALUES (?, ?, ?)
             ;';
         $pdo->prepare($query)->execute([$content, $idQuestion, $idTake]);
+    }
+
+    public static function updateAnswer($content, $idAnswer)
+    {
+        $pdo = Database::dbConnection();
+        $query =
+            'UPDATE answers
+            SET content = ?
+            WHERE idAnswer = ?
+            ;';
+        $pdo->prepare($query)->execute([$content, $idAnswer]);
     }
 
     /**

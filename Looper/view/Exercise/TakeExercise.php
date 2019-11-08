@@ -6,22 +6,36 @@ $title = 'take';
 $idExercise = $params->exercise;
 $exerciseName = $params->exerciseName;
 $questions = $params->questions;
+$updateAnswer = $params->updateAnswer;
 
 $titleSection = "Exercise : " . $exerciseName;
+
+$formAction = '/exercise/' . $idExercise . '/submit';
+if ($updateAnswer) {
+    $formAction = '/exercise/' . $idExercise . '/answer/'. $params->answer . '/resubmit';
+}
 ?>
-<form action='/exercise/<?= $idExercise; ?>/submit' method="post">
+<form action='<?= $formAction; ?>' method="post">
     <p>If you want to come back later, you can submit your answers and save the link of the page.</p>
 
     <?php foreach ($questions as $question): ?>
         <div class="card">
             <div class="title"><?= $question['label'] ?></div>
-            <?php switch ($question['fkQuestionType']):
+            <?php
+            $inputName = $question['idQuestion'];
+            $content = "";
+            if ($updateAnswer) {
+                $inputName = $question['idAnswer'];
+                $content = $question['content'];
+            }
+
+            switch ($question['fkQuestionType']):
                 case 1: ?>
-                    <input name="<?= $question['idQuestion'] ?>" type="text">
+                    <input name="<?= $inputName ?>" value="<?= $content ?>" type="text">
                     <?php break;
                 case 2:
                 case 3: ?>
-                    <textarea name="<?= $question['idQuestion'] ?>"></textarea>
+                    <textarea name="<?= $inputName ?>"><?= $content ?></textarea>
                     <?php break;
             endswitch; ?>
         </div>
