@@ -125,7 +125,7 @@ class ExerciseController extends Controller
         return View::render("Take", Database::getAnsweringExercises());
     }
 
-    static function submit($params)
+    static function submitAnswer($params)
     {
         // TODO take POST data -> update db to add it -> get id of submitted answer -> return to takeExercise page using the id
     }
