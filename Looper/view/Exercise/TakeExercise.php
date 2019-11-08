@@ -6,7 +6,8 @@ $title = 'take';
 $exerciseName = $params->exerciseName;
 $questions = $params->questions;
 
-$titleSection = "Exercise : " . $exerciseName;
+$titleSection = "Exercise : " ;
+$details = $exerciseName;
 ?>
 <form>
     <?php foreach ($questions as $question): ?>

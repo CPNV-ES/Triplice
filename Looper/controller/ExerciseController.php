@@ -128,11 +128,19 @@ class ExerciseController extends Controller
 
         return View::render("Exercise/TakeExercise", $params);
     }
+
+    /**
+     * return to view all answers with answering status
+     */
     static function take()
     {
         return View::render("Take", Database::getAnsweringExercises());
     }
 
+    /**
+     * returns to view which questions were answered by user
+     * @param $params (questionId)
+     */
     static function resultsByExercise($params)
     {
         $params->exerciseId =$params->exercise;
@@ -141,6 +149,11 @@ class ExerciseController extends Controller
         $params->results = Database::getResultsExercise($params->exerciseId);
         View::render("Exercise/ResultByExercise", $params);
     }
+
+    /**
+     * return to view with all answers by question
+     * @param $params (questionId)
+     */
     static function resultsByQuestion($params)
     {
         $params->questionId = $params->results;
@@ -150,6 +163,11 @@ class ExerciseController extends Controller
         $params->results = Database::getResultsByQuestion($params->exerciseId, $params->results);
         View::render("Exercise/ResultByQuestion", $params);
     }
+
+    /**
+     * return to view  with answers of user for exercise
+     * @param $params (user id)
+     */
     static function resultsByUser($params)
     {
         $params->userId = $params->user;

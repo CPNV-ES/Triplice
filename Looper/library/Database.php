@@ -322,6 +322,11 @@ class Database
         return $exercises;
     }
 
+    /**
+     * get the name of question
+     * @param $idQuestion
+     * @return name of question
+     */
     public static function getQuestionName($idQuestion)
     {
         $pdo = Database::dbConnection();
