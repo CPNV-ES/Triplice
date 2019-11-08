@@ -8,10 +8,10 @@
 class Database
 {
     private static $dsn;
-    private static $ip="SC-C332-PC14";
-    private static $dbName="Triplice";
-    private static $user="Triplice";
-    private static $password="Triplice";
+    private static $ip = "SC-C332-PC14";
+    private static $dbName = "Triplice";
+    private static $user = "Triplice";
+    private static $password = "Triplice";
 
     /**
      * connects to the database
@@ -152,9 +152,9 @@ class Database
 
     /**
      * create a question
-     * @param int $exerciseId       id of the exercise containing the question
-     * @param string $label         label of the question
-     * @param int $idQuestionType   id of the type of the question
+     * @param int $exerciseId id of the exercise containing the question
+     * @param string $label label of the question
+     * @param int $idQuestionType id of the type of the question
      */
     public static function addQuestion($exerciseId, $label, $idQuestionType)
     {
@@ -169,9 +169,9 @@ class Database
 
     /**
      * modify a question
-     * @param int $questionId       id of the question to modify
-     * @param string $label         new label of the question
-     * @param int $idQuestionType   new id of the type of the question
+     * @param int $questionId id of the question to modify
+     * @param string $label new label of the question
+     * @param int $idQuestionType new id of the type of the question
      */
     public static function modifyQuestion($questionId, $label, $idQuestionType)
     {
@@ -322,6 +322,27 @@ class Database
         return $exercises;
     }
 
+    /**
+     * Create an answer
+     * @param string $content content of the answer
+     * @param int $idTake id of the take including the answer
+     * @param int $idQuestion id of the question the take is answering
+     */
+    public static function createAnswer($content, $idTake, $idQuestion)
+    {
+        $pdo = Database::dbConnection();
+        $query =
+            'INSERT INTO answers(content, fkQuestion, fkTake)
+            VALUES (?, ?, ?)
+            ;';
+        $pdo->prepare($query)->execute([$content, $idQuestion, $idTake]);
+    }
+
+    /**
+     * Get the name of a question
+     * @param int $id the id of the question
+     * @return string the name of the question
+     */
     public static function getQuestionName($idQuestion)
     {
         $pdo = Database::dbConnection();
@@ -334,15 +355,16 @@ class Database
         $question = $statement->fetch();
         return $question;
     }
+
     /**
      * Get all answers of exercise
      * @param $id
-     * @return all answers of specific exercise
+     * @return array all answers of specific exercise
      */
     public static function getResultsExercise($id)
     {
         $pdo = Database::dbConnection();
-        $query =   "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
                     FROM answers
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
@@ -354,8 +376,9 @@ class Database
 
         return self::usersQuestionsOfExercise($data);
     }
+
     /**
-     * search on satabase all answers for specific question
+     * search on database all answers for specific question
      * @param $idExercise
      * @param $idQuestion
      * @return object array with users and their answer for the question
@@ -363,7 +386,7 @@ class Database
     public static function getResultsByQuestion($idExercise, $idQuestion)
     {
         $pdo = Database::dbConnection();
-        $query =   "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
                     FROM answers
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
@@ -385,7 +408,7 @@ class Database
     public static function getResultsByUser($idExercise, $idUser)
     {
         $pdo = Database::dbConnection();
-        $query =   "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
                     FROM answers
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
@@ -406,34 +429,70 @@ class Database
      */
     private static function usersQuestionsOfExercise($obj)
     {
-        $users=array();
-        $lastID='0';
-        $index=0;
-        $user=new stdClass();
-        foreach ($obj as $value)
-        {
-            if($lastID!=$value->id)//when new user
+        $users = array();
+        $lastID = '0';
+        $index = 0;
+        $user = new stdClass();
+        foreach ($obj as $value) {
+            if ($lastID != $value->id)//when new user
             {
-                if($lastID!=0)// not add user on the first iteration, because it's empty
+                if ($lastID != 0)// not add user on the first iteration, because it's empty
                 {
-                    array_push($users,$user);
+                    array_push($users, $user);
                 }
 
-                $index=0;
-                $user=new stdClass();
-                $user->id=$value->id;
-                $user->name=$value->name;
+                $index = 0;
+                $user = new stdClass();
+                $user->id = $value->id;
+                $user->name = $value->name;
             }
-            $user->question[$index]=new stdClass();//our question contain label and answer object
-            $user->question[$index]->label=$value->question;
-            $user->question[$index]->answer=$value->answer;
+            $user->question[$index] = new stdClass();//our question contain label and answer object
+            $user->question[$index]->label = $value->question;
+            $user->question[$index]->answer = $value->answer;
             $index++;
-            $lastID=$value->id;
-            if( !next( $obj ) ) { //when the last loop, add user on users array
-                array_push($users,$user);
+            $lastID = $value->id;
+            if (!next($obj)) { //when the last loop, add user on users array
+                array_push($users, $user);
             }
         }
 
         return $users;
+    }
+
+    /**
+     * Create a take
+     * @return int the id of the take
+     */
+    public static function createTake()
+    {
+        $pdo = Database::dbConnection();
+        $query =
+            'INSERT INTO takes(saveTime)
+            VALUES (NOW())
+            ;';
+        $pdo->prepare($query)->execute();
+
+        return Database::getLastTakeId();
+    }
+
+    /**
+     * get the id of the latest take
+     * @return int id of the take
+     */
+    public static function getLastTakeId()
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT idTake 
+            FROM takes
+            ORDER by saveTime DESC, idTake DESC
+            LIMIT 1
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([]);
+        $takeId = $statement->fetch()["idTake"];
+
+        return $takeId;
     }
 }

@@ -117,6 +117,9 @@ class ExerciseController extends Controller
         $params->exerciseName = $exercise['name'];
         $params->questions = $questions;
 
+        // TODO display take if it is a modification
+        // TODO allow to update answer from display page
+
         return View::render("Exercise/TakeExercise", $params);
     }
 
@@ -125,9 +128,20 @@ class ExerciseController extends Controller
         return View::render("Take", Database::getAnsweringExercises());
     }
 
-    static function submit($params)
+    static function submitAnswer($params)
     {
-        // TODO take POST data -> update db to add it -> get id of submitted answer -> return to takeExercise page using the id
+        $exerciseId = $params->exercise;
+        
+        $idTake = Database::createTake();
+
+        // create the submitted answers
+        foreach ($_POST as $idQuestion => $answer) {
+            Database::createAnswer($answer, $idTake, $idQuestion);
+        }
+
+        // TODO add take id
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/take");
+        exit();
     }
 
     static function resultsByExercise($params)
