@@ -112,12 +112,23 @@ class ExerciseController extends Controller
     {
         $exerciseId = $params->exercise;
         $exercise = Database::getExercise($exerciseId);
-        $questions = Database::getQuestions($exerciseId);
+
+        $updateAnswer = false;
+        $questions = null;
+        if (isset($params->answer)) {
+            $takeId = $params->answer;
+            $questions = Database::getQuestionsAndAnswers($takeId);
+            $updateAnswer = true;
+            $params->takeId = $takeId;
+        } else {
+            $questions = Database::getQuestions($exerciseId);
+        }
 
         $params->exerciseName = $exercise['name'];
         $params->questions = $questions;
+        $params->updateAnswer = $updateAnswer;
 
-        // TODO display take if it is a modification
+
         // TODO allow to update answer from display page
 
         return View::render("Exercise/TakeExercise", $params);
@@ -131,7 +142,7 @@ class ExerciseController extends Controller
     static function submitAnswer($params)
     {
         $exerciseId = $params->exercise;
-        
+
         $idTake = Database::createTake();
 
         // create the submitted answers
@@ -139,8 +150,21 @@ class ExerciseController extends Controller
             Database::createAnswer($answer, $idTake, $idQuestion);
         }
 
-        // TODO add take id
-        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/take");
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $idTake . "/edit");
+        exit();
+    }
+
+    static function editAnswer($params)
+    {
+        $exerciseId = $params->exercise;
+        $takeId = $params->answer;
+
+        // create the submitted answers
+        foreach ($_POST as $idAnswer => $answer) {
+            Database::updateAnswer($answer, $idAnswer);
+        }
+
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $takeId . "/edit");
         exit();
     }
 
