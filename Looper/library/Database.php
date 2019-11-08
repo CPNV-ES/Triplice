@@ -8,7 +8,7 @@
 class Database
 {
     private static $dsn;
-    private static $ip="localhost";
+    private static $ip="SC-C332-PC14";
     private static $dbName="Triplice";
     private static $user="Triplice";
     private static $password="Triplice";

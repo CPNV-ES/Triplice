@@ -5,7 +5,6 @@
     justify-content: center;
     text-align: center;
     background-color: #eeeeee;
-    height: 100px;
     margin: 10px;
     border-radius: 5px;
     padding: 20px;
@@ -19,6 +18,7 @@
     padding-bottom: 10px;
     border-radius: 5px;
 }
+
 .cmdExercise{
     display: flex;
     box-sizing: border-box;
@@ -32,13 +32,29 @@
 .cmdExercise:hover {
     background-color: #606c76;
 }
+
+input, textarea {
+    font: inherit;
+    width: 100%;
+    font-size: 20px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    padding: 2px 10px;
+    resize: none;
+}
+
+button.take {
+    font: inherit;
+    border: none;
+}
+
 @media (min-width: 900px) {
-    .card {
+    .cardContainer {
         flex: 0 0 60%;
     }
 }
 @media (max-width: 899px) {
-    .card {
+    .cardContainer {
         flex: 0 0 80%;
     }
 }

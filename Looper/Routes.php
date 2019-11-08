@@ -14,6 +14,7 @@ Router::add("/exercise/id/question/id/modify", "ExerciseController@modify");
 Router::add("/exercise/id/completeExercise", "ExerciseController@completeExercise");
 Router::add("/exercise/take", "ExerciseController@take");
 Router::add("/exercise/id/take", "ExerciseController@takeExercise");
+Router::add("/exercise/id/submit", "ExerciseController@submitAnswer");
 Router::add("/manage", "ManageController@index");
 Router::add("/exercise/id/delete", "ManageController@deleteExercise");
 Router::add("/exercise/id/close", "ManageController@closeExercise");

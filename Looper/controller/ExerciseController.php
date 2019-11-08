@@ -17,16 +17,14 @@ class ExerciseController extends Controller
      */
     static function newExercise()
     {
-        if (isset($_POST["title"]))
-        {
+        if (isset($_POST["title"])) {
             $exerciseName = $_POST["title"];
             $exerciseId = Database::createExercise($exerciseName);
 
             // redirect to modify page
-            header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
             exit();
-        }
-        else {
+        } else {
             self::error();
         }
     }
@@ -41,25 +39,20 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
 
         // delete/modify question if the action has been selected
-        if(isset($_POST['label']))
-        {
-            if(!isset($_POST['idQuestionToModify']))
-            {
+        if (isset($_POST['label'])) {
+            if (!isset($_POST['idQuestionToModify'])) {
                 Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
-            }
-            else
-            {
+            } else {
                 Database::modifyQuestion($_POST['idQuestionToModify'], $_POST['label'], $_POST['idAnswerType']);
             }
 
             // redirect to modify page, to avoid resending post at the refresh of the page
-            header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
             exit();
         }
 
         $params->modifyQuestion = False;
-        if (isset($params->question))
-        {
+        if (isset($params->question)) {
             $questionId = $params->question;
             $params->modifyQuestion = True;
             $params->questionToModify = Database::getQuestion($questionId);
@@ -83,7 +76,7 @@ class ExerciseController extends Controller
         Database::deleteQuestion($questionId);
 
         // redirect to modify page
-        header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
         exit();
     }
 
@@ -97,18 +90,16 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
         $questionsCount = Database::questionsCount($exerciseId);
 
-        if($questionsCount > 0)
-        {
+        if ($questionsCount > 0) {
             // update exercise status to 'answering'
             Database::modifyExerciseStatus($exerciseId, 2);
 
             // redirect to modify page
-            header("Location: http://".$_SERVER['HTTP_HOST']."/manage");
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
             exit();
-        }
-        else{
+        } else {
             // redirect to modify page
-            header("Location: http://".$_SERVER['HTTP_HOST']."/exercise/".$exerciseId."/modify");
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
             exit();
         }
     }
@@ -128,34 +119,42 @@ class ExerciseController extends Controller
 
         return View::render("Exercise/TakeExercise", $params);
     }
+
     static function take()
     {
         return View::render("Take", Database::getAnsweringExercises());
     }
 
+    static function submit($params)
+    {
+        // TODO take POST data -> update db to add it -> get id of submitted answer -> return to takeExercise page using the id
+    }
+
     static function resultsByExercise($params)
     {
-        $params->exerciseId =$params->exercise;
+        $params->exerciseId = $params->exercise;
         $params->exercise = Database::getExercise($params->exerciseId)['name'];
         $params->questions = Database::getQuestions($params->exerciseId);
         $params->results = Database::getResultsExercise($params->exerciseId);
         View::render("Exercise/ResultByExercise", $params);
     }
+
     static function resultsByQuestion($params)
     {
         $params->questionId = $params->results;
-        $params->exerciseId =$params->exercise;
+        $params->exerciseId = $params->exercise;
         $params->exercise = Database::getExercise($params->exerciseId)['name'];
         $params->question = Database::getQuestionName($params->questionId);
         $params->results = Database::getResultsByQuestion($params->exerciseId, $params->results);
         View::render("Exercise/ResultByQuestion", $params);
     }
+
     static function resultsByUser($params)
     {
         $params->userId = $params->user;
-        $params->exerciseId =$params->exercise;
+        $params->exerciseId = $params->exercise;
         $params->exercise = Database::getExercise($params->exerciseId)['name'];
-        $params->results = Database::getResultsByUser($params->exerciseId,$params->userId);
+        $params->results = Database::getResultsByUser($params->exerciseId, $params->userId);
         View::render("Exercise/ResultByUser", $params);
     }
 
