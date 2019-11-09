@@ -380,6 +380,11 @@ class Database
      * @param int $id the id of the question
      * @return string the name of the question
      */
+    /**
+     * get the name of question
+     * @param $idQuestion
+     * @return name of question
+     */
     public static function getQuestionName($idQuestion)
     {
         $pdo = Database::dbConnection();

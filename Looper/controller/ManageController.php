@@ -3,9 +3,17 @@ require 'model/ManageModel.php';
 
 class ManageController extends Controller
 {
+    /**
+     * Get all exercises and number of questions by exercise
+     */
     static function index()
     {
-        return view::render("Exercise/Manage",Database::getAllExercises());
+        $params->exercises = Database::getAllExercises();
+        foreach ($params->exercises['Building'] as $exercise)
+        {
+                $exercise->count=Database::questionsCount($exercise->id);
+        }
+        return view::render("Exercise/Manage",$params);
     }
 
     /**

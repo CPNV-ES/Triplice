@@ -1,6 +1,8 @@
 table
 {
     position: absolute;
+    top: 200px;
+    display: inline-table;
     left: 5%;
     width: 90%;
     text-align: left;
@@ -46,12 +48,7 @@ a:hover
 {
     font-weight: bold;
 }
-.answer
-{
+.answer {
     padding-top: 5px;
     padding-left: 1.5em;
-}
-.green
-{
-   color: #419d78;
 }

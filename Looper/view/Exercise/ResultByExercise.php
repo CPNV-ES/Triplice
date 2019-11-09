@@ -1,9 +1,9 @@
 <?php
 $title = 'results';
 $titleSection = "Exercise : ";
-$details = $params->exercise;
+$details = "<a href='/exercise/$params->exerciseId/results'>$params->exercise</a>";
 
-$Querstions = $params->questions;
+$Questions = $params->questions;
 $exercises = $params->results;
 
 ?>
@@ -13,7 +13,7 @@ $exercises = $params->results;
             <th>
                 Takes
             </th>
-            <?php foreach ($Querstions as $question) : ?>
+            <?php foreach ($Questions as $question) : ?>
                 <th>
                     <a href="/exercise/<?=$params->exerciseId?>/results/<?= $question['idQuestion']?>" ><?= $question['label'] ?></a>
                 </th>
@@ -27,9 +27,15 @@ $exercises = $params->results;
                     <a href="/exercise/<?=$params->exerciseId?>/user/<?=$byUser->id?>" ><?= $byUser->name ?></a>
                 </th>
                 <?php foreach ($byUser->question as $answer) : ?>
-                    <th>
+                    <th class="center">
                         <?php if(!empty($answer->answer)): ?>
-                            <div class="fa fa-check green">
+                            <?php if(strlen($answer->answer)>10): ?>
+                                <div class="fa fa-check-double">
+                            <?php else : ?>
+                                <div class="fa fa-check">
+                            <?php endif; ?>
+                        <?php else : ?>
+                            <div class="fa fa-times">
                         <?php endif; ?>
                     </th>
                 <?php endforeach; ?>

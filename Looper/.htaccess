@@ -3,6 +3,8 @@ DirectoryIndex index.php
 # enable apache rewrite engine
 RewriteEngine on
 
+ErrorDocument 404 /
+
 # set your rewrite base
 # Edit this in your init method too if you script lives in a subfolder
 RewriteBase /

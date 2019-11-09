@@ -8,7 +8,8 @@ $exerciseName = $params->exerciseName;
 $questions = $params->questions;
 $updateAnswer = $params->updateAnswer;
 
-$titleSection = "Exercise : " . $exerciseName;
+$titleSection = "Exercise : " ;
+$details = $exerciseName;
 
 $formAction = '/exercise/' . $idExercise . '/submit';
 if ($updateAnswer) {

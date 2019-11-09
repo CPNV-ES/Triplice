@@ -11,7 +11,15 @@
     padding: 10px 0;
     position: fixed;
 }
-
+#navbar a
+{
+    color: white;
+    text-decoration: none;
+}
+#navbar a:hover
+{
+    color: #606c76;
+}
 /*
 Home section
  */
