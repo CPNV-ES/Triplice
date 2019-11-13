@@ -59,7 +59,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'];
     </h2>
     <form action='/exercise/<?= $idExercise; ?>/modify' method="post">
         <label for="label">Label</label>
-        <input type="text" name="label" id="label" value="<?= $questionLabel ?>" required>
+        <input type="text" name="label" id="label" value="<?= $questionLabel ?>" maxlength="50" required>
 
         <label for="answerType">Answer type</label>
         <select name="idAnswerType" id="idAnswerType">
