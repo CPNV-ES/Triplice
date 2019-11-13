@@ -8,10 +8,12 @@ $questionTypes = $params->questionTypes;
 $modifyQuestion = $params->modifyQuestion;
 $questionToModify = null;
 $questionLabel = '';
+$questionMinLength = 1;
 $submitButtonText = 'Create field';
 if ($modifyQuestion) {
     $questionToModify = $params->questionToModify;
     $questionLabel = $questionToModify['label'];
+    $questionMinLength = $questionToModify['minimumLength'];
     $submitButtonText = 'Modify question';
 }
 
@@ -60,6 +62,10 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'];
     <form action='/exercise/<?= $idExercise; ?>/modify' method="post">
         <label for="label">Label</label>
         <input type="text" name="label" id="label" value="<?= $questionLabel ?>" maxlength="50" required>
+
+        <!-- TODO load value when modifying-->
+        <label for="minimumLength">Acceptance size</label>
+        <input type="number" name="minimumLength" id="minimumLength" min="1" max="50" value="<?= $questionMinLength ?>" required>
 
         <label for="answerType">Answer type</label>
         <select name="idAnswerType" id="idAnswerType">

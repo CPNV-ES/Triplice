@@ -27,7 +27,9 @@ class ExerciseController extends Controller
             header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
             exit();
         } else {
-            self::error();
+            $params = [];
+            $params->message = 'Invalid inputs.';
+            self::error($params);
         }
     }
 
@@ -39,13 +41,30 @@ class ExerciseController extends Controller
     static function modify($params)
     {
         $exerciseId = $params->exercise;
+        var_dump($_POST);
 
         // delete/modify question if the action has been selected
-        if (isset($_POST['label'])) {
-            if (!isset($_POST['idQuestionToModify'])) {
-                Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
+        if (isset($_POST['label']) and isset($_POST['minimumLength'])) {
+
+            // expected input :
+            // * label : string, length <= 50
+            // * idQuestionToModify : int, id of an existing question, optional
+            // TODO verify minimumLength is int, > 0, <= 250
+            if (strlen($_POST['label']) <= 50) {
+                // TODO verify id is int, is the id of a question, and is the id of the selected question
+                if (!isset($_POST['idQuestionToModify'])) {
+                    // new question : add it
+                    Database::addQuestion($exerciseId, $_POST['label'], $_POST['minimumLength'], $_POST['idAnswerType']);
+                } else {
+                    // existing question : update it
+                    Database::modifyQuestion(
+                        $_POST['idQuestionToModify'], $_POST['label'], $_POST['minimumLength'], $_POST['idAnswerType']
+                    );
+                }
             } else {
-                Database::modifyQuestion($_POST['idQuestionToModify'], $_POST['label'], $_POST['idAnswerType']);
+                $params = [];
+                $params->message = 'Invalid inputs.';
+                self::error($params);
             }
 
             // redirect to modify page, to avoid resending post at the refresh of the page
