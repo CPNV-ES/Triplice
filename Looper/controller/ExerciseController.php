@@ -17,7 +17,9 @@ class ExerciseController extends Controller
      */
     static function newExercise()
     {
-        if (isset($_POST["title"])) {
+        // expected input :
+        // * title : string, length <= 50
+        if (isset($_POST["title"]) and strlen($_POST["title"]) <= 50) {
             $exerciseName = $_POST["title"];
             $exerciseId = Database::createExercise($exerciseName);
 
