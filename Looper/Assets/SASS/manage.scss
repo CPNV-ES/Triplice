@@ -1,0 +1,61 @@
+@import "_colorsBySections";
+// ------------------------------------------------------- //
+$colorHover:#606c76;
+// ------------------------------------------------------- //
+
+
+#content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.column{
+  & h1 {
+    width: 80%;
+    margin-left: 10%;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.8em;
+    margin-top: 0;
+  }
+  & h2 {
+    width: 90%;
+    margin-left: 5%;
+    font-weight: 100;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+    border-bottom: #e1e1e1 1px solid;
+  }
+  & .row {
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 0.5em;
+    margin-bottom: 0.5em;
+    border-bottom: #e1e1e1 1px solid;
+  }
+}
+
+.ico {
+  color: $principal;
+  &:hover {
+    color: $colorHover;
+  }
+}
+
+
+@media (min-width: 900px) {
+  .column {
+    width: calc(100% / 3 - 60px);
+    margin: 0 10px;
+  }
+}
+
+@media (max-width: 899px) {
+  .column {
+    width: 80%;
+    margin: 0 10px;
+  }
+}

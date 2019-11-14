@@ -1,40 +1,31 @@
-/*
-Color by section
- */
-.home, .take {
-  background-color: #9b4dca;
-  color: white; }
+@import "_colorsBySections";
+// ------------------------------------------------------- //
+$TableBorderColor:#e1e1e1;
+$inputsBorderColor:rgba(149, 150, 151, 0.55);
+// ------------------------------------------------------- //
 
-.create, .modify {
-  background-color: #e0a458;
-  color: white; }
-
-.manage, .results {
-  background-color: #419d78; }
-
-.error {
-  background-color: rgba(214, 5, 12, 0.74);
-  color: white; }
 
 /*
 form display
  */
 form {
-  width: 600px; }
+  width: 600px;
+}
 
 label {
-  font-size: 25px; }
-
-a {
-  color: #9b4dca; }
-
+  font-size: 25px;
+}
+a{
+  color: $principal;
+}
 input, select {
   min-width: 300px;
   width: 100%;
   margin: 5px 0px 15px 0px;
   border-radius: 3px;
-  border-color: rgba(149, 150, 151, 0.55);
-  font-size: 20px; }
+  border-color: $inputsBorderColor;
+  font-size: 20px;
+}
 
 button {
   font-size: 20px;
@@ -42,17 +33,21 @@ button {
   border-radius: 3px;
   border-color: transparent;
   padding: 5px 10px;
-  background-color: #9b4dca;
+
+  background-color:  $principal;
   cursor: pointer;
-  margin-bottom: 1.5em; }
+  margin-bottom: 1.5em;
+}
 
 button:hover {
-  background-color: grey; }
+  background-color: grey;
+}
 
 #content {
   display: flex;
   flex-direction: row;
-  align-items: flex-start; }
+  align-items: flex-start;
+}
 
 .questionsTable .row {
   width: 90%;
@@ -61,36 +56,45 @@ button:hover {
   justify-content: space-between;
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
-  border-bottom: #e1e1e1 1px solid; }
+  border-bottom: $TableBorderColor 1px solid;
+}
 
 .buttonRow {
   width: 90%;
   margin-left: 5%;
   display: flex;
-  justify-content: space-around; }
+  justify-content: space-around;
+}
 
 .label, .type {
   box-sizing: border-box;
   word-break: break-word;
   display: flex;
   justify-content: left;
-  padding-left: 0.5em; }
+  padding-left: 0.5em;
+}
 
 .type {
   width: 30%;
   flex-shrink: 0;
-  justify-content: right; }
+  justify-content: right;
+}
 
 .questionType {
-  margin-right: 10px; }
+  margin-right: 10px;
+}
+
 
 @media (min-width: 900px) {
   .questionsTable {
     width: calc(100% / 2 - 60px);
-    margin: 0 10px; } }
+    margin: 0 10px;
+  }
+}
+
 @media (max-width: 899px) {
   .questionsTable {
     width: 80%;
-    margin: 0 10px; } }
-
-/*# sourceMappingURL=create.css.map */
+    margin: 0 10px;
+  }
+}

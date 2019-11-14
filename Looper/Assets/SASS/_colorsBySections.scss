@@ -1,0 +1,28 @@
+// ------------------------------------------------------- //
+$principal:#9b4dca;
+$create:#e0a458;
+$manage:#419d78;
+$error:rgba(214, 5, 12, 0.74);
+// ------------------------------------------------------- //
+
+/*
+Color by section
+ */
+.home, .take
+{
+  background-color: $principal;
+  color: white;
+}
+.create, .modify
+{
+  background-color: $create;
+  color: white;
+}
+.manage, .results {
+  background-color: $manage;
+}
+.error
+{
+  background-color: $error;
+  color: white;
+}

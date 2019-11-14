@@ -14,8 +14,8 @@ $exercises = $params->results;
                 Takes
             </th>
             <?php foreach ($Questions as $question) : ?>
-                <th>
-                    <a href="/exercise/<?=$params->exerciseId?>/results/<?= $question['idQuestion']?>" ><?= $question['label'] ?></a>
+                <th  class="questions">
+                    <a href="/exercise/<?=$params->exerciseId?>/results/<?= $question['idQuestion']?>"><?= $question['label'] ?></a>
                 </th>
             <?php endforeach; ?>
         </tr>

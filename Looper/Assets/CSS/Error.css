@@ -1,24 +1,37 @@
-body
-{
-    background-color: rgba(255, 0, 0, 0.05);;
-}
-#msg
-{
-    display: block;
-    background-color: rgba(255, 0, 0, 0.2);
-    padding: 50px;
-    border-radius: 20px;
-    opacity: .5;
-    word-break: break-word;
-}
-#msg h1
-{
-    padding-bottom: 5px;
-    border-bottom: rgba(128,121,121,0.5) 2px solid;
-}
+/*
+Color by section
+ */
+.home, .take {
+  background-color: #9b4dca;
+  color: white; }
+
+.create, .modify {
+  background-color: #e0a458;
+  color: white; }
+
+.manage, .results {
+  background-color: #419d78; }
+
+.error {
+  background-color: rgba(214, 5, 12, 0.74);
+  color: white; }
+
+body {
+  background-color: rgba(255, 0, 0, 0.05); }
+
+#msg {
+  display: block;
+  background-color: rgba(255, 0, 0, 0.2);
+  padding: 50px;
+  border-radius: 20px;
+  word-break: break-word; }
+
+#msg h1 {
+  padding-bottom: 5px;
+  border-bottom: rgba(128, 121, 121, 0.5) 2px solid; }
 
 @media (min-width: 900px) {
-    #msg{
-        margin-top: 10%;
-    }
-}
+  #msg {
+    margin-top: 10%; } }
+
+/*# sourceMappingURL=error.css.map */
