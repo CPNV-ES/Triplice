@@ -1,0 +1,51 @@
+.card {
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #eeeeee;
+  margin: 10px;
+  border-radius: 5px;
+  padding: 20px; }
+
+.title {
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 10px;
+  border-radius: 5px; }
+
+.cmdExercise {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  border-radius: 5px; }
+
+.cmdExercise:hover {
+  background-color: #606c76; }
+
+input, textarea {
+  font: inherit;
+  width: 100%;
+  font-size: 20px;
+  border: 1px solid darkgray;
+  border-radius: 5px;
+  padding: 2px 10px;
+  resize: none; }
+
+button .take {
+  font: inherit;
+  border: none; }
+
+@media (min-width: 900px) {
+  .cardContainer {
+    flex: 0 0 60%; } }
+@media (max-width: 899px) {
+  .cardContainer {
+    flex: 0 0 80%; } }
+
+/*# sourceMappingURL=take.css.map */
