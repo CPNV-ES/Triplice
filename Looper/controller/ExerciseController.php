@@ -41,24 +41,27 @@ class ExerciseController extends Controller
     static function modify($params)
     {
         $exerciseId = $params->exercise;
-        var_dump($_POST);
 
         // delete/modify question if the action has been selected
         if (isset($_POST['label']) and isset($_POST['minimumLength'])) {
 
+            $label = $_POST['label'];
+            $minimumLength = $_POST['minimumLength'];
+
             // expected input :
             // * label : string, length <= 50
+            // * minimumLength : int, accepted length of answers
             // * idQuestionToModify : int, id of an existing question, optional
-            // TODO verify minimumLength is int, > 0, <= 250
-            if (strlen($_POST['label']) <= 50) {
-                // TODO verify id is int, is the id of a question, and is the id of the selected question
+            if (strlen($label) <= 50 && 0 < $minimumLength && $minimumLength <= 250) {
+                // TODO verify exerciseId is int, is the id of a question, and is the id of the selected question
+                // TODO verify idAnswerType
                 if (!isset($_POST['idQuestionToModify'])) {
                     // new question : add it
-                    Database::addQuestion($exerciseId, $_POST['label'], $_POST['minimumLength'], $_POST['idAnswerType']);
+                    Database::addQuestion($exerciseId, $label, $minimumLength, $_POST['idAnswerType']);
                 } else {
                     // existing question : update it
                     Database::modifyQuestion(
-                        $_POST['idQuestionToModify'], $_POST['label'], $_POST['minimumLength'], $_POST['idAnswerType']
+                        $_POST['idQuestionToModify'], $label, $minimumLength, $_POST['idAnswerType']
                     );
                 }
             } else {
@@ -148,9 +151,6 @@ class ExerciseController extends Controller
         $params->exerciseName = $exercise['name'];
         $params->questions = $questions;
         $params->updateAnswer = $updateAnswer;
-
-
-        // TODO allow to update answer from display page
 
         return View::render("Exercise/TakeExercise", $params);
     }
