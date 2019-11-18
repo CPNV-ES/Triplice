@@ -1,5 +1,4 @@
 <?php
-require 'model/ManageModel.php';
 
 class ManageController extends Controller
 {

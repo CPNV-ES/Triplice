@@ -1,5 +1,4 @@
 <?php
-require 'model/HomeModel.php';
 
 /**
  * Class HomeController
