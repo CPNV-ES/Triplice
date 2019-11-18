@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+// ------------------------------------------------------- //
+$homeChildText:white;
+$bodyColor:#606c76;
+$bodyBackground:rgba(222, 222, 222, 0.2);
+// ------------------------------------------------------- //
+
+body {
+  font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: 20px;
+  margin: 0;
+  background-color: $bodyBackground;
+  color: $bodyColor;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*
+ flex the content!
+ */
+#content {
+  align-items: flex-start;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.homeChild
+{
+  text-align: center;
+  color: $homeChildText;
+  margin: 10px;
+  height: 40px;
+  padding-top: 20px;
+  border-radius: 5px;
+}
+.homeChild:hover
+{
+  background-color: grey;
+}
+
+.title
+{
+  width: 85%;
+}
+.fa-times
+{
+  color: red;
+}
+.fa-check,.fa-check-double
+{
+  color: #419d78;
+}
+.row .title
+{
+  width: 75%;
+}
+.center
+{
+  text-align: center;
+}
+
+
+/*
+for large screen, display 3 buttons.
+ */
+@media (min-width: 700px) {
+  .homeChild {
+    width: 25%;
+  }
+}
+
+/*
+for small screen, display 1 button.
+ */
+@media (max-width: 699px) {
+  .homeChild {
+    width: 100%;
+  }
+}

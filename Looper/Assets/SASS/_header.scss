@@ -1,0 +1,182 @@
+@import "_colorsBySections";
+// ------------------------------------------------------- //
+$color: white;
+$colorHover: #606c76;
+// ------------------------------------------------------- //
+
+
+#navbar
+{
+  color: $color;
+  width: 100%;
+  z-index: 1;
+  top:0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 10px 0;
+  position: fixed;
+  & a{
+    color: $color;
+    text-decoration: none;
+  }
+  & a:hover
+  {
+    color: $colorHover;
+  }
+}
+/*
+Home section
+ */
+.home{
+  text-align: center;
+  & h1
+  {
+    font-size: 3.6em;
+    letter-spacing: 1.1rem;
+    line-height: 1.2;
+    margin-top: 0;
+  }
+}
+#content
+{
+  margin-top: 19em;
+}
+
+@media (max-height: 500px) {
+  #navbar
+  {
+    max-height: 250px;
+  }
+
+  #content
+  {
+    margin-top: 14em;
+  }
+}
+/*
+take, create, manage sections by size of screen
+ */
+@media (min-width: 900px) {
+
+  .results , .error, .take, .create, .manage, .modify
+  {
+    & + #content{
+      margin-top: 7em;
+    }
+    & .section
+    {
+      max-width: 60%;
+      margin: 0 auto;
+      display: flex;
+      max-height: 120px;
+    }
+  }
+
+  .results, .modify{
+    & .title{
+      font-size: 13px;
+    }
+  }
+  .section {
+    & .title {
+      height: 100%;
+    }
+    &.title h1
+    {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    & .title img {
+      position: absolute;
+    }
+  }
+  .results , .modify {
+    & .section.title h1
+    {
+      max-height: 60px;
+      margin: auto;
+    }
+  }
+  .results, .modify
+  {
+    & p{
+      max-width: 50%;
+      max-height: 60px;
+      margin: auto;
+    }
+  }
+}
+
+@media (max-width: 899px)
+{
+  .results, .error, .take,.create,.manage,.modify
+  {
+    & + #content{
+      margin-top: 7em;
+    }
+    & .section    {
+      max-width: 90%;
+      margin: 0 auto;
+      display: flex;
+    }
+  }
+
+  #navbar
+  {
+    &.results, &.take, &.create, &.manage, &.modify{
+      height: 5em;
+      display: block;
+      position: fixed;
+      width: 100%;
+      z-index: 1;
+      top:0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .error , .take, .manage, .create, .modify, .results
+  {
+    & .section h1{
+      margin: auto;
+      max-height: 36px;
+      font-size: 160%;
+    }
+  }
+
+  .modify , .results
+  {
+    & .title{
+      font-size: 13px;
+    }
+    & .section.title h1
+    {
+      max-height: 60px;
+      margin: auto;
+    }
+  }
+  .section.title h1
+  {
+    padding-left: 10%;
+  }
+
+  .modify p
+  {
+    max-width: 50%;
+    max-height: 60px;
+    margin: auto;
+  }
+}
+@media (max-width: 500px)
+{
+  .results ,.error , .take, .manage, .create, .modify
+  {
+    & .section h1
+    {
+      margin: auto;
+      max-height: 36px;
+      font-size: 20px;
+    }
+  }
+}

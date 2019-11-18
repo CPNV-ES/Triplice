@@ -1,0 +1,30 @@
+@import "_colorsBySections";
+// ------------------------------------------------------- //
+$bgColor: rgb(255,0,0);
+$borderColor:rgb(128,121,121);
+// ------------------------------------------------------- //
+
+
+body
+{
+  background-color:rgba($bgColor, 0.05) ;
+}
+#msg
+{
+  display: block;
+  background-color: rgba($bgColor, 0.2);
+  padding: 50px;
+  border-radius: 20px;
+  word-break: break-word;
+}
+#msg h1
+{
+  padding-bottom: 5px;
+  border-bottom: rgba($borderColor,0.5) 2px solid;
+}
+
+@media (min-width: 900px) {
+  #msg{
+    margin-top: 10%;
+  }
+}
