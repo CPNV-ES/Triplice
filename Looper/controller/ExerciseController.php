@@ -17,7 +17,9 @@ class ExerciseController extends Controller
      */
     static function newExercise()
     {
-        if (isset($_POST["title"])) {
+        // expected input :
+        // * title : string, length <= 50
+        if (isset($_POST["title"]) and strlen($_POST["title"]) <= 50) {
             $exerciseName = $_POST["title"];
             $exerciseId = Database::createExercise($exerciseName);
 
@@ -25,7 +27,9 @@ class ExerciseController extends Controller
             header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
             exit();
         } else {
-            self::error();
+            $params = [];
+            $params->message = 'Invalid inputs.';
+            self::error($params);
         }
     }
 
@@ -39,11 +43,31 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
 
         // delete/modify question if the action has been selected
-        if (isset($_POST['label'])) {
-            if (!isset($_POST['idQuestionToModify'])) {
-                Database::addQuestion($exerciseId, $_POST['label'], $_POST['idAnswerType']);
+        if (isset($_POST['label']) and isset($_POST['minimumLength'])) {
+
+            $label = $_POST['label'];
+            $minimumLength = $_POST['minimumLength'];
+
+            // expected input :
+            // * label : string, length <= 50
+            // * minimumLength : int, accepted length of answers
+            // * idQuestionToModify : int, id of an existing question, optional
+            if (strlen($label) <= 50 && 0 < $minimumLength && $minimumLength <= 250) {
+                // TODO verify exerciseId is int, is the id of a question, and is the id of the selected question
+                // TODO verify idAnswerType
+                if (!isset($_POST['idQuestionToModify'])) {
+                    // new question : add it
+                    Database::addQuestion($exerciseId, $label, $minimumLength, $_POST['idAnswerType']);
+                } else {
+                    // existing question : update it
+                    Database::modifyQuestion(
+                        $_POST['idQuestionToModify'], $label, $minimumLength, $_POST['idAnswerType']
+                    );
+                }
             } else {
-                Database::modifyQuestion($_POST['idQuestionToModify'], $_POST['label'], $_POST['idAnswerType']);
+                $params = [];
+                $params->message = 'Invalid inputs.';
+                self::error($params);
             }
 
             // redirect to modify page, to avoid resending post at the refresh of the page
@@ -127,9 +151,6 @@ class ExerciseController extends Controller
         $params->exerciseName = $exercise['name'];
         $params->questions = $questions;
         $params->updateAnswer = $updateAnswer;
-
-
-        // TODO allow to update answer from display page
 
         return View::render("Exercise/TakeExercise", $params);
     }

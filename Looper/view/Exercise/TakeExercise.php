@@ -32,11 +32,11 @@ if ($updateAnswer) {
 
             switch ($question['fkQuestionType']):
                 case 1: ?>
-                    <input name="<?= $inputName ?>" value="<?= $content ?>" type="text">
+                    <input name="<?= $inputName ?>" value="<?= $content ?>" type="text" maxlength="50">
                     <?php break;
                 case 2:
                 case 3: ?>
-                    <textarea name="<?= $inputName ?>"><?= $content ?></textarea>
+                    <textarea name="<?= $inputName ?>" maxlength="250"><?= $content ?></textarea>
                     <?php break;
             endswitch; ?>
         </div>
