@@ -8,7 +8,8 @@
 class Database
 {
     private static $dsn;
-    private static $ip = "SC-C332-PC14";
+    //private static $ip = "SC-C332-PC14";
+    private static $ip = "localhost";
     private static $dbName = "Triplice";
     private static $user = "Triplice";
     private static $password = "Triplice";
@@ -124,7 +125,7 @@ class Database
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseId]);
-        $questions = $statement;
+        $questions = $statement->fetchAll();
 
         return $questions;
     }
@@ -186,11 +187,11 @@ class Database
     public static function addQuestion($exerciseId, $label, $minimumLength, $idQuestionType)
     {
         $pdo = Database::dbConnection();
-
+        $id = count(self::getQuestions($exerciseId))+1;
         $query =
-            'INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType)
-            VALUES (?, ?, ?, ?)
-            ;';
+            "INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType, `order`)
+            VALUES (?, ?, ?, ?, $id)
+            ;";
         $pdo->prepare($query)->execute([$label, $minimumLength, $exerciseId, $idQuestionType]);
     }
 
