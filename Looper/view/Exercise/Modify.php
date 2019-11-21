@@ -33,7 +33,7 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'];
     <?php foreach ($questions as $question): ?>
         <div class="row title">
             <div class="label"><?= $question['label'] ?></div>
-            
+
             <div class="type">
                 <div class="questionType"><?= $question['type'] ?></div>
                 <div>
