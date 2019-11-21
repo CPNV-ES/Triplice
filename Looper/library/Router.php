@@ -99,7 +99,7 @@ class Router
         include("$controller[0]");
 
         $method=$controller[1];
-        if( empty($param) || count($param)>=1 )
+        if( !empty($param) || count($param)>=1 )
             //convert $parm to object for easier use
             $class::$method((object)$param);
         else

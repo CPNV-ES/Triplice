@@ -29,7 +29,7 @@ $exercises = $params->results;
                 <?php foreach ($byUser->question as $answer) : ?>
                     <th class="center">
                         <?php if(!empty($answer->answer)): ?>
-                            <?php if(strlen($answer->answer)>10): ?>
+                            <?php if(strlen($answer->answer) >= $answer->minimumLength): ?>
                                 <div class="fa fa-check-double">
                             <?php else : ?>
                                 <div class="fa fa-check">
