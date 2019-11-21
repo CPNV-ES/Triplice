@@ -52,7 +52,8 @@ CREATE TABLE IF NOT EXISTS `triplice`.`questionTypes` (
 CREATE TABLE IF NOT EXISTS `triplice`.`questions` (
   `idQuestion` INT NOT NULL AUTO_INCREMENT,
   `label` TEXT NOT NULL,
-  `minimumLength` INT NOT NULL DEFAULT 0,
+  `minimumLength` INT NOT NULL DEFAULT 1,
+  `order` INT NOT NULL,
   `fkExercise` INT NOT NULL,
   `fkQuestionType` INT NOT NULL,
   PRIMARY KEY (`idQuestion`),
