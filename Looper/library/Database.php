@@ -408,7 +408,7 @@ class Database
     public static function getResultsExercise($id)
     {
         $pdo = Database::dbConnection();
-        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion, minimumLength
                     FROM answers
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
@@ -430,7 +430,7 @@ class Database
     public static function getResultsByQuestion($idExercise, $idQuestion)
     {
         $pdo = Database::dbConnection();
-        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion, minimumLength
                     FROM answers
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
@@ -452,7 +452,7 @@ class Database
     public static function getResultsByUser($idExercise, $idUser)
     {
         $pdo = Database::dbConnection();
-        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion, minimumLength
                     FROM answers
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
@@ -493,6 +493,7 @@ class Database
             $user->question[$index] = new stdClass();//our question contain label and answer object
             $user->question[$index]->label = $value->question;
             $user->question[$index]->answer = $value->answer;
+            $user->question[$index]->minimumLength = $value->minimumLength;
             $index++;
             $lastID = $value->id;
             if (!next($obj)) { //when the last loop, add user on users array
