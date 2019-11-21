@@ -188,8 +188,8 @@ class Database
         $pdo = Database::dbConnection();
 
         $query =
-            'INSERT INTO questions(label, minimumLength, order, fkExercise, fkQuestionType)
-            VALUES (?, ?, 0, ?, ?)
+            'INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType)
+            VALUES (?, ?, ?, ?)
             ;';
         $pdo->prepare($query)->execute([$label, $minimumLength, $exerciseId, $idQuestionType]);
     }
