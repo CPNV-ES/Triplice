@@ -26,12 +26,14 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'];
     <h1>Questions</h1>
     <div class="row title">
         <div class="label">Question</div>
+        <div class="label">Minimum Length</div>
         <div class="label">Answer type</div>
     </div>
 
     <?php foreach ($questions as $question): ?>
         <div class="row title">
             <div class="label"><?= $question['label'] ?></div>
+            
             <div class="type">
                 <div class="questionType"><?= $question['type'] ?></div>
                 <div>
