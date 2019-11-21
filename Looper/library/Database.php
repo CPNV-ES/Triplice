@@ -180,36 +180,38 @@ class Database
      * create a question
      * @param int $exerciseId id of the exercise containing the question
      * @param string $label label of the question
+     * @param int $minimumLength minimum length of answer to accept it
      * @param int $idQuestionType id of the type of the question
      */
-    public static function addQuestion($exerciseId, $label, $idQuestionType)
+    public static function addQuestion($exerciseId, $label, $minimumLength, $idQuestionType)
     {
         $pdo = Database::dbConnection();
 
         $query =
-            'INSERT INTO questions(label, fkExercise, fkQuestionType)
-            VALUES (?, ?, ?)
+            'INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType)
+            VALUES (?, ?, ?, ?)
             ;';
-        $pdo->prepare($query)->execute([$label, $exerciseId, $idQuestionType]);
+        $pdo->prepare($query)->execute([$label, $minimumLength, $exerciseId, $idQuestionType]);
     }
 
     /**
      * modify a question
      * @param int $questionId id of the question to modify
      * @param string $label new label of the question
+     * @param int $minimumLength minimum length of answer to accept it
      * @param int $idQuestionType new id of the type of the question
      */
-    public static function modifyQuestion($questionId, $label, $idQuestionType)
+    public static function modifyQuestion($questionId, $label, $minimumLength, $idQuestionType)
     {
         $pdo = Database::dbConnection();
 
         $query =
             'UPDATE questions
-            SET label = ?, fkQuestionType = ?
+            SET label = ?, minimumLength = ?, fkQuestionType = ?
             WHERE idQuestion = ?
             ;';
 
-        $pdo->prepare($query)->execute([$label, $idQuestionType, $questionId]);
+        $pdo->prepare($query)->execute([$label, $minimumLength, $idQuestionType, $questionId]);
     }
 
     /**
@@ -364,6 +366,11 @@ class Database
         $pdo->prepare($query)->execute([$content, $idQuestion, $idTake]);
     }
 
+    /**
+     * Update an answer
+     * @param string $content new content of the answer
+     * @param int $idAnswer id of the answer we are modifying
+     */
     public static function updateAnswer($content, $idAnswer)
     {
         $pdo = Database::dbConnection();
@@ -379,11 +386,6 @@ class Database
      * Get the name of a question
      * @param int $id the id of the question
      * @return string the name of the question
-     */
-    /**
-     * get the name of question
-     * @param $idQuestion
-     * @return name of question
      */
     public static function getQuestionName($idQuestion)
     {
@@ -420,7 +422,7 @@ class Database
     }
 
     /**
-     * search on database all answers for specific question
+     * search on database all answers for a specific question
      * @param $idExercise
      * @param $idQuestion
      * @return object array with users and their answer for the question
@@ -442,7 +444,7 @@ class Database
     }
 
     /**
-     * Search all answers of user for question
+     * Search all answers of user for a question
      * @param $idExercise
      * @param $idUser
      * @return object array with user's answers
