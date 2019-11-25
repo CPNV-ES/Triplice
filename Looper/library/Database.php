@@ -541,4 +541,27 @@ class Database
 
         return $takeId;
     }
+    /**
+     * get a question
+     * @param int $questionId id of the question
+     * @return object question
+     */
+    public static function getSpecificQuestion($exerciseId, $order)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            LEFT JOIN questiontypes
+            ON questions.fkQuestionType = questiontypes.idQuestionType
+            WHERE fkExercise = ? and `order` = ?
+            ORDER BY idQuestion
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId, $order]);
+        $questions = $statement->fetch();
+
+        return $questions;
+    }
 }
