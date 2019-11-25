@@ -454,7 +454,7 @@ class Database
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
                     INNER JOIN exercises on exercises.idExercise = questions.fkExercise
-                    WHERE exercises.idExercise=$id ORDER BY id";
+                    WHERE exercises.idExercise=$id ORDER BY id,`order`";
         $statement = $pdo->prepare($query);
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_CLASS);
