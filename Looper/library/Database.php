@@ -121,7 +121,7 @@ class Database
             LEFT JOIN questiontypes
             ON questions.fkQuestionType = questiontypes.idQuestionType
             WHERE fkExercise = ?
-            ORDER BY idQuestion
+            ORDER BY `order` 
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseId]);
@@ -542,11 +542,11 @@ class Database
         return $takeId;
     }
     /**
-     * get a question
+     * get a question by specific order
      * @param int $questionId id of the question
-     * @return object question
+     * @return question with all data
      */
-    public static function getSpecificQuestion($exerciseId, $order)
+    public static function getSpecificQuestionByOrder($exerciseId, $order)
     {
         $pdo = Database::dbConnection();
 
@@ -563,5 +563,19 @@ class Database
         $questions = $statement->fetch();
 
         return $questions;
+    }
+
+    /**
+     * update order of question by question id
+     *
+     * @param $order new order of exercise
+     * @param $idQuestion
+     */
+    public static function UpdateQuestionByOrder($order,$idQuestion)
+    {
+        $pdo = Database::dbConnection();
+        $query="UPDATE `questions` SET `order`=? WHERE  `idQuestion`=?;";
+        $statement = $pdo->prepare($query);
+        $statement->execute([$order,$idQuestion]);
     }
 }
