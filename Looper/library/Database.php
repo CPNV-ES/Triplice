@@ -131,6 +131,26 @@ class Database
     }
 
     /**
+     * get max order of all questions of an exercise
+     * @param int $exerciseId id of the exercise
+     * @return number
+     */
+    public static function getMaxOrder($exerciseId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT MAX(`order`) as `order`
+            FROM questions
+            WHERE fkExercise = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $questions = $statement->fetch();
+
+        return $questions[0];
+    }
+    /**
      * get all questions of a take and their answers
      * @param int $takeId id of the take
      * @return array questions of the take with answers
@@ -177,6 +197,7 @@ class Database
         return $question->fetch();
     }
 
+
     /**
      * create a question
      * @param int $exerciseId id of the exercise containing the question
@@ -187,10 +208,10 @@ class Database
     public static function addQuestion($exerciseId, $label, $minimumLength, $idQuestionType)
     {
         $pdo = Database::dbConnection();
-        $id = count(self::getQuestions($exerciseId))+1;
+        $number= self::getMaxOrder($exerciseId)+1;
         $query =
             "INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType, `order`)
-            VALUES (?, ?, ?, ?, $id)
+            VALUES (?, ?, ?, ?, $number)
             ;";
         $pdo->prepare($query)->execute([$label, $minimumLength, $exerciseId, $idQuestionType]);
     }
@@ -205,7 +226,6 @@ class Database
     public static function modifyQuestion($questionId, $label, $minimumLength, $idQuestionType)
     {
         $pdo = Database::dbConnection();
-
         $query =
             'UPDATE questions
             SET label = ?, minimumLength = ?, fkQuestionType = ?
@@ -222,12 +242,26 @@ class Database
     public static function deleteQuestion($questionId)
     {
         $pdo = Database::dbConnection();
-
+        $question=self::getQuestion($questionId);
         $query =
             'DELETE FROM questions 
             WHERE idQuestion = ?;';
 
         $pdo->prepare($query)->execute([$questionId]);
+
+        self::reorderQuestions($question["fkExercise"],$question["order"]);
+    }
+
+    public static function reorderQuestions($exericeId, $order)
+    {
+        $pdo = Database::dbConnection();
+
+        $query="UPDATE questions
+        SET `order` = `order` -1
+        WHERE fkExercise = ? 
+        AND `order` >= ? ";
+
+        $pdo->prepare($query)->execute([$exericeId, $order]);
     }
 
     /**
