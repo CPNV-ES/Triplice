@@ -7,22 +7,22 @@
  */
 class Database
 {
-    private static $dsn;
-    //private static $ip = "SC-C332-PC14";
-    private static $ip = "localhost";
-    private static $dbName = "Triplice";
-    private static $user = "Triplice";
-    private static $password = "Triplice";
-
     /**
      * connects to the database
-     * @return database connection
+     * @return PDO
      */
     protected static function dbConnection()
     {
-        self::$dsn = "mysql:dbname=" . self::$dbName . ";host=" . self::$ip;
+        // load the database configuration
+        include "config.php";
+        $ip = $databaseConnection["ip"];
+        $dbName = $databaseConnection["dbName"];
+        $user = $databaseConnection["user"];
+        $password = $databaseConnection["password"];
+
+        $dsn = "mysql:dbname=" . $dbName . ";host=" . $ip;
         try {
-            $pdo = new PDO(self::$dsn, self::$user, self::$password);
+            $pdo = new PDO($dsn, $user, $password);
             return $pdo;
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
@@ -581,6 +581,7 @@ class Database
 
         return $takeId;
     }
+
     /**
      * get a question by specific order
      * @param int $questionId id of the question
