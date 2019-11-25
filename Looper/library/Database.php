@@ -8,7 +8,8 @@
 class Database
 {
     private static $dsn;
-    private static $ip = "SC-C332-PC14";
+    //private static $ip = "SC-C332-PC14";
+    private static $ip = "localhost";
     private static $dbName = "Triplice";
     private static $user = "Triplice";
     private static $password = "Triplice";
@@ -124,7 +125,7 @@ class Database
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseId]);
-        $questions = $statement;
+        $questions = $statement->fetchAll();
 
         return $questions;
     }
@@ -186,11 +187,11 @@ class Database
     public static function addQuestion($exerciseId, $label, $minimumLength, $idQuestionType)
     {
         $pdo = Database::dbConnection();
-
+        $id = count(self::getQuestions($exerciseId))+1;
         $query =
-            'INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType)
-            VALUES (?, ?, ?, ?)
-            ;';
+            "INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType, `order`)
+            VALUES (?, ?, ?, ?, $id)
+            ;";
         $pdo->prepare($query)->execute([$label, $minimumLength, $exerciseId, $idQuestionType]);
     }
 
@@ -539,5 +540,28 @@ class Database
         $takeId = $statement->fetch()["idTake"];
 
         return $takeId;
+    }
+    /**
+     * get a question
+     * @param int $questionId id of the question
+     * @return object question
+     */
+    public static function getSpecificQuestion($exerciseId, $order)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            LEFT JOIN questiontypes
+            ON questions.fkQuestionType = questiontypes.idQuestionType
+            WHERE fkExercise = ? and `order` = ?
+            ORDER BY idQuestion
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId, $order]);
+        $questions = $statement->fetch();
+
+        return $questions;
     }
 }

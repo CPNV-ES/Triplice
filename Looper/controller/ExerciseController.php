@@ -1,6 +1,7 @@
 <?php
 
 use http\Params;
+include "/model/ExerciseModel.php";
 
 class ExerciseController extends Controller
 {
@@ -232,4 +233,9 @@ class ExerciseController extends Controller
         View::render("Exercise/ResultByUser", $params);
     }
 
+    static function order($params)
+    {
+        $model = new ExerciseModel();
+        $model->WhatOrder($_SERVER["REQUEST_URI"]);
+    }
 }

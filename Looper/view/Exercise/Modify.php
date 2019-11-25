@@ -25,18 +25,28 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'];
 <div class="questionsTable">
     <h1>Questions</h1>
     <div class="row title">
+        <div class="label">Order</div>
         <div class="label">Question</div>
         <div class="label">Minimum Length</div>
         <div class="label">Answer type</div>
     </div>
 
-    <?php foreach ($questions as $question): ?>
+    <?php foreach ($questions as $keys => $question): ?>
         <div class="row title">
+            <div class="order">
+                <?php if ($keys != 0) :  //when the last loop ?>
+                    <a href="/exercise/<?= $idExercise ?>/order/<?= $question['order'] ?>/up">+</a>
+                <?php endif; ?>
+                <?php if (next($questions)) :  //when the last loop ?>
+                    <a href="/exercise/<?= $idExercise ?>/order/<?= $question['order'] ?>/down">-</a>
+                <?php endif; ?>
+            </div>
             <div class="label"><?= $question['label'] ?></div>
             <div class="label"><?= $question['minimumLength'] ?></div>
             <div class="type">
                 <div class="questionType"><?= $question['type'] ?></div>
                 <div>
+                    <input type="hidden" value="<?= $question['order'] ?>" name="order">
                     <a href="/exercise/<?= $idExercise ?>/question/<?= $question['idQuestion'] ?>/modify"
                        title="Modify question">
                         <div class="fa fa-edit ico"></div>
@@ -61,12 +71,13 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'];
     <h2>
         New question
     </h2>
-    <form action='/exercise/<?= $idExercise; ?>/modify' method="post">
+    <form class="createQuestion" action='/exercise/<?= $idExercise; ?>/modify' method="post">
         <label for="label">Label</label>
         <input type="text" name="label" id="label" value="<?= $questionLabel ?>" maxlength="50" required>
-        
+
         <label for="minimumLength">Acceptance size</label>
-        <input type="number" name="minimumLength" id="minimumLength" min="1" max="50" value="<?= $questionMinLength ?>" required>
+        <input type="number" name="minimumLength" id="minimumLength" min="1" max="50" value="<?= $questionMinLength ?>"
+               required>
 
         <label for="idAnswerType">Answer type</label>
         <select name="idAnswerType" id="idAnswerType">

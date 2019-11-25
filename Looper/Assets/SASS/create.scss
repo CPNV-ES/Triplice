@@ -8,9 +8,6 @@ $inputsBorderColor:rgba(149, 150, 151, 0.55);
 /*
 form display
  */
-form {
-  width: 600px;
-}
 
 label {
   font-size: 25px;
@@ -84,6 +81,14 @@ button:hover {
   margin-right: 10px;
 }
 
+.createQuestion{
+  width: 600px;
+}
+.order
+{
+  width: 50px;
+  text-align: center;
+}
 
 @media (min-width: 900px) {
   .questionsTable {
