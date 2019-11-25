@@ -7,13 +7,6 @@
  */
 class Database
 {
-    private static $dsn;
-    //private static $ip = "SC-C332-PC14";
-    private static $ip = "localhost";
-    private static $dbName = "Triplice";
-    private static $user = "Triplice";
-    private static $password = "Triplice";
-
     /**
      * connects to the database
      * @return PDO
@@ -22,14 +15,14 @@ class Database
     {
         // load the database configuration
         include "config.php";
-        self::$ip = $databaseConnection["ip"];
-        self::$dbName = $databaseConnection["dbName"];
-        self::$user = $databaseConnection["user"];
-        self::$password = $databaseConnection["password"];
+        $ip = $databaseConnection["ip"];
+        $dbName = $databaseConnection["dbName"];
+        $user = $databaseConnection["user"];
+        $password = $databaseConnection["password"];
 
-        self::$dsn = "mysql:dbname=" . self::$dbName . ";host=" . self::$ip;
+        $dsn = "mysql:dbname=" . $dbName . ";host=" . $ip;
         try {
-            $pdo = new PDO(self::$dsn, self::$user, self::$password);
+            $pdo = new PDO($dsn, $user, $password);
             return $pdo;
         } catch (PDOException $e) {
             echo 'Connection failed: ' . $e->getMessage();
@@ -194,7 +187,7 @@ class Database
     public static function addQuestion($exerciseId, $label, $minimumLength, $idQuestionType)
     {
         $pdo = Database::dbConnection();
-        $id = count(self::getQuestions($exerciseId))+1;
+        $id = count(self::getQuestions($exerciseId)) + 1;
         $query =
             "INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType, `order`)
             VALUES (?, ?, ?, ?, $id)
@@ -548,6 +541,7 @@ class Database
 
         return $takeId;
     }
+
     /**
      * get a question
      * @param int $questionId id of the question
