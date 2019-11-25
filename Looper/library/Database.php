@@ -252,6 +252,12 @@ class Database
         self::reorderQuestions($question["fkExercise"],$question["order"]);
     }
 
+    /**
+     * reorganize questions of exercise
+     *
+     * @param $exericeId
+     * @param $order
+     */
     public static function reorderQuestions($exericeId, $order)
     {
         $pdo = Database::dbConnection();
