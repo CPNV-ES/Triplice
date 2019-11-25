@@ -167,7 +167,7 @@ class Database
             INNER JOIN answers
             ON answers.fkQuestion = questions.idQuestion
             WHERE answers.fkTake = ?
-            ORDER BY idQuestion
+            ORDER BY `order`
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$takeId]);
