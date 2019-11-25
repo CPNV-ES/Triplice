@@ -35,10 +35,10 @@ $titleSection = 'Modify Exercise : ' . $exercise['name'];
         <div class="row title">
             <div class="order">
                 <?php if ($keys != 0) :  //when the last loop ?>
-                    <a href="/exercise/<?= $idExercise ?>/order/<?= $question['order'] ?>/up">+</a>
+                    <a href="/exercise/<?= $idExercise ?>/order/<?= $question['order'] ?>/up">↑</a>
                 <?php endif; ?>
                 <?php if (next($questions)) :  //when the last loop ?>
-                    <a href="/exercise/<?= $idExercise ?>/order/<?= $question['order'] ?>/down">-</a>
+                    <a href="/exercise/<?= $idExercise ?>/order/<?= $question['order'] ?>/down">↓</a>
                 <?php endif; ?>
             </div>
             <div class="label"><?= $question['label'] ?></div>

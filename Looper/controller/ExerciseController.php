@@ -1,7 +1,7 @@
 <?php
 
 use http\Params;
-include "/model/ExerciseModel.php";
+include "model/ExerciseModel.php";
 
 class ExerciseController extends Controller
 {
@@ -233,9 +233,17 @@ class ExerciseController extends Controller
         View::render("Exercise/ResultByUser", $params);
     }
 
+    /**
+     * when user modify order question on modify page
+     *
+     * @param $params get by url
+     */
     static function order($params)
     {
-        $model = new ExerciseModel();
-        $model->WhatOrder($_SERVER["REQUEST_URI"]);
+        $model = new ExerciseModel($params);
+        $model->OrderQuestion($_SERVER["REQUEST_URI"]);
+
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/$params->exercise/modify/");
+        exit();
     }
 }
