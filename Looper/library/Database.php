@@ -16,10 +16,16 @@ class Database
 
     /**
      * connects to the database
-     * @return database connection
+     * @return PDO
      */
     protected static function dbConnection()
     {
+        include "config.php";
+        self::$ip = $databaseConnection["ip"];
+        self::$dbName = $databaseConnection["dbName"];
+        self::$user = $databaseConnection["user"];
+        self::$password = $databaseConnection["password"];
+
         self::$dsn = "mysql:dbname=" . self::$dbName . ";host=" . self::$ip;
         try {
             $pdo = new PDO(self::$dsn, self::$user, self::$password);
