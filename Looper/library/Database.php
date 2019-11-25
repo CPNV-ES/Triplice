@@ -20,6 +20,7 @@ class Database
      */
     protected static function dbConnection()
     {
+        // load the database configuration
         include "config.php";
         self::$ip = $databaseConnection["ip"];
         self::$dbName = $databaseConnection["dbName"];
