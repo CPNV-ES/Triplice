@@ -66,9 +66,10 @@ class ExerciseController extends Controller
                     );
                 }
             } else {
-                $params = [];
-                $params->message = 'Invalid inputs.';
-                self::error($params);
+                $params = new stdClass();
+                $params->error="Invalid inputs.";
+                $params->message = "<a href='/exercise/$exerciseId/modify'>Go Back</a>";
+                return self::error($params);
             }
 
             // redirect to modify page, to avoid resending post at the refresh of the page
