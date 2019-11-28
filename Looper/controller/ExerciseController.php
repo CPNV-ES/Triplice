@@ -28,9 +28,10 @@ class ExerciseController extends Controller
             header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
             exit();
         } else {
-            $params = [];
-            $params->message = 'Invalid inputs.';
-            self::error($params);
+            $params = new stdClass();
+            $params->error="No exercise name";
+            $params->message = 'Please enter an exercise name<br><a href="/exercise/create">Back</a>';
+            return self::error($params);
         }
     }
 
@@ -54,7 +55,7 @@ class ExerciseController extends Controller
             // * minimumLength : int, accepted length of answers
             // * idQuestionToModify : int, id of an existing question, optional
             if (strlen($label) <= 50 && 0 < $minimumLength && $minimumLength <= 250) {
-                // TODO verify exerciseId is int, is the id of a question, and is the id of the selected question
+                // TODO verify  is the id of a question, and is the id of the selected question
                 // TODO verify idAnswerType
                 if (!isset($_POST['idQuestionToModify'])) {
                     // new question : add it
