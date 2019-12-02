@@ -192,10 +192,13 @@ class ExerciseController extends Controller
         // Iterate on the questions and not the $_POST data, because we cannot trust the $_POST
         foreach ($questions as $question) {
             $idQuestion = $question['idQuestion'];
-            if (isset($_POST[$idQuestion]))
-            {
+            // Check if the $_POST data contains an answer to the question (if the form is not broken, it should)
+            if (isset($_POST[$idQuestion])) {
                 $answer = $_POST[$idQuestion];
                 Database::createAnswer($answer, $idTake, $idQuestion);
+            } else {
+                // Create an empty answer if an actual answer has not been found
+                Database::createAnswer("", $idTake, $idQuestion);
             }
         }
 
