@@ -1,6 +1,7 @@
 <?php
 
 use http\Params;
+
 include "model/ExerciseModel.php";
 
 class ExerciseController extends Controller
@@ -29,7 +30,7 @@ class ExerciseController extends Controller
             exit();
         } else {
             $params = new stdClass();
-            $params->error="No exercise name";
+            $params->error = "No exercise name";
             $params->message = 'Please enter an exercise name<br><a href="/exercise/create">Back</a>';
             return self::error($params);
         }
@@ -68,7 +69,7 @@ class ExerciseController extends Controller
                 }
             } else {
                 $params = new stdClass();
-                $params->error="Invalid inputs.";
+                $params->error = "Invalid inputs.";
                 $params->message = "<a href='/exercise/$exerciseId/modify'>Go Back</a>";
                 return self::error($params);
             }
@@ -138,7 +139,17 @@ class ExerciseController extends Controller
     static function takeExercise($params)
     {
         $exerciseId = $params->exercise;
-        $exercise = Database::getExercise($exerciseId);
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+
+        $exerciseStatus = $exercise['status'];
+
+        // Check if the exercise has a status that allows answers
+        if ($exerciseStatus != 'Answering') {
+            $params = new stdClass();
+            $params->error = "You are not allowed to answer to this exercise !";
+            $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
+            return self::error($params);
+        }
 
         $updateAnswer = false;
         $questions = null;
