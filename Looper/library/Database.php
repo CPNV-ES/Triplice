@@ -103,9 +103,9 @@ class Database
         $query =
             'SELECT * 
             FROM exercises
-            WHERE idExercise = ?
             INNER JOIN exercisestatus
-            ON exercisestatus.idExerciseStatus = exercises.idExercise
+            ON exercisestatus.idExerciseStatus = exercises.fkExerciseStatus
+            WHERE idExercise = ?
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$exerciseId]);
