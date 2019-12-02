@@ -175,8 +175,6 @@ class ExerciseController extends Controller
         return View::render("Take", Database::getAnsweringExercises());
     }
 
-    // TODO check if the exercise allows modif (status)
-
     /**
      * Submit the answers to an exercise. Use the POST data to create the answers to the exercise.
      * @param $params contains exercise, the id of the exercise
@@ -184,6 +182,15 @@ class ExerciseController extends Controller
     static function submitAnswer($params)
     {
         $exerciseId = $params->exercise;
+
+        // Check if the exercise has a status that allows answers
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+        if ($exercise['status'] != 'Answering') {
+            $params = new stdClass();
+            $params->error = "You are not allowed to answer to this exercise !";
+            $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
+            return self::error($params);
+        }
 
         $idTake = Database::createTake();
 
@@ -208,8 +215,6 @@ class ExerciseController extends Controller
         exit();
     }
 
-
-    // TODO check if the exercise allows modif (status)
     /**
      * Edit the answers from a specific take
      * @param $params contains exercise, the id of the exercise, and answer, the id of the take
@@ -218,6 +223,15 @@ class ExerciseController extends Controller
     {
         $exerciseId = $params->exercise;
         $takeId = $params->answer;
+
+        // Check if the exercise has a status that allows answers
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+        if ($exercise['status'] != 'Answering') {
+            $params = new stdClass();
+            $params->error = "You are not allowed to answer to this exercise !";
+            $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
+            return self::error($params);
+        }
 
         // Get the questions from the exercise
         $exerciseQuestions = Database::getQuestions($exerciseId);
