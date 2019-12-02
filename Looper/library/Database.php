@@ -92,6 +92,29 @@ class Database
     }
 
     /**
+     * Get an exercise with its status
+     * @param int $exerciseId id of the exercise
+     * @return object exercise with status
+     */
+    public static function getExerciseWithStatus($exerciseId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT * 
+            FROM exercises
+            WHERE idExercise = ?
+            INNER JOIN exercisestatus
+            ON exercisestatus.idExerciseStatus = exercises.idExercise
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $exercise = $statement->fetch();
+
+        return $exercise;
+    }
+
+    /**
      * delete an exercise
      * @param int $exerciseId id of the exercise
      */

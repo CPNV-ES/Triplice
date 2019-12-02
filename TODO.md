@@ -2,7 +2,7 @@ Empêcher les légers problèmes liés aux caractères <,> (casse le html, injec
 
 Empêcher de répondre à un exercice n'ayant pas le bon le statut "answering" (/exercice/3/answer/id/edit).
 Empêcher d'accéder à un exercice n'ayant pas le bon le statut "answering" (/exercice/3/take).
-Empêcher de modifier les répnses d'un mauvais exercice.
+Empêcher de modifier les réponses d'un mauvais exercice.
 Empêcher de modifire des réponses n'existant pas.
 
 Empêcher l'accès à un exercice inexistant.

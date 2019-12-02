@@ -138,7 +138,9 @@ class ExerciseController extends Controller
     static function takeExercise($params)
     {
         $exerciseId = $params->exercise;
-        $exercise = Database::getExercise($exerciseId);
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+
+        if($exercise[''])
 
         $updateAnswer = false;
         $questions = null;
