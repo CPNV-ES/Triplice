@@ -175,9 +175,11 @@ class ExerciseController extends Controller
         return View::render("Take", Database::getAnsweringExercises());
     }
 
+    // TODO check if the exercise allows modif (status)
+
     /**
      * Submit the answers to an exercise. Use the POST data to create the answers to the exercise.
-     * @param $params contains exercise, the id of the exercises
+     * @param $params contains exercise, the id of the exercise
      */
     static function submitAnswer($params)
     {
@@ -206,14 +208,42 @@ class ExerciseController extends Controller
         exit();
     }
 
+
+    // TODO check if the exercise allows modif (status)
+    /**
+     * Edit the answers from a specific take
+     * @param $params contains exercise, the id of the exercise, and answer, the id of the take
+     */
     static function editAnswer($params)
     {
         $exerciseId = $params->exercise;
         $takeId = $params->answer;
 
-        // create the submitted answers
-        foreach ($_POST as $idAnswer => $answer) {
-            Database::updateAnswer($answer, $idAnswer);
+        // Get the questions from the exercise
+        $exerciseQuestions = Database::getQuestions($exerciseId);
+
+        // Get the answers and the questions of the take
+        $questionsWithAnswers = Database::getQuestionsAndAnswers($takeId);
+
+        // Update the answer, after a few checks
+        // Iterate on the original answers and not the $_POST data, because we cannot trust the $_POST
+        foreach ($questionsWithAnswers as $questionWithAnswer) {
+            // check if the answer really belongs to the exercise (if the form is not broken, it should)
+            $isInExercise = false;
+            foreach ($exerciseQuestions as $question) {
+                if($question['idQuestion'] == $questionWithAnswer['idQuestion']) {
+                    $isInExercise = true;
+                    // once we have found the question, we don't need to continue the iteration
+                    break;
+                }
+            }
+
+            // Check if a new answer to the question has been submitted (if the form is not broken, it should)
+            $answerId = $questionWithAnswer['idAnswer'];
+            if($isInExercise && isset($_POST[$answerId])) {
+                $answer = $_POST[$answerId];
+                Database::updateAnswer($answer, $answerId);
+            }
         }
 
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $takeId . "/edit");
