@@ -173,6 +173,7 @@ class Database
 
         return $questions[0];
     }
+
     /**
      * get all questions of a take and their answers
      * @param int $takeId id of the take
@@ -231,7 +232,7 @@ class Database
     public static function addQuestion($exerciseId, $label, $minimumLength, $idQuestionType)
     {
         $pdo = Database::dbConnection();
-        $number= self::getMaxOrder($exerciseId)+1;
+        $number = self::getMaxOrder($exerciseId) + 1;
         $query =
             "INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType, `order`)
             VALUES (?, ?, ?, ?, $number)
@@ -265,14 +266,14 @@ class Database
     public static function deleteQuestion($questionId)
     {
         $pdo = Database::dbConnection();
-        $question=self::getQuestion($questionId);
+        $question = self::getQuestion($questionId);
         $query =
             'DELETE FROM questions 
             WHERE idQuestion = ?;';
 
         $pdo->prepare($query)->execute([$questionId]);
 
-        self::reorderQuestions($question["fkExercise"],$question["order"]);
+        self::reorderQuestions($question["fkExercise"], $question["order"]);
     }
 
     /**
@@ -285,7 +286,7 @@ class Database
     {
         $pdo = Database::dbConnection();
 
-        $query="UPDATE questions
+        $query = "UPDATE questions
         SET `order` = `order` -1
         WHERE fkExercise = ? 
         AND `order` >= ? ";
@@ -635,11 +636,11 @@ class Database
      * @param $order new order of exercise
      * @param $idQuestion
      */
-    public static function UpdateQuestionByOrder($order,$idQuestion)
+    public static function UpdateQuestionByOrder($order, $idQuestion)
     {
         $pdo = Database::dbConnection();
-        $query="UPDATE `questions` SET `order`=? WHERE  `idQuestion`=?;";
+        $query = "UPDATE `questions` SET `order`=? WHERE  `idQuestion`=?;";
         $statement = $pdo->prepare($query);
-        $statement->execute([$order,$idQuestion]);
+        $statement->execute([$order, $idQuestion]);
     }
 }

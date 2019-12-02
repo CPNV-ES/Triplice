@@ -141,10 +141,8 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
         $exercise = Database::getExerciseWithStatus($exerciseId);
 
-        $exerciseStatus = $exercise['status'];
-
         // Check if the exercise has a status that allows answers
-        if ($exerciseStatus != 'Answering') {
+        if ($exercise['status'] != 'Answering') {
             $params = new stdClass();
             $params->error = "You are not allowed to answer to this exercise !";
             $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
@@ -177,15 +175,28 @@ class ExerciseController extends Controller
         return View::render("Take", Database::getAnsweringExercises());
     }
 
+    /**
+     * Submit the answers to an exercise. Use the POST data to create the answers to the exercise.
+     * @param $params contains exercise, the id of the exercises
+     */
     static function submitAnswer($params)
     {
         $exerciseId = $params->exercise;
 
         $idTake = Database::createTake();
 
-        // create the submitted answers
-        foreach ($_POST as $idQuestion => $answer) {
-            Database::createAnswer($answer, $idTake, $idQuestion);
+        // Get the questions from the exercise
+        $questions = Database::getQuestions($exerciseId);
+
+        // Create the submitted answers
+        // Iterate on the questions and not the $_POST data, because we cannot trust the $_POST
+        foreach ($questions as $question) {
+            $idQuestion = $question['idQuestion'];
+            if (isset($_POST[$idQuestion]))
+            {
+                $answer = $_POST[$idQuestion];
+                Database::createAnswer($answer, $idTake, $idQuestion);
+            }
         }
 
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $idTake . "/edit");
