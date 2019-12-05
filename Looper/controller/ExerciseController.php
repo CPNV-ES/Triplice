@@ -118,6 +118,14 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
         $questionsCount = Database::questionsCount($exerciseId);
 
+        if (!ExerciseController::isModifiable($exerciseId)) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to modify this exercise";
+            $params->message =
+                '<a href="/">Home</a>.';
+            return self::error($params);
+        }
+
         if ($questionsCount > 0) {
             // update exercise status to 'answering'
             Database::modifyExerciseStatus($exerciseId, 2);
@@ -348,5 +356,18 @@ class ExerciseController extends Controller
 
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/$params->exercise/modify/");
         exit();
+    }
+
+    /**
+     * Check if an exercise is modifiable
+     *
+     * @param $exerciseId
+     * @return bool
+     */
+    static function isModifiable($exerciseId)
+    {
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $isModifiable = ($exercise['status'] == 'building');
+        return $isModifiable;
     }
 }
