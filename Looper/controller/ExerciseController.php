@@ -20,7 +20,7 @@ class ExerciseController extends Controller
     {
         // expected input :
         // * title : string, length <= 50
-        if (isset($_POST["title"]) and strlen($_POST["title"]) <= 50) {
+        if (isset($_POST["title"]) and mb_strlen($_POST["title"]) <= 50) {
             $exerciseName = $_POST["title"];
             $exerciseId = Database::createExercise($exerciseName);
 

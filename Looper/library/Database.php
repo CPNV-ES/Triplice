@@ -88,6 +88,8 @@ class Database
         $statement->execute([$exerciseId]);
         $exercise = $statement->fetch();
 
+        $exercise = array_map(function($val) { return htmlspecialchars($val); }, $exercise);
+
         return $exercise;
     }
 
@@ -127,7 +129,11 @@ class Database
         $statement->execute([$exerciseId]);
         $questions = $statement->fetchAll();
 
-        return $questions;
+        $exercise=array();
+        foreach ($questions as $question)
+            array_push($exercise,array_map(function($val) { return htmlspecialchars($val); }, $question));
+
+        return $exercise;
     }
 
     /**
@@ -171,9 +177,19 @@ class Database
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$takeId]);
-        $questions = $statement;
+        $questions = $statement->fetchAll();
 
-        return $questions;
+        $exercise=array();
+        foreach ($questions as $question)
+        {
+            $question['label']=htmlspecialchars($question['label']);//html_entity_decode(
+            //escape quotes and html entity quotes
+            $question['content']=str_replace(array('&quot;',"&apos;",'"',"'"),array('&amp;quot&semi;','&amp;apos&semi;','&quot;',"&apos;"),$question['content']);
+            array_push($exercise, $question);
+        }
+
+
+        return $exercise;
     }
 
     /**
@@ -192,9 +208,11 @@ class Database
             ;';
         $statement = $pdo->prepare($query);
         $statement->execute([$questionId]);
-        $question = $statement;
+        $question = $statement->fetch();
 
-        return $question->fetch();
+        $exercise = array_map(function($val) { return htmlspecialchars($val); }, $question);
+
+        return $exercise;
     }
 
 
@@ -323,9 +341,13 @@ class Database
             FROM questiontypes';
         $statement = $pdo->prepare($query);
         $statement->execute();
-        $questionTypes = $statement;
+        $questionTypes = $statement->fetchAll();
 
-        return $questionTypes;
+        $exercise=array();
+        foreach ($questionTypes as $question)
+            array_push($exercise,array_map(function($val) { return htmlspecialchars($val); }, $question));
+
+        return $exercise;
     }
 
     /**
@@ -345,6 +367,10 @@ class Database
         $statement = $pdo->prepare($query);
         $statement->execute();
         $exercises = $statement->fetchAll(PDO::FETCH_CLASS);
+
+        foreach ($exercises as $exercise)
+            $exercise->name=htmlspecialchars($exercise->name);
+
         return $exercises;
     }
 
@@ -361,6 +387,7 @@ class Database
         $statement = $pdo->prepare($query);
         $statement->execute();
         $exercises = $statement->fetchAll(PDO::FETCH_CLASS);
+
         return $exercises;
     }
 
@@ -387,6 +414,10 @@ class Database
             $exercises[$exerciseStatus[$i]->status] = $statement->fetchAll(PDO::FETCH_CLASS);
 
         }
+
+        foreach ($exercises as $exercise)
+            foreach ($exercise as $data)
+                $data->name=htmlspecialchars($data->name);
 
         return $exercises;
     }
@@ -438,6 +469,12 @@ class Database
         $statement = $pdo->prepare($query);
         $statement->execute();
         $question = $statement->fetch();
+
+
+        foreach ($question as $key=>$data)
+            $question[$key]=htmlspecialchars($data);
+
+
         return $question;
     }
 
@@ -481,7 +518,7 @@ class Database
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_CLASS);
 
-        return self::usersQuestionsOfExercise($data);
+        return self::usersQuestionsOfExercise($data,true);
     }
 
     /**
@@ -503,8 +540,7 @@ class Database
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_CLASS); //return an array with id, name, question, answer
 
-        return self::usersQuestionsOfExercise($data);
-
+        return self::usersQuestionsOfExercise($data,true);
     }
 
     /**
@@ -512,7 +548,7 @@ class Database
      * @param $obj <- array of objects with id, name and question with answer
      * @return $users <- array objects with questions and answers by user
      */
-    private static function usersQuestionsOfExercise($obj)
+    private static function usersQuestionsOfExercise($obj, bool $encode=false)
     {
         $users = array();
         $lastID = '0';
@@ -532,8 +568,11 @@ class Database
                 $user->name = $value->name;
             }
             $user->question[$index] = new stdClass();//our question contain label and answer object
-            $user->question[$index]->label = $value->question;
-            $user->question[$index]->answer = $value->answer;
+            $user->question[$index]->label = htmlspecialchars($value->question);
+            if($encode)
+                $user->question[$index]->answer = htmlspecialchars($value->answer);
+            else
+                $user->question[$index]->answer = $value->answer;
             $user->question[$index]->minimumLength = $value->minimumLength;
             $index++;
             $lastID = $value->id;
