@@ -150,10 +150,35 @@ class ExerciseController extends Controller
         }
 
         $updateAnswer = false;
-        $questions = null;
         if (isset($params->answer)) {
             $takeId = $params->answer;
+
+            // Check if the answers belong to the exercise
             $questions = Database::getQuestionsAndAnswers($takeId);
+            $takeBelongToExercise = true;
+            $otherExerciseId = null;
+            foreach ($questions as $question) {
+                if ($question['fkExercise'] != $exerciseId) {
+                    $takeBelongToExercise = false;
+                    // save the wrong exercise id found
+                    $otherExerciseId = $question['fkExercise'];
+                    // Once the test has failed, there is no need to use the next item
+                    break;
+                }
+            }
+            echo $takeBelongToExercise;
+
+            // TODO insert link text
+            // TODO test
+            if (!$takeBelongToExercise) {
+                $params = new stdClass();
+                $params->error = "Answer not recognised";
+                $params->message =
+                    'That answer contains answers to questions from another exercise. <br/>Maybe you wanted <a href="/exercise/'
+                    . $otherExerciseId . '/answer/' . $takeId . '/edit">INSERT NAME HERE</a>.';
+                return self::error($params);
+            }
+
             $updateAnswer = true;
             $params->takeId = $takeId;
         } else {
@@ -161,7 +186,7 @@ class ExerciseController extends Controller
         }
 
         $params->exerciseName = $exercise['name'];
-        $params->questions = $questions;
+        $params->questions = $questions = Database::getQuestionsAndAnswers($takeId);;
         $params->updateAnswer = $updateAnswer;
 
         return View::render("Exercise/TakeExercise", $params);
@@ -245,7 +270,7 @@ class ExerciseController extends Controller
             // check if the answer really belongs to the exercise (if the form is not broken, it should)
             $isInExercise = false;
             foreach ($exerciseQuestions as $question) {
-                if($question['idQuestion'] == $questionWithAnswer['idQuestion']) {
+                if ($question['idQuestion'] == $questionWithAnswer['idQuestion']) {
                     $isInExercise = true;
                     // once we have found the question, we don't need to continue the iteration
                     break;
@@ -254,7 +279,7 @@ class ExerciseController extends Controller
 
             // Check if a new answer to the question has been submitted (if the form is not broken, it should)
             $answerId = $questionWithAnswer['idAnswer'];
-            if($isInExercise && isset($_POST[$answerId])) {
+            if ($isInExercise && isset($_POST[$answerId])) {
                 $answer = $_POST[$answerId];
                 Database::updateAnswer($answer, $answerId);
             }
