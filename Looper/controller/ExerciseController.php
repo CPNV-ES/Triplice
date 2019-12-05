@@ -168,17 +168,17 @@ class ExerciseController extends Controller
             }
             echo $takeBelongToExercise;
 
-            // TODO insert link text
-            // TODO test
             if (!$takeBelongToExercise) {
+                $otherExercise = Database::getExercise($otherExerciseId);
                 $params = new stdClass();
                 $params->error = "Answer not recognised";
                 $params->message =
-                    'That answer contains answers to questions from another exercise. <br/>Maybe you wanted <a href="/exercise/'
-                    . $otherExerciseId . '/answer/' . $takeId . '/edit">INSERT NAME HERE</a>.';
+                    'That answer contains answers to questions from another exercise. <br/>Maybe you wanted the exercise <a href="/exercise/'
+                    . $otherExerciseId . '/answer/' . $takeId . '/edit">' . $otherExercise['name'] . '</a>.';
                 return self::error($params);
             }
 
+            $questions = Database::getQuestionsAndAnswers($takeId);
             $updateAnswer = true;
             $params->takeId = $takeId;
         } else {
@@ -186,7 +186,7 @@ class ExerciseController extends Controller
         }
 
         $params->exerciseName = $exercise['name'];
-        $params->questions = $questions = Database::getQuestionsAndAnswers($takeId);;
+        $params->questions = $questions;
         $params->updateAnswer = $updateAnswer;
 
         return View::render("Exercise/TakeExercise", $params);
