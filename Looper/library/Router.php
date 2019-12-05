@@ -9,12 +9,16 @@
  */
 class Router
 {
+    /**
+     * @var array containt all routes
+     */
     private static $routes = array(); // Contiendra la liste des routes
-    private static $dirController="controller"; //dossier de tous nos controlleurs
+    /**
+     * @var string dir containt all our controllers
+     */
+    private static $dirController="controller";
 
     /**
-     * add
-     *
      * Method to create dynamics path on our site
      *
      * @param route $route url we want
@@ -30,8 +34,6 @@ class Router
         ));
     }
     /**
-     * run
-     *
      * check that our url matches with our routes and send to good pages
      *
      * @author Diogo VIEIRA Diogo
@@ -62,8 +64,6 @@ class Router
         self::execute(self::$dirController."/HomeController@error",(object)array("error"=>"Error 404 | page not found","message"=>$_SERVER['HTTP_HOST'].$url));
     }
     /**
-     * sortArray
-     *
      * Sort all parameters of route and associated with previous name of the route
      *
      * @param $route route has match with URL
@@ -85,8 +85,6 @@ class Router
         return $arraySorted;
     }
     /**
-     * execute
-     *
      * call method of specific class with parameters when it exists
      *
      * @param $function function of route (example "HomeController@error")
@@ -105,4 +103,5 @@ class Router
         else
             $class::$method();
     }
+
 }
