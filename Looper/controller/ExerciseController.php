@@ -45,6 +45,15 @@ class ExerciseController extends Controller
     {
         $exerciseId = $params->exercise;
 
+        // Check if we are allowed to modify the exercise
+        if (!ExerciseController::isModifiable($exerciseId)) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to modify this exercise";
+            $params->message =
+                '<a href="/">Home</a>.';
+            return self::error($params);
+        }
+
         // delete/modify question if the action has been selected
         if (isset($_POST['label']) and isset($_POST['minimumLength'])) {
 
@@ -101,6 +110,16 @@ class ExerciseController extends Controller
     {
         $exerciseId = $params->exercise;
         $questionId = $params->question;
+
+        // Check if we are allowed to modify the exercise
+        if (!ExerciseController::isModifiable($exerciseId)) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to modify this exercise";
+            $params->message =
+                '<a href="/">Home</a>.';
+            return self::error($params);
+        }
+
         Database::deleteQuestion($questionId);
 
         // redirect to modify page
@@ -118,6 +137,7 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
         $questionsCount = Database::questionsCount($exerciseId);
 
+        // Check if we are allowed to modify the exercise
         if (!ExerciseController::isModifiable($exerciseId)) {
             $params = new stdClass();
             $params->error = "You are not allowed to modify this exercise";
