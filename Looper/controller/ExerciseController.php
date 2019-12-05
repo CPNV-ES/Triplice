@@ -141,10 +141,8 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
         $exercise = Database::getExerciseWithStatus($exerciseId);
 
-        $exerciseStatus = $exercise['status'];
-
         // Check if the exercise has a status that allows answers
-        if ($exerciseStatus != 'Answering') {
+        if ($exercise['status'] != 'Answering') {
             $params = new stdClass();
             $params->error = "You are not allowed to answer to this exercise !";
             $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
@@ -152,9 +150,41 @@ class ExerciseController extends Controller
         }
 
         $updateAnswer = false;
-        $questions = null;
         if (isset($params->answer)) {
             $takeId = $params->answer;
+
+            // Check if the answers belong to the exercise
+            $questions = Database::getQuestionsAndAnswers($takeId);
+            $thereAreAnswers = false;
+            $takeBelongToExercise = true;
+            $otherExerciseId = null;
+            foreach ($questions as $question) {
+                $thereAreAnswers = true;
+                if ($question['fkExercise'] != $exerciseId) {
+                    $takeBelongToExercise = false;
+                    // save the wrong exercise id found
+                    $otherExerciseId = $question['fkExercise'];
+                    // Once the test has failed, there is no need to use the next item
+                    break;
+                }
+            }
+            if (!$thereAreAnswers) {
+                $params = new stdClass();
+                $params->error = "Answer does not exist";
+                $params->message =
+                    'That answer does not exist. <a href="/exercise/take">Take en exercise</a>.';
+                return self::error($params);
+            }
+            if (!$takeBelongToExercise) {
+                $otherExercise = Database::getExercise($otherExerciseId);
+                $params = new stdClass();
+                $params->error = "Answer not recognised";
+                $params->message =
+                    'That answer contains answers to questions from another exercise. <br/>Maybe you wanted the exercise <a href="/exercise/'
+                    . $otherExerciseId . '/answer/' . $takeId . '/edit">' . $otherExercise['name'] . '</a>.';
+                return self::error($params);
+            }
+
             $questions = Database::getQuestionsAndAnswers($takeId);
             $updateAnswer = true;
             $params->takeId = $takeId;
@@ -177,29 +207,89 @@ class ExerciseController extends Controller
         return View::render("Take", Database::getAnsweringExercises());
     }
 
+    /**
+     * Submit the answers to an exercise. Use the POST data to create the answers to the exercise.
+     * @param $params contains exercise, the id of the exercise
+     */
     static function submitAnswer($params)
     {
         $exerciseId = $params->exercise;
 
+        // Check if the exercise has a status that allows answers
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+        if ($exercise['status'] != 'Answering') {
+            $params = new stdClass();
+            $params->error = "You are not allowed to answer to this exercise !";
+            $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
+            return self::error($params);
+        }
+
         $idTake = Database::createTake();
 
-        // create the submitted answers
-        foreach ($_POST as $idQuestion => $answer) {
-            Database::createAnswer($answer, $idTake, $idQuestion);
+        // Get the questions from the exercise
+        $questions = Database::getQuestions($exerciseId);
+
+        // Create the submitted answers
+        // Iterate on the questions and not the $_POST data, because we cannot trust the $_POST
+        foreach ($questions as $question) {
+            $idQuestion = $question['idQuestion'];
+            // Check if the $_POST data contains an answer to the question (if the form is not broken, it should)
+            if (isset($_POST[$idQuestion])) {
+                $answer = $_POST[$idQuestion];
+                Database::createAnswer($answer, $idTake, $idQuestion);
+            } else {
+                // Create an empty answer if an actual answer has not been found
+                Database::createAnswer("", $idTake, $idQuestion);
+            }
         }
 
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $idTake . "/edit");
         exit();
     }
 
+    /**
+     * Edit the answers from a specific take
+     * @param $params contains exercise, the id of the exercise, and answer, the id of the take
+     */
     static function editAnswer($params)
     {
         $exerciseId = $params->exercise;
         $takeId = $params->answer;
 
-        // create the submitted answers
-        foreach ($_POST as $idAnswer => $answer) {
-            Database::updateAnswer($answer, $idAnswer);
+        // Check if the exercise has a status that allows answers
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+        if ($exercise['status'] != 'Answering') {
+            $params = new stdClass();
+            $params->error = "You are not allowed to answer to this exercise !";
+            $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
+            return self::error($params);
+        }
+
+        // Get the questions from the exercise
+        $exerciseQuestions = Database::getQuestions($exerciseId);
+
+        // Get the answers and the questions of the take
+        $questionsWithAnswers = Database::getQuestionsAndAnswers($takeId);
+
+        // Update the answer, after a few checks
+        // Iterate on the original answers and not the $_POST data, because we cannot trust the $_POST
+        foreach ($questionsWithAnswers as $questionWithAnswer) {
+            // check if the answer really belongs to the exercise (if the form is not broken, it should)
+            $isInExercise = false;
+            foreach ($exerciseQuestions as $question) {
+                if ($question['idQuestion'] == $questionWithAnswer['idQuestion']) {
+                    $isInExercise = true;
+                    // once we have found the question, we don't need to continue the iteration
+                    break;
+                }
+            }
+
+            // Check if a new answer to the question has been submitted (if the form is not broken, it should)
+            $answerId = $questionWithAnswer['idAnswer'];
+            if ($isInExercise && isset($_POST[$answerId])) {
+                $answer = $_POST[$answerId];
+                Database::updateAnswer($answer, $answerId);
+            }
         }
 
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $takeId . "/edit");
