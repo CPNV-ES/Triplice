@@ -387,7 +387,7 @@ class ExerciseController extends Controller
     static function isModifiable($exerciseId)
     {
         $exercise = Database::getExerciseWithStatus($exerciseId);
-        $isModifiable = ($exercise['status'] == 'building');
+        $isModifiable = ($exercise['status'] == 'Building');
         return $isModifiable;
     }
 }
