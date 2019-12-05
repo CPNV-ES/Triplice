@@ -1,7 +1,3 @@
-Empêcher les légers problèmes liés aux caractères <,> (casse le html, injection de script) -> htmlencode
-
-Empêcher de modifier un exercice qui n'est plus en construction (v. status).
+corriger le delete avec des réponses
 
 Séparer Model et Controleur.
-
-
