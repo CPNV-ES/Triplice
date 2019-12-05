@@ -155,9 +155,11 @@ class ExerciseController extends Controller
 
             // Check if the answers belong to the exercise
             $questions = Database::getQuestionsAndAnswers($takeId);
+            $thereAreAnswers = false;
             $takeBelongToExercise = true;
             $otherExerciseId = null;
             foreach ($questions as $question) {
+                $thereAreAnswers = true;
                 if ($question['fkExercise'] != $exerciseId) {
                     $takeBelongToExercise = false;
                     // save the wrong exercise id found
@@ -166,8 +168,13 @@ class ExerciseController extends Controller
                     break;
                 }
             }
-            echo $takeBelongToExercise;
-
+            if (!$thereAreAnswers) {
+                $params = new stdClass();
+                $params->error = "Answer does not exist";
+                $params->message =
+                    'That answer does not exist. <a href="/exercise/take">Take en exercise</a>.';
+                return self::error($params);
+            }
             if (!$takeBelongToExercise) {
                 $otherExercise = Database::getExercise($otherExerciseId);
                 $params = new stdClass();
