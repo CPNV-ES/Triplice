@@ -21,8 +21,18 @@ class ManageController extends Controller
      */
     static function deleteExercise($params)
     {
-        // delete the exercise
         $exerciseId = $params->exercise;
+
+        // Check if we are allowed to delete the exercise
+        if (ManageController::isAnswering($exerciseId) ) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to delete this exercise. Close it first.";
+            $params->message =
+                '<a href="/Manage">Manage exercises</a>.';
+            return self::error($params);
+        }
+
+        // delete the exercise
         Database::deleteExercise($exerciseId);
 
         // redirect to manage page
@@ -38,10 +48,33 @@ class ManageController extends Controller
     {
         // update exercise status to 'answering'
         $exerciseId = $params->exercise;
+
+        // Check if we are allowed to close the exercise
+        if (!ManageController::isAnswering($exerciseId)) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to close this exercise.";
+            $params->message =
+                '<a href="/Manage">Manage exercises</a>.';
+            return self::error($params);
+        }
+
         Database::modifyExerciseStatus($exerciseId, 3);
 
         // redirect to the manage page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
         exit();
+    }
+
+    /**
+     * Check if an exercise is answering
+     *
+     * @param $exerciseId
+     * @return bool
+     */
+    static function isAnswering($exerciseId)
+    {
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $isModifiable = ($exercise['status'] == 'Answering');
+        return $isModifiable;
     }
 }
