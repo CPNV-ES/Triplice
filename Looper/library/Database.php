@@ -113,6 +113,8 @@ class Database
         $statement->execute([$exerciseId]);
         $exercise = $statement->fetch();
 
+        $exercise = array_map(function($val) { return htmlspecialchars($val); }, $exercise);
+
         return $exercise;
     }
 
