@@ -27,6 +27,19 @@ class ExerciseModel
     }
 
     /**
+     * Check if an exercise is answering
+     *
+     * @param $exerciseId
+     * @return bool
+     */
+    static function isAnswering($exerciseId)
+    {
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $isModifiable = ($exercise['status'] == 'Answering');
+        return $isModifiable;
+    }
+
+    /**
      * check order of question and use url to get if user want up or down the order of question
      * Update the order of question based on url information
      *

@@ -1,5 +1,7 @@
 <?php
 
+require_once "model/ExerciseModel.php";
+
 class ManageController extends Controller
 {
     /**
@@ -24,7 +26,7 @@ class ManageController extends Controller
         $exerciseId = $params->exercise;
 
         // Check if we are allowed to delete the exercise
-        if (ManageController::isAnswering($exerciseId) ) {
+        if (ExerciseModel::isAnswering($exerciseId) ) {
             $params = new stdClass();
             $params->error = "You are not allowed to delete this exercise. Close it first.";
             $params->message =
@@ -50,7 +52,7 @@ class ManageController extends Controller
         $exerciseId = $params->exercise;
 
         // Check if we are allowed to close the exercise
-        if (!ManageController::isAnswering($exerciseId)) {
+        if (!ExerciseModel::isAnswering($exerciseId)) {
             $params = new stdClass();
             $params->error = "You are not allowed to close this exercise.";
             $params->message =
@@ -63,18 +65,5 @@ class ManageController extends Controller
         // redirect to the manage page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
         exit();
-    }
-
-    /**
-     * Check if an exercise is answering
-     *
-     * @param $exerciseId
-     * @return bool
-     */
-    static function isAnswering($exerciseId)
-    {
-        $exercise = Database::getExerciseWithStatus($exerciseId);
-        $isModifiable = ($exercise['status'] == 'Answering');
-        return $isModifiable;
     }
 }

@@ -110,7 +110,7 @@ class ExerciseController extends Controller
         $questionId = $params->question;
 
         // Check if we are allowed to modify the exercise
-        if (!ExerciseController::isModifiable($exerciseId)) {
+        if (!ExerciseModel::isModifiable($exerciseId)) {
             $params = new stdClass();
             $params->error = "You are not allowed to modify this exercise";
             $params->message =
@@ -136,7 +136,7 @@ class ExerciseController extends Controller
         $questionsCount = Database::questionsCount($exerciseId);
 
         // Check if we are allowed to modify the exercise
-        if (!ExerciseController::isModifiable($exerciseId)) {
+        if (!ExerciseModel::isModifiable($exerciseId)) {
             $params = new stdClass();
             $params->error = "You are not allowed to modify this exercise";
             $params->message =
