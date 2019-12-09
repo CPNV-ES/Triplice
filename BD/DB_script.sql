@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `triplice`.`questions` (
     FOREIGN KEY (`fkQuestionType`)
     REFERENCES `triplice`.`questionTypes` (`idQuestionType`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    ON UPDATE CASCADE
 );
 
 
@@ -98,5 +98,5 @@ CREATE TABLE IF NOT EXISTS `triplice`.`answers` (
     FOREIGN KEY (`fkTake`)
     REFERENCES `triplice`.`takes` (`idTake`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    ON UPDATE CASCADE
 );
