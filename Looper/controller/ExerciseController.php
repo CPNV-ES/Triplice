@@ -2,7 +2,7 @@
 
 use http\Params;
 
-include "model/ExerciseModel.php";
+require_once "model/ExerciseModel.php";
 
 class ExerciseController extends Controller
 {
@@ -46,7 +46,7 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
 
         // Check if we are allowed to modify the exercise
-        if (!ExerciseController::isModifiable($exerciseId)) {
+        if (!ExerciseModel::isModifiable($exerciseId)) {
             $params = new stdClass();
             $params->error = "You are not allowed to modify this exercise";
             $params->message =
@@ -65,8 +65,6 @@ class ExerciseController extends Controller
             // * minimumLength : int, accepted length of answers
             // * idQuestionToModify : int, id of an existing question, optional
             if (strlen($label) <= 50 && 0 < $minimumLength && $minimumLength <= 250) {
-                // TODO verify  is the id of a question, and is the id of the selected question
-                // TODO verify idAnswerType
                 if (!isset($_POST['idQuestionToModify'])) {
                     // new question : add it
                     Database::addQuestion($exerciseId, $label, $minimumLength, $_POST['idAnswerType']);
@@ -177,6 +175,7 @@ class ExerciseController extends Controller
             return self::error($params);
         }
 
+        // Check if we are updating new answers
         $updateAnswer = false;
         if (isset($params->answer)) {
             $takeId = $params->answer;
@@ -376,18 +375,5 @@ class ExerciseController extends Controller
 
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/$params->exercise/modify/");
         exit();
-    }
-
-    /**
-     * Check if an exercise is modifiable
-     *
-     * @param $exerciseId
-     * @return bool
-     */
-    static function isModifiable($exerciseId)
-    {
-        $exercise = Database::getExerciseWithStatus($exerciseId);
-        $isModifiable = ($exercise['status'] == 'Building');
-        return $isModifiable;
     }
 }

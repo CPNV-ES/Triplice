@@ -14,6 +14,19 @@ class ExerciseModel
     }
 
     /**
+     * Check if an exercise is modifiable
+     *
+     * @param $exerciseId
+     * @return bool
+     */
+    static function isModifiable($exerciseId)
+    {
+        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $isModifiable = ($exercise['status'] == 'Building');
+        return $isModifiable;
+    }
+
+    /**
      * check order of question and use url to get if user want up or down the order of question
      * Update the order of question based on url information
      *
