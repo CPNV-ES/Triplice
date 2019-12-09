@@ -3,6 +3,7 @@
 use http\Params;
 
 require_once "model/ExerciseModel.php";
+require_once "model/QuestionModel.php";
 
 class ExerciseController extends Controller
 {
@@ -53,27 +54,24 @@ class ExerciseController extends Controller
             return self::error($params);
         }
 
-        // delete/modify question if the action has been selected
+        // modify/create question if the action has been selected
         if (isset($_POST['label']) and isset($_POST['minimumLength'])) {
 
             $label = $_POST['label'];
             $minimumLength = $_POST['minimumLength'];
 
-            // expected input :
-            // * label : string, length <= 50
-            // * minimumLength : int, accepted length of answers
-            // * idQuestionToModify : int, id of an existing question, optional
-            if (strlen($label) <= 50 && 0 < $minimumLength && $minimumLength <= 250) {
+            try {
                 if (!isset($_POST['idQuestionToModify'])) {
                     // new question : add it
-                    Database::addQuestion($exerciseId, $label, $minimumLength, $_POST['idAnswerType']);
+                    QuestionModel::createQuestion($exerciseId, $label, $minimumLength, $_POST['idAnswerType']);
                 } else {
+                    // TODO : verify if the question belongs to the exercise (probably use the exerciseController)
                     // existing question : update it
-                    Database::modifyQuestion(
+                    QuestionModel::updateQuestion(
                         $_POST['idQuestionToModify'], $label, $minimumLength, $_POST['idAnswerType']
                     );
                 }
-            } else {
+            } catch(Exception $exception) {
                 $params = new stdClass();
                 $params->error = "Invalid inputs.";
                 $params->message = "<a href='/exercise/$exerciseId/modify'>Go Back</a>";

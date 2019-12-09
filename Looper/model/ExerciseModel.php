@@ -10,9 +10,9 @@ class ExerciseModel
      * ExerciseModel constructor.
      * @param $params params returned by router
      */
-    public function __construct($params=null)
+    public function __construct($params = null)
     {
-        $this->params=$params;
+        $this->params = $params;
     }
 
     /**
@@ -68,26 +68,25 @@ class ExerciseModel
      */
     public function OrderQuestion($url)
     {
-        $type=substr(strrchr($url, "/"),1); //get if is up or down information
-        switch ($type)
-        {
+        $type = substr(strrchr($url, "/"), 1); //get if is up or down information
+        switch ($type) {
             case "up":
-                $current=Database::getSpecificQuestionByOrder($this->params->exercise,$this->params->order);
-                $other=Database::getSpecificQuestionByOrder($this->params->exercise,$this->params->order-1);//get question with number before
+                $current = Database::getSpecificQuestionByOrder($this->params->exercise, $this->params->order);
+                $other = Database::getSpecificQuestionByOrder($this->params->exercise, $this->params->order - 1);//get question with number before
                 break;
             case "down":
-                $current=Database::getSpecificQuestionByOrder($this->params->exercise,$this->params->order);
-                $other=Database::getSpecificQuestionByOrder($this->params->exercise,$this->params->order+1);//get question with number after
+                $current = Database::getSpecificQuestionByOrder($this->params->exercise, $this->params->order);
+                $other = Database::getSpecificQuestionByOrder($this->params->exercise, $this->params->order + 1);//get question with number after
                 break;
             default:
                 break;
         }
-        $tmp=$current["order"];
-        $current["order"]=$other["order"];
-        $other["order"]=$tmp;
+        $tmp = $current["order"];
+        $current["order"] = $other["order"];
+        $other["order"] = $tmp;
 
         //update orders
-        Database::UpdateQuestionByOrder($current["order"],$current["idQuestion"]);
-        Database::UpdateQuestionByOrder($other["order"],$other["idQuestion"]);
+        Database::UpdateQuestionByOrder($current["order"], $current["idQuestion"]);
+        Database::UpdateQuestionByOrder($other["order"], $other["idQuestion"]);
     }
 }
