@@ -6,11 +6,20 @@ class QuestionModel
     protected const MIN_MIN_LENGTH = 1;
     protected const MAX_MIN_LENGTH = 250;
 
+    /**
+     * Get a question
+     * @param int $questionId id of the question
+     * @return object question
+     */
+    public static function getQuestion($questionId)
+    {
+        return Database::getQuestion($questionId);
+    }
+
     public static function createQuestion($exerciseId, $label, $minimumLength, $idAnswerType)
     {
         // TODO verify if $idAnswerType corresponds to a valid answer type
         // Data validation
-
         if (
             is_numeric($exerciseId) &&
             !is_null(Database::getExercise($exerciseId)) &&
@@ -47,5 +56,14 @@ class QuestionModel
         } else {
             throw new Exception('Invalid inputs');
         }
+    }
+
+    /**
+     * get all question types
+     * @return array list of the question types
+     */
+    public static function getQuestionTypes()
+    {
+        return Database::getQuestionTypes();
     }
 }

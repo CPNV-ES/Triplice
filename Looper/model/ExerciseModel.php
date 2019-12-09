@@ -33,6 +33,26 @@ class ExerciseModel
     }
 
     /**
+     * Get an exercise
+     * @param int $exerciseId id of the exercise
+     * @return object exercise
+     */
+    public static function getExercise($exerciseId)
+    {
+        return Database::getExercise($exerciseId);
+    }
+
+    /**
+     * Get all questions of an exercise
+     * @param int $exerciseId id of the exercise
+     * @return array questions of the exercise
+     */
+    public static function getQuestions($exerciseId)
+    {
+        return Database::getQuestions($exerciseId);
+    }
+
+    /**
      * Check if an exercise is modifiable
      *
      * @param $exerciseId

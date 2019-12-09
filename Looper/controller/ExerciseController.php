@@ -87,12 +87,12 @@ class ExerciseController extends Controller
         if (isset($params->question)) {
             $questionId = $params->question;
             $params->modifyQuestion = True;
-            $params->questionToModify = Database::getQuestion($questionId);
+            $params->questionToModify = QuestionModel::getQuestion($questionId);
         }
 
-        $params->exercise = Database::getExercise($exerciseId);
-        $params->questions = Database::getQuestions($exerciseId);
-        $params->questionTypes = Database::getQuestionTypes();
+        $params->exercise = ExerciseModel::getExercise($exerciseId);
+        $params->questions = ExerciseModel::getQuestions($exerciseId);
+        $params->questionTypes = QuestionModel::getQuestionTypes();
 
         View::render("Exercise/Modify", $params);
     }
