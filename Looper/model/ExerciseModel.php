@@ -4,6 +4,8 @@ class ExerciseModel
 {
     private $params;
 
+    private const MAX_NAME_LENGTH = 50;
+
     /**
      * ExerciseModel constructor.
      * @param $params params returned by router
@@ -14,12 +16,29 @@ class ExerciseModel
     }
 
     /**
+     * @param $exerciseName name of the new exercise
+     * @return int id of the exercise created
+     * @throws Exception if zhe name is too long
+     */
+    public static function createExercise($exerciseName)
+    {
+        // expected input :
+        // * title : string, length <= 50
+        if (mb_strlen($exerciseName) <= self::MAX_NAME_LENGTH) {
+            $exerciseId = Database::createExercise($exerciseName);
+            return $exerciseId;
+        } else {
+            throw new Exception('Name too long');
+        }
+    }
+
+    /**
      * Check if an exercise is modifiable
      *
      * @param $exerciseId
      * @return bool
      */
-    static function isModifiable($exerciseId)
+    public static function isModifiable($exerciseId)
     {
         $exercise = Database::getExerciseWithStatus($exerciseId);
         $isModifiable = ($exercise['status'] == 'Building');
@@ -32,7 +51,7 @@ class ExerciseModel
      * @param $exerciseId
      * @return bool
      */
-    static function isAnswering($exerciseId)
+    public static function isAnswering($exerciseId)
     {
         $exercise = Database::getExerciseWithStatus($exerciseId);
         $isModifiable = ($exercise['status'] == 'Answering');

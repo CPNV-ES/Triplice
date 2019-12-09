@@ -19,21 +19,20 @@ class ExerciseController extends Controller
      */
     static function newExercise()
     {
-        // expected input :
-        // * title : string, length <= 50
-        if (isset($_POST["title"]) and mb_strlen($_POST["title"]) <= 50) {
-            $exerciseName = $_POST["title"];
-            $exerciseId = Database::createExercise($exerciseName);
-
-            // redirect to modify page
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
-            exit();
-        } else {
+        try {
+            // create the exercise
+            $exerciseId = ExerciseModel::createExercise($_POST["title"]);
+        } catch (Exception $exception) {
+            // Display error page if problem when creating the exercise
             $params = new stdClass();
-            $params->error = "No exercise name";
+            $params->error = "Invalid exercise name";
             $params->message = 'Please enter an exercise name<br><a href="/exercise/create">Back</a>';
             return self::error($params);
         }
+
+        // redirect to modify page
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
+        exit();
     }
 
     /**
