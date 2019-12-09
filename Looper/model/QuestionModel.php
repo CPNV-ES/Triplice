@@ -16,6 +16,15 @@ class QuestionModel
         return Database::getQuestion($questionId);
     }
 
+    /**
+     * Create a new question
+     *
+     * @param string $exerciseId id of the exercise
+     * @param string $label label of the question
+     * @param string $minimumLength minimum length of the question
+     * @param string $idAnswerType id of the category of the question
+     * @throws Exception
+     */
     public static function createQuestion($exerciseId, $label, $minimumLength, $idAnswerType)
     {
         // TODO verify if $idAnswerType corresponds to a valid answer type
@@ -37,6 +46,15 @@ class QuestionModel
         }
     }
 
+    /**
+     * Modify a question
+     *
+     * @param string $idQuestionToModify id of the question to modify
+     * @param string $label new label of the question
+     * @param string $minimumLength new minimum length of the question
+     * @param string $idAnswerType id of the new category of the question
+     * @throws Exception
+     */
     public static function updateQuestion($idQuestionToModify, $label, $minimumLength, $idAnswerType)
     {
         // TODO verify if $idAnswerType corresponds to a valid answer type
