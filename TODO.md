@@ -1,5 +1,3 @@
-corriger le delete avec des réponses
-
-Permettre de supprimer les exercices clos.
-
 Séparer Model et Controleur.
+
+page take exercise protéger le titre des tags html (<script>)
