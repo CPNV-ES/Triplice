@@ -115,6 +115,16 @@ class ExerciseController extends Controller
             return self::error($params);
         }
 
+        // check if question belongs to the exercise
+        $question = QuestionModel::getQuestion($questionId);
+        if($question['fkExercise'] != $exerciseId) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to delete this question";
+            $params->message =
+                '<a href="/">Home</a>.';
+            return self::error($params);
+        }
+        
         Database::deleteQuestion($questionId);
 
         // redirect to modify page
