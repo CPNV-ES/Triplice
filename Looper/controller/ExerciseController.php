@@ -195,7 +195,7 @@ class ExerciseController extends Controller
      */
     static function take()
     {
-        return View::render("Take", Database::getAnsweringExercises());
+        return View::render("Take", ExerciseModel::getAnsweringExercises());
     }
 
     /**
@@ -207,7 +207,7 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
 
         // Check if the exercise has a status that allows answers
-        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $exercise = ExerciseModel::getExerciseWithStatus($exerciseId);
         if ($exercise['status'] != 'Answering') {
             $params = new stdClass();
             $params->error = "You are not allowed to answer to this exercise !";
@@ -215,26 +215,10 @@ class ExerciseController extends Controller
             return self::error($params);
         }
 
-        $idTake = Database::createTake();
+        // create the take
+        $takeId = ExerciseModel::createTake($exerciseId, $_POST);
 
-        // Get the questions from the exercise
-        $questions = Database::getQuestions($exerciseId);
-
-        // Create the submitted answers
-        // Iterate on the questions and not the $_POST data, because we cannot trust the $_POST
-        foreach ($questions as $question) {
-            $idQuestion = $question['idQuestion'];
-            // Check if the $_POST data contains an answer to the question (if the form is not broken, it should)
-            if (isset($_POST[$idQuestion])) {
-                $answer = $_POST[$idQuestion];
-                Database::createAnswer($answer, $idTake, $idQuestion);
-            } else {
-                // Create an empty answer if an actual answer has not been found
-                Database::createAnswer("", $idTake, $idQuestion);
-            }
-        }
-
-        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $idTake . "/edit");
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $takeId . "/edit");
         exit();
     }
 

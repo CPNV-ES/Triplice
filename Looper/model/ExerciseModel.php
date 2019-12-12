@@ -1,5 +1,7 @@
 <?php
 
+require_once 'TakeModel.php';
+
 class ExerciseModel
 {
     private $params;
@@ -33,6 +35,36 @@ class ExerciseModel
     }
 
     /**
+     * @param int $exerciseId id of the exercise we are answering
+     * @param array $answers list of the answers
+     * @return int
+     */
+    public static function createTake($exerciseId, $answers)
+    {
+        $idTake = TakeModel::createTake();
+
+        // Get the questions from the exercise
+        $questions = self::getQuestions($exerciseId);
+
+        // Create the submitted answers
+        // Iterate on the questions and not the $answers data, because we cannot trust the user input
+        // (answers comes from a $_POST)
+        foreach ($questions as $question) {
+            $idQuestion = $question['idQuestion'];
+            // Check if the $_POST data contains an answer to the question (if the form is not broken, it should)
+            if (isset($answers[$idQuestion])) {
+                $answer = $answers[$idQuestion];
+                TakeModel::createAnswer($answer, $idTake, $idQuestion);
+            } else {
+                // Create an empty answer if an actual answer has not been found
+                TakeModel::createAnswer("", $idTake, $idQuestion);
+            }
+        }
+
+        return $idTake;
+    }
+
+    /**
      * Get an exercise
      * @param int $exerciseId id of the exercise
      * @return object exercise
@@ -50,6 +82,15 @@ class ExerciseModel
     public static function getExerciseWithStatus($exerciseId)
     {
         return Database::getExerciseWithStatus($exerciseId);
+    }
+
+    /**
+     * Search all exercises with the "Answering" status
+     * @return array all Answering exercises
+     */
+    public static function getAnsweringExercises()
+    {
+        return Database::getAnsweringExercises();
     }
 
     /**
@@ -94,7 +135,8 @@ class ExerciseModel
      * @param int $takeId id of the take we want to get
      * @return array list of questions with the answers of the take
      */
-    public static function getQuestionsAndAnswersFromTake($takeId) {
+    public static function getQuestionsAndAnswersFromTake($takeId)
+    {
         return Database::getQuestionsAndAnswers($takeId);
     }
 
@@ -178,6 +220,7 @@ class ExerciseModel
             throw new Exception('not allowesd');
         }
 
+        // TODO call question model
         Database::deleteQuestion($questionId);
     }
 
