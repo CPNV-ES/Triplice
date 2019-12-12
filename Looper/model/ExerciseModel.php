@@ -63,6 +63,42 @@ class ExerciseModel
     }
 
     /**
+     * @param int $exerciseId id of the exercise we want the take
+     * @param int $takeId id of the take we want to get
+     * @return array questions of the take with answers
+     * @throws Exception
+     */
+    public static function getQuestionsAndAnswers($exerciseId, $takeId)
+    {
+        $questions = self::getQuestionsAndAnswersFromTake($takeId);
+
+        $takeBelongToExercise = true;
+        $thereAreAnswers = false;
+        foreach ($questions as $question) {
+            $thereAreAnswers = true;
+            if ($question['fkExercise'] != $exerciseId) {
+                $takeBelongToExercise = false;
+                // Once the test has failed, there is no need to use the next item
+                break;
+            }
+        }
+        if (!$takeBelongToExercise || !$thereAreAnswers) {
+            throw new Exception('invalid take');
+        }
+
+        // we have to refetch the questions, because the foreach does not allow us to reuse them later
+        return self::getQuestionsAndAnswersFromTake($takeId);
+    }
+
+    /**
+     * @param int $takeId id of the take we want to get
+     * @return array list of questions with the answers of the take
+     */
+    public static function getQuestionsAndAnswersFromTake($takeId) {
+        return Database::getQuestionsAndAnswers($takeId);
+    }
+
+    /**
      * Check if an exercise is modifiable
      *
      * @param $exerciseId

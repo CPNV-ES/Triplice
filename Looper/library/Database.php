@@ -212,7 +212,6 @@ class Database
             array_push($exercise, $question);
         }
 
-
         return $exercise;
     }
 

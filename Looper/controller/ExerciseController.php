@@ -167,43 +167,20 @@ class ExerciseController extends Controller
         if (isset($params->answer)) {
             $takeId = $params->answer;
 
-            // Check if the answers belong to the exercise
-            $questions = Database::getQuestionsAndAnswers($takeId);
-            $thereAreAnswers = false;
-            $takeBelongToExercise = true;
-            $otherExerciseId = null;
-            foreach ($questions as $question) {
-                $thereAreAnswers = true;
-                if ($question['fkExercise'] != $exerciseId) {
-                    $takeBelongToExercise = false;
-                    // save the wrong exercise id found
-                    $otherExerciseId = $question['fkExercise'];
-                    // Once the test has failed, there is no need to use the next item
-                    break;
-                }
-            }
-            if (!$thereAreAnswers) {
+            try {
+                $questions = ExerciseModel::getQuestionsAndAnswers($exerciseId, $takeId);
+            } catch (Exception $exception) {
                 $params = new stdClass();
                 $params->error = "Answer does not exist";
                 $params->message =
                     'That answer does not exist. <a href="/exercise/take">Take en exercise</a>.';
                 return self::error($params);
             }
-            if (!$takeBelongToExercise) {
-                $otherExercise = Database::getExercise($otherExerciseId);
-                $params = new stdClass();
-                $params->error = "Answer not recognised";
-                $params->message =
-                    'That answer contains answers to questions from another exercise. <br/>Maybe you wanted the exercise <a href="/exercise/'
-                    . $otherExerciseId . '/answer/' . $takeId . '/edit">' . $otherExercise['name'] . '</a>.';
-                return self::error($params);
-            }
 
-            $questions = Database::getQuestionsAndAnswers($takeId);
             $updateAnswer = true;
             $params->takeId = $takeId;
         } else {
-            $questions = Database::getQuestions($exerciseId);
+            $questions = ExerciseModel::getQuestions($exerciseId);
         }
 
         $params->exerciseName = $exercise['name'];
