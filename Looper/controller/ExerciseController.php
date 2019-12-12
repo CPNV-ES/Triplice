@@ -124,8 +124,8 @@ class ExerciseController extends Controller
                 '<a href="/">Home</a>.';
             return self::error($params);
         }
-        
-        Database::deleteQuestion($questionId);
+
+        QuestionModel::deleteQuestion($questionId);
 
         // redirect to modify page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");

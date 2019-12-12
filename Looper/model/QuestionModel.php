@@ -77,6 +77,15 @@ class QuestionModel
     }
 
 
+    /**
+     * delete a question
+     * @param int $questionId id of the question
+     */
+    public static function deleteQuestion($questionId)
+    {
+        Database::deleteQuestion($questionId);
+    }
+
 
     /**
      * get all question types
