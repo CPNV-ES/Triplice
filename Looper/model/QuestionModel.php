@@ -76,6 +76,16 @@ class QuestionModel
         }
     }
 
+    /**
+     * update order of question by question id
+     *
+     * @param $order new order of exercise
+     * @param $idQuestion
+     */
+    public static function UpdateQuestionOrder($order, $idQuestion)
+    {
+        Database::UpdateQuestionByOrder($order, $idQuestion);
+    }
 
     /**
      * delete a question
@@ -85,7 +95,6 @@ class QuestionModel
     {
         Database::deleteQuestion($questionId);
     }
-
 
     /**
      * get all question types

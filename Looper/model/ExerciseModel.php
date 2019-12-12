@@ -43,6 +43,16 @@ class ExerciseModel
     }
 
     /**
+     * Get an exercise with its status
+     * @param int $exerciseId id of the exercise
+     * @return object exercise with status
+     */
+    public static function getExerciseWithStatus($exerciseId)
+    {
+        return Database::getExerciseWithStatus($exerciseId);
+    }
+
+    /**
      * Get all questions of an exercise
      * @param int $exerciseId id of the exercise
      * @return array questions of the exercise
@@ -81,6 +91,7 @@ class ExerciseModel
     /**
      * check order of question and use url to get if user want up or down the order of question
      * Update the order of question based on url information
+     * Assumes the questions are ordered coutinuously (1, 2, 3, ...)
      *
      * @param $url current url
      * @example Up : $url -> /exercise/1/order/2/up
@@ -88,25 +99,97 @@ class ExerciseModel
      */
     public function OrderQuestion($url)
     {
-        $type = substr(strrchr($url, "/"), 1); //get if is up or down information
+        //get if is up or down information
+        $type = substr(strrchr($url, "/"), 1);
+
+        // get the two questions to switch
         switch ($type) {
             case "up":
-                $current = Database::getSpecificQuestionByOrder($this->params->exercise, $this->params->order);
-                $other = Database::getSpecificQuestionByOrder($this->params->exercise, $this->params->order - 1);//get question with number before
+                $current = self::getQuestionByOrder($this->params->exercise, $this->params->order);
+                $other = self::getQuestionByOrder($this->params->exercise, $this->params->order - 1);//get question with number before
                 break;
             case "down":
-                $current = Database::getSpecificQuestionByOrder($this->params->exercise, $this->params->order);
-                $other = Database::getSpecificQuestionByOrder($this->params->exercise, $this->params->order + 1);//get question with number after
+                $current = self::getQuestionByOrder($this->params->exercise, $this->params->order);
+                $other = self::getQuestionByOrder($this->params->exercise, $this->params->order + 1);//get question with number after
                 break;
             default:
                 break;
         }
+
+        // switch the order of the two elements
         $tmp = $current["order"];
         $current["order"] = $other["order"];
         $other["order"] = $tmp;
 
-        //update orders
-        Database::UpdateQuestionByOrder($current["order"], $current["idQuestion"]);
-        Database::UpdateQuestionByOrder($other["order"], $other["idQuestion"]);
+        //update the order
+        QuestionModel::UpdateQuestionOrder($current["order"], $current["idQuestion"]);
+        QuestionModel::UpdateQuestionOrder($other["order"], $other["idQuestion"]);
+    }
+
+    /**
+     * delete a question from the exercise
+     * @param $exerciseId id of the exercise
+     * @param int $questionId id of the question
+     * @throws Exception
+     */
+    public static function deleteQuestion($exerciseId, $questionId)
+    {
+        // Check if we are allowed to modify the exercise
+        // Check if question belongs to the exercise
+        $question = QuestionModel::getQuestion($questionId);
+        if (!self::isModifiable($exerciseId) ||
+            $question['fkExercise'] != $exerciseId) {
+            throw new Exception('not allowesd');
+        }
+
+        Database::deleteQuestion($questionId);
+    }
+
+    /**
+     * get the number of questions of an exercise
+     * @param int $idExercise id of the exercise
+     * @return int number of questions of the exercise
+     */
+    public static function questionsCount($idExercise)
+    {
+        return Database::questionsCount($idExercise);
+    }
+
+    /**
+     * get a question by specific order
+     * @param int $exerciseId id of the question
+     * @return question of the exercise with the specified order
+     */
+    public static function getQuestionByOrder($exerciseId, $order)
+    {
+        return Database::getSpecificQuestionByOrder($exerciseId, $order);
+    }
+
+    /**
+     * Change the status of an exercise to completed
+     * @param $exerciseId
+     * @throws Exception
+     */
+    static function completeExercise($exerciseId)
+    {
+        $questionsCount = self::questionsCount($exerciseId);
+
+        // Check if we are allowed to modify the exercise : right status and at least one question
+        if (!ExerciseModel::isModifiable($exerciseId) ||
+            $questionsCount <= 0) {
+            throw new Exception('not allowed');
+        }
+
+        self::updateExerciseStatus($exerciseId, 2);
+    }
+
+    /**
+     * modify the status of an exercise
+     * @param int $idExercise id of the exercise to modify
+     * @param int $idStatus new id of the status
+     */
+    public static function updateExerciseStatus($idExercise, $idStatus)
+    {
+        Database::modifyExerciseStatus($idExercise, $idStatus);
     }
 }

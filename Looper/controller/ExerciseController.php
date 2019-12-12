@@ -71,7 +71,7 @@ class ExerciseController extends Controller
                         $_POST['idQuestionToModify'], $label, $minimumLength, $_POST['idAnswerType']
                     );
                 }
-            } catch(Exception $exception) {
+            } catch (Exception $exception) {
                 $params = new stdClass();
                 $params->error = "Invalid inputs.";
                 $params->message = "<a href='/exercise/$exerciseId/modify'>Go Back</a>";
@@ -83,6 +83,8 @@ class ExerciseController extends Controller
             exit();
         }
 
+
+        // check if there is a question to modify
         $params->modifyQuestion = False;
         if (isset($params->question)) {
             $questionId = $params->question;
@@ -106,26 +108,15 @@ class ExerciseController extends Controller
         $exerciseId = $params->exercise;
         $questionId = $params->question;
 
-        // Check if we are allowed to modify the exercise
-        if (!ExerciseModel::isModifiable($exerciseId)) {
-            $params = new stdClass();
-            $params->error = "You are not allowed to modify this exercise";
-            $params->message =
-                '<a href="/">Home</a>.';
-            return self::error($params);
-        }
-
-        // check if question belongs to the exercise
-        $question = QuestionModel::getQuestion($questionId);
-        if($question['fkExercise'] != $exerciseId) {
+        try {
+            ExerciseModel::deleteQuestion($exerciseId, $questionId);
+        } catch (Exception $exception) {
             $params = new stdClass();
             $params->error = "You are not allowed to delete this question";
             $params->message =
                 '<a href="/">Home</a>.';
             return self::error($params);
         }
-
-        QuestionModel::deleteQuestion($questionId);
 
         // redirect to modify page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
@@ -140,29 +131,18 @@ class ExerciseController extends Controller
     static function completeExercise($params)
     {
         $exerciseId = $params->exercise;
-        $questionsCount = Database::questionsCount($exerciseId);
 
-        // Check if we are allowed to modify the exercise
-        if (!ExerciseModel::isModifiable($exerciseId)) {
-            $params = new stdClass();
-            $params->error = "You are not allowed to modify this exercise";
-            $params->message =
-                '<a href="/">Home</a>.';
-            return self::error($params);
-        }
-
-        if ($questionsCount > 0) {
-            // update exercise status to 'answering'
-            Database::modifyExerciseStatus($exerciseId, 2);
-
-            // redirect to modify page
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
-            exit();
-        } else {
-            // redirect to modify page
+        try {
+            ExerciseModel::completeExercise($exerciseId);
+        } catch (Exception $exception) {
+            // redirect to modify exercise page
             header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
             exit();
         }
+
+        // redirect to manage page
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
+        exit();
     }
 
     /**
@@ -172,7 +152,7 @@ class ExerciseController extends Controller
     static function takeExercise($params)
     {
         $exerciseId = $params->exercise;
-        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $exercise = ExerciseModel::getExerciseWithStatus($exerciseId);
 
         // Check if the exercise has a status that allows answers
         if ($exercise['status'] != 'Answering') {
@@ -182,7 +162,7 @@ class ExerciseController extends Controller
             return self::error($params);
         }
 
-        // Check if we are updating new answers
+        // Check if we are updating answers
         $updateAnswer = false;
         if (isset($params->answer)) {
             $takeId = $params->answer;
