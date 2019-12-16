@@ -221,10 +221,11 @@ class ExerciseController extends Controller
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $takeId . "/edit");
         exit();
     }
-
+    
     /**
      * Edit the answers from a specific take
      * @param $params contains exercise, the id of the exercise, and answer, the id of the take
+     * @throws Exception
      */
     static function editAnswer($params)
     {
@@ -232,7 +233,7 @@ class ExerciseController extends Controller
         $takeId = $params->answer;
 
         // Check if the exercise has a status that allows answers
-        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $exercise = ExerciseModel::getExerciseWithStatus($exerciseId);
         if ($exercise['status'] != 'Answering') {
             $params = new stdClass();
             $params->error = "You are not allowed to answer to this exercise !";
@@ -241,11 +242,12 @@ class ExerciseController extends Controller
         }
 
         // Get the questions from the exercise
-        $exerciseQuestions = Database::getQuestions($exerciseId);
+        $exerciseQuestions = ExerciseModel::getQuestions($exerciseId);
 
         // Get the answers and the questions of the take
-        $questionsWithAnswers = Database::getQuestionsAndAnswers($takeId);
+        $questionsWithAnswers = ExerciseModel::getQuestionsAndAnswers($takeId);
 
+        // TODO move to model
         // Update the answer, after a few checks
         // Iterate on the original answers and not the $_POST data, because we cannot trust the $_POST
         foreach ($questionsWithAnswers as $questionWithAnswer) {
@@ -263,7 +265,7 @@ class ExerciseController extends Controller
             $answerId = $questionWithAnswer['idAnswer'];
             if ($isInExercise && isset($_POST[$answerId])) {
                 $answer = $_POST[$answerId];
-                Database::updateAnswer($answer, $answerId);
+                AnswerModel::updateAnswer($answer, $answerId);
             }
         }
 
