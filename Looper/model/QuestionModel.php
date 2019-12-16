@@ -31,7 +31,7 @@ class QuestionModel
         // Data validation
         if (
             is_numeric($exerciseId) &&
-            !is_null(Database::getExercise($exerciseId)) &&
+            !is_null(ExerciseModel::getExercise($exerciseId)) &&
             is_string($label) &&
             mb_strlen($label) <= self::MAX_LABEL_LENGTH &&
             is_numeric($minimumLength) &&

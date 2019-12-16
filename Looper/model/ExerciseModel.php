@@ -148,7 +148,7 @@ class ExerciseModel
      */
     public static function isModifiable($exerciseId)
     {
-        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $exercise = self::getExerciseWithStatus($exerciseId);
         $isModifiable = ($exercise['status'] == 'Building');
         return $isModifiable;
     }
@@ -161,7 +161,7 @@ class ExerciseModel
      */
     public static function isAnswering($exerciseId)
     {
-        $exercise = Database::getExerciseWithStatus($exerciseId);
+        $exercise = self::getExerciseWithStatus($exerciseId);
         $isModifiable = ($exercise['status'] == 'Answering');
         return $isModifiable;
     }
@@ -216,12 +216,12 @@ class ExerciseModel
         // Check if question belongs to the exercise
         $question = QuestionModel::getQuestion($questionId);
         if (!self::isModifiable($exerciseId) ||
-            $question['fkExercise'] != $exerciseId) {
+            $question['fkExercise'] != $exerciseId
+        ) {
             throw new Exception('not allowesd');
         }
 
-        // TODO call question model
-        Database::deleteQuestion($questionId);
+        QuestionModel::deleteQuestion($questionId);
     }
 
     /**
@@ -254,7 +254,7 @@ class ExerciseModel
         $questionsCount = self::questionsCount($exerciseId);
 
         // Check if we are allowed to modify the exercise : right status and at least one question
-        if (!ExerciseModel::isModifiable($exerciseId) ||
+        if (!self::isModifiable($exerciseId) ||
             $questionsCount <= 0) {
             throw new Exception('not allowed');
         }
