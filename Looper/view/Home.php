@@ -9,5 +9,5 @@ $titleSection = "Exercise<br>Looper";
     Take an exercise
 </a>
 <a class="homeChild manage" href='/Manage'>
-    Manage Exercises
+    Manage exercises
 </a>
