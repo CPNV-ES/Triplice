@@ -75,11 +75,26 @@ class ExerciseModel
     /**
      * Get an exercise
      * @param int $exerciseId id of the exercise
-     * @return object exercise
+     * @return array exercise
      */
     public static function getExercise($exerciseId)
     {
-        return Database::getExercise($exerciseId);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT * 
+            FROM exercises
+            WHERE idExercise = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $exercise = $statement->fetch();
+
+        $exercise = array_map(function ($val) {
+            return htmlspecialchars($val);
+        }, $exercise);
+
+        return $exercise;
     }
 
     /**
@@ -88,7 +103,29 @@ class ExerciseModel
      */
     public static function getExercises()
     {
-        return Database::getAllExercises();
+        $pdo = Database::dbConnection();
+        $exerciseStatus = self::getStatusExercices();
+        $exercises = array();
+        //get exercises by status an save it in array
+        for ($i = 0; $i < count($exerciseStatus); $i++) {
+            $query =
+                "SELECT `name`,`idExercise` as `id`
+            FROM Exercises
+            INNER JOIN Exercisestatus 
+                ON idExerciseStatus=fkExerciseStatus 
+            WHERE `status` LIKE '" . $exerciseStatus[$i]->status . "';";
+            $statement = $pdo->prepare($query);
+            $statement->execute();
+            //save all exercises with the same status on array
+            $exercises[$exerciseStatus[$i]->status] = $statement->fetchAll(PDO::FETCH_CLASS);
+
+        }
+
+        foreach ($exercises as $exercise)
+            foreach ($exercise as $data)
+                $data->name = htmlspecialchars($data->name);
+
+        return $exercises;
     }
 
     /**
@@ -98,7 +135,20 @@ class ExerciseModel
      */
     public static function getExerciseWithStatus($exerciseId)
     {
-        return Database::getExerciseWithStatus($exerciseId);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT * 
+            FROM exercises
+            INNER JOIN exercisestatus
+            ON exercisestatus.idExerciseStatus = exercises.fkExerciseStatus
+            WHERE idExercise = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $exercise = $statement->fetch();
+
+        return $exercise;
     }
 
     /**
@@ -107,7 +157,22 @@ class ExerciseModel
      */
     public static function getAnsweringExercises()
     {
-        return Database::getAnsweringExercises();
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT `name`,`idExercise`
+            FROM Exercises
+            INNER JOIN Exercisestatus 
+                ON idExerciseStatus=fkExerciseStatus 
+            WHERE `status` LIKE "Answering";';
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $exercises = $statement->fetchAll(PDO::FETCH_CLASS);
+
+        foreach ($exercises as $exercise)
+            $exercise->name = htmlspecialchars($exercise->name);
+
+        return $exercises;
     }
 
     /**
@@ -140,7 +205,48 @@ class ExerciseModel
      */
     public static function getQuestions($exerciseId)
     {
-        return Database::getQuestions($exerciseId);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            LEFT JOIN questiontypes
+            ON questions.fkQuestionType = questiontypes.idQuestionType
+            WHERE fkExercise = ?
+            ORDER BY `order` 
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $questions = $statement->fetchAll();
+
+        $exercise = array();
+        foreach ($questions as $question)
+            array_push($exercise, array_map(function ($val) {
+                return htmlspecialchars($val);
+            }, $question));
+
+        return $exercise;
+    }
+
+    /**
+     * get max order of all questions of an exercise
+     * @param int $exerciseId id of the exercise
+     * @return number
+     */
+    public static function getMaxOrder($exerciseId)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT MAX(`order`) as `order`
+            FROM questions
+            WHERE fkExercise = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId]);
+        $questions = $statement->fetch();
+
+        return $questions[0];
     }
 
     /**
@@ -150,29 +256,104 @@ class ExerciseModel
      */
     public static function getAnswers($exerciseId)
     {
-        return Database::getResultsExercise($exerciseId);
+        $pdo = Database::dbConnection();
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion, minimumLength
+                    FROM answers
+                    INNER JOIN questions on answers.fkQuestion = questions.idQuestion
+                    INNER JOIN takes ON takes.idTake = answers.fkTake
+                    INNER JOIN exercises on exercises.idExercise = questions.fkExercise
+                    WHERE exercises.idExercise=$exerciseId ORDER BY id,`order`";
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_CLASS);
+
+        return self::usersQuestionsOfExercise($data);
+    }
+
+    /**
+     * sorts all the objects in the table to create a table containing all the answers to questions by user
+     * @param array $obj list of objects with id, name and question with answer
+     * @param bool $encode determines if the data should be encoded to be displayed in html
+     * @return array $users questions and answers by user
+     */
+    private static function usersQuestionsOfExercise($obj, bool $encode = false)
+    {
+        $users = array();
+        $lastID = '0';
+        $index = 0;
+        $user = new stdClass();
+        foreach ($obj as $value) {
+            if ($lastID != $value->id)//when new user
+            {
+                if ($lastID != 0)// not add user on the first iteration, because it's empty
+                {
+                    array_push($users, $user);
+                }
+
+                $index = 0;
+                $user = new stdClass();
+                $user->id = $value->id;
+                $user->name = $value->name;
+            }
+            $user->question[$index] = new stdClass();//our question contain label and answer object
+            $user->question[$index]->label = htmlspecialchars($value->question);
+            if ($encode)
+                $user->question[$index]->answer = htmlspecialchars($value->answer);
+            else
+                $user->question[$index]->answer = $value->answer;
+            $user->question[$index]->minimumLength = $value->minimumLength;
+            $index++;
+            $lastID = $value->id;
+            if (!next($obj)) { //when the last loop, add user on users array
+                array_push($users, $user);
+            }
+        }
+
+        return $users;
     }
 
     /**
      * search on database all answers for a specific question
      * @param $idExercise
      * @param $idQuestion
-     * @return object array with users and their answer for the question
+     * @return array with users and their answer for the question
      */
     public static function getAnswersByQuestion($idExercise, $idQuestion)
     {
-        return Database::getResultsByQuestion($idExercise, $idQuestion);
+        $pdo = Database::dbConnection();
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion, minimumLength
+                    FROM answers
+                    INNER JOIN questions on answers.fkQuestion = questions.idQuestion
+                    INNER JOIN takes ON takes.idTake = answers.fkTake
+                    INNER JOIN exercises on exercises.idExercise = questions.fkExercise
+                    WHERE exercises.idExercise=$idExercise and questions.idQuestion=$idQuestion ORDER BY id";
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_CLASS);
+
+        return self::usersQuestionsOfExercise($data, true);
     }
 
     /**
      * Search all answers of a take
      * @param $idExercise
      * @param $idUser
-     * @return object array with user's answers
+     * @return array with the user's answers
      */
     public static function getResultsByTake($idExercise, $idUser)
     {
-        return Database::getResultsByUser($idExercise, $idUser);
+        $pdo = Database::dbConnection();
+        $query = "SELECT takes.idTake AS id, takes.saveTime AS name, exercises.name AS exercice, questions.label AS question, content AS answer, questions.idQuestion, minimumLength
+                    FROM answers
+                    INNER JOIN questions on answers.fkQuestion = questions.idQuestion
+                    INNER JOIN takes ON takes.idTake = answers.fkTake
+                    INNER JOIN exercises on exercises.idExercise = questions.fkExercise
+                    WHERE exercises.idExercise=$idExercise and takes.idTake=$idUser ORDER BY id";
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_CLASS); //return an array with id, name, question, answer
+
+        return self::usersQuestionsOfExercise($data, true);
     }
 
     /**
@@ -209,7 +390,31 @@ class ExerciseModel
      */
     public static function getQuestionsAndAnswersFromTake($takeId)
     {
-        return Database::getQuestionsAndAnswers($takeId);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            LEFT JOIN questiontypes
+            ON questions.fkQuestionType = questiontypes.idQuestionType
+            INNER JOIN answers
+            ON answers.fkQuestion = questions.idQuestion
+            WHERE answers.fkTake = ?
+            ORDER BY `order`
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$takeId]);
+        $questions = $statement->fetchAll();
+
+        $exercise = array();
+        foreach ($questions as $question) {
+            $question['label'] = htmlspecialchars($question['label']);//html_entity_decode(
+            //escape quotes and html entity quotes
+            $question['content'] = str_replace(array('&quot;', "&apos;", '"', "'"), array('&amp;quot&semi;', '&amp;apos&semi;', '&quot;', "&apos;"), $question['content']);
+            array_push($exercise, $question);
+        }
+
+        return $exercise;
     }
 
     /**
@@ -282,7 +487,13 @@ class ExerciseModel
      */
     public static function deleteExercise($exerciseId)
     {
-        Database::deleteExercise($exerciseId);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'DELETE FROM exercises 
+            WHERE idExercise = ?;';
+
+        $pdo->prepare($query)->execute([$exerciseId]);
     }
 
     /**
@@ -312,17 +523,44 @@ class ExerciseModel
      */
     public static function questionsCount($idExercise)
     {
-        return Database::questionsCount($idExercise);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT COUNT(idQuestion)
+                FROM questions
+                WHERE fkExercise = ?;';
+
+        $statement = $pdo->prepare($query);
+        $statement->execute([$idExercise]);
+        $questionsCount = $statement->fetch()[0];
+
+        // return the number
+        return $questionsCount;
     }
 
     /**
      * get a question by specific order
      * @param int $exerciseId id of the question
-     * @return question of the exercise with the specified order
+     * @param int $order order of the question
+     * @return array question of the exercise with the specified order
      */
     public static function getQuestionByOrder($exerciseId, $order)
     {
-        return Database::getSpecificQuestionByOrder($exerciseId, $order);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            LEFT JOIN questiontypes
+            ON questions.fkQuestionType = questiontypes.idQuestionType
+            WHERE fkExercise = ? and `order` = ?
+            ORDER BY idQuestion
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseId, $order]);
+        $questions = $statement->fetch();
+
+        return $questions;
     }
 
     /**
@@ -350,6 +588,14 @@ class ExerciseModel
      */
     public static function updateExerciseStatus($idExercise, $idStatus)
     {
-        Database::modifyExerciseStatus($idExercise, $idStatus);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'UPDATE exercises
+            SET fkExerciseStatus = ?
+            WHERE idExercise = ?
+            ;';
+
+        $pdo->prepare($query)->execute([$idStatus, $idExercise]);
     }
 }

@@ -9,6 +9,12 @@ class AnswerModel
      */
     public static function updateAnswer($content, $idAnswer)
     {
-        Database::updateAnswer($content, $idAnswer);
+        $pdo = Database::dbConnection();
+        $query =
+            'UPDATE answers
+            SET content = ?
+            WHERE idAnswer = ?
+            ;';
+        $pdo->prepare($query)->execute([$content, $idAnswer]);
     }
 }

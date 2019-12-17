@@ -9,11 +9,26 @@ class QuestionModel
     /**
      * Get a question
      * @param int $questionId id of the question
-     * @return object question
+     * @return array question
      */
     public static function getQuestion($questionId)
     {
-        return Database::getQuestion($questionId);
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questions
+            WHERE idQuestion = ?
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$questionId]);
+        $question = $statement->fetch();
+
+        $exercise = array_map(function ($val) {
+            return htmlspecialchars($val);
+        }, $question);
+
+        return $exercise;
     }
 
     /**
@@ -23,7 +38,20 @@ class QuestionModel
      */
     public static function getName($questionId)
     {
-        return Database::getQuestionName($questionId);
+        $pdo = Database::dbConnection();
+        $query =
+            "SELECT label
+            FROM questions
+            WHERE idQuestion=$questionId;";
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $question = $statement->fetch();
+
+        foreach ($question as $key => $data) {
+            $question[$key] = htmlspecialchars($data);
+        }
+
+        return $question;
     }
 
     /**
@@ -50,7 +78,13 @@ class QuestionModel
             is_numeric($idAnswerType)
         ) {
             // Create the question
-            Database::addQuestion($exerciseId, $label, $minimumLength, $idAnswerType);
+            $pdo = Database::dbConnection();
+            $number = ExerciseModel::getMaxOrder($exerciseId) + 1;
+            $query =
+                "INSERT INTO questions(label, minimumLength, fkExercise, fkQuestionType, `order`)
+            VALUES (?, ?, ?, ?, $number)
+            ;";
+            $pdo->prepare($query)->execute([$label, $minimumLength, $exerciseId, $idAnswerType]);
         } else {
             throw new Exception('Invalid inputs');
         }
@@ -79,22 +113,51 @@ class QuestionModel
             $minimumLength <= self::MAX_MIN_LENGTH &&
             is_numeric($idAnswerType)
         ) {
-            // Create the question
-            Database::modifyQuestion($idQuestionToModify, $label, $minimumLength, $idAnswerType);
+            // update the question
+            $pdo = Database::dbConnection();
+            $query =
+                'UPDATE questions
+            SET label = ?, minimumLength = ?, fkQuestionType = ?
+            WHERE idQuestion = ?
+            ;';
+
+            $pdo->prepare($query)->execute([$label, $minimumLength, $idAnswerType, $idQuestionToModify]);
+
         } else {
             throw new Exception('Invalid inputs');
         }
     }
 
     /**
-     * update order of question by question id
+     * update the order of a question
      *
-     * @param $order new order of exercise
-     * @param $idQuestion
+     * @param int $order new order of the question
+     * @param int $idQuestion id of the question
      */
     public static function UpdateQuestionOrder($order, $idQuestion)
     {
-        Database::UpdateQuestionByOrder($order, $idQuestion);
+        $pdo = Database::dbConnection();
+        $query = "UPDATE `questions` SET `order`=? WHERE  `idQuestion`=?;";
+        $statement = $pdo->prepare($query);
+        $statement->execute([$order, $idQuestion]);
+    }
+
+    /**
+     * reorganize questions of exercise
+     *
+     * @param int $exericeId id of the exercise
+     * @param int $order order of the pivot exercise
+     */
+    public static function reorderQuestions($exericeId, $order)
+    {
+        $pdo = Database::dbConnection();
+
+        $query = "UPDATE questions
+        SET `order` = `order` -1
+        WHERE fkExercise = ? 
+        AND `order` >= ? ";
+
+        $pdo->prepare($query)->execute([$exericeId, $order]);
     }
 
     /**
@@ -103,7 +166,15 @@ class QuestionModel
      */
     public static function deleteQuestion($questionId)
     {
-        Database::deleteQuestion($questionId);
+        $pdo = Database::dbConnection();
+        $question = self::getQuestion($questionId);
+        $query =
+            'DELETE FROM questions 
+            WHERE idQuestion = ?;';
+
+        $pdo->prepare($query)->execute([$questionId]);
+
+        self::reorderQuestions($question["fkExercise"], $question["order"]);
     }
 
     /**
@@ -112,6 +183,21 @@ class QuestionModel
      */
     public static function getQuestionTypes()
     {
-        return Database::getQuestionTypes();
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT *
+            FROM questiontypes';
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $questionTypes = $statement->fetchAll();
+
+        $exercise = array();
+        foreach ($questionTypes as $question)
+            array_push($exercise, array_map(function ($val) {
+                return htmlspecialchars($val);
+            }, $question));
+
+        return $exercise;
     }
 }
