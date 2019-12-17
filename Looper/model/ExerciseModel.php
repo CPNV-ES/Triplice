@@ -152,6 +152,23 @@ class ExerciseModel
     }
 
     /**
+     * search all exercises status on database
+     * @return array with all status on database
+     */
+    private static function getStatusExercices()
+    {
+        $pdo = Database::dbConnection();
+        $query =
+            'SELECT `status`
+            FROM Exercisestatus;';
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $exercises = $statement->fetchAll(PDO::FETCH_CLASS);
+
+        return $exercises;
+    }
+
+    /**
      * Search all exercises with the "Answering" status
      * @return array all Answering exercises
      */

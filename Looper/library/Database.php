@@ -28,21 +28,4 @@ class Database
             echo 'Connection failed: ' . $e->getMessage();
         }
     }
-
-    /**
-     * search all exercises status on database
-     * @return array with all status on database
-     */
-    private static function getStatusExercices()
-    {
-        $pdo = Database::dbConnection();
-        $query =
-            'SELECT `status`
-            FROM Exercisestatus;';
-        $statement = $pdo->prepare($query);
-        $statement->execute();
-        $exercises = $statement->fetchAll(PDO::FETCH_CLASS);
-
-        return $exercises;
-    }
 }
