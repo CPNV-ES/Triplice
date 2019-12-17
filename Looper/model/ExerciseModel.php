@@ -1,6 +1,7 @@
 <?php
 
 require_once 'TakeModel.php';
+require_once 'AnswerModel.php';
 
 class ExerciseModel
 {

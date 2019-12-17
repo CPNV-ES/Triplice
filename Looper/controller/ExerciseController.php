@@ -244,8 +244,10 @@ class ExerciseController extends Controller
         // Get the questions from the exercise
         $exerciseQuestions = ExerciseModel::getQuestions($exerciseId);
 
+        var_dump($exerciseQuestions);
+
         // Get the answers and the questions of the take
-        $questionsWithAnswers = ExerciseModel::getQuestionsAndAnswers($takeId);
+        $questionsWithAnswers = ExerciseModel::getQuestionsAndAnswers($exerciseId, $takeId);
 
         // TODO move to model
         // Update the answer, after a few checks
