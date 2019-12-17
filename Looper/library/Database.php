@@ -11,7 +11,7 @@ class Database
      * connects to the database
      * @return PDO
      */
-    protected static function dbConnection()
+    public static function dbConnection()
     {
         // load the database configuration
         include "config.php";
@@ -30,50 +30,9 @@ class Database
     }
 
     /**
-     * create an exercise
-     * @param string $exerciseName name of the exercise
-     * @return int id of the exercise created
-     */
-    public static function createExercise($exerciseName)
-    {
-        $pdo = Database::dbConnection();
-
-        $query =
-            'INSERT INTO exercises(name, fkExerciseStatus)
-            VALUES (?, 1)
-            ;';
-        $pdo->prepare($query)->execute([$exerciseName]);
-
-        return self::getExerciseId($exerciseName);
-    }
-
-    /**
-     * get the id of an exercise
-     * @param string $exerciseName name of the exercise
-     * @return int id of the exercise
-     */
-    public static function getExerciseId($exerciseName)
-    {
-        $pdo = Database::dbConnection();
-
-        $query =
-            'SELECT idExercise 
-            FROM exercises
-            WHERE exercises.name = ?
-            ORDER by idExercise DESC
-            LIMIT 1
-            ;';
-        $statement = $pdo->prepare($query);
-        $statement->execute([$exerciseName]);
-        $exerciseId = $statement->fetch()["idExercise"];
-
-        return $exerciseId;
-    }
-
-    /**
      * get an exercise
      * @param int $exerciseId id of the exercise
-     * @return object exercise
+     * @return array exercise
      */
     public static function getExercise($exerciseId)
     {
@@ -88,7 +47,9 @@ class Database
         $statement->execute([$exerciseId]);
         $exercise = $statement->fetch();
 
-        $exercise = array_map(function($val) { return htmlspecialchars($val); }, $exercise);
+        $exercise = array_map(function ($val) {
+            return htmlspecialchars($val);
+        }, $exercise);
 
         return $exercise;
     }
@@ -152,9 +113,11 @@ class Database
         $statement->execute([$exerciseId]);
         $questions = $statement->fetchAll();
 
-        $exercise=array();
+        $exercise = array();
         foreach ($questions as $question)
-            array_push($exercise,array_map(function($val) { return htmlspecialchars($val); }, $question));
+            array_push($exercise, array_map(function ($val) {
+                return htmlspecialchars($val);
+            }, $question));
 
         return $exercise;
     }
@@ -203,12 +166,11 @@ class Database
         $statement->execute([$takeId]);
         $questions = $statement->fetchAll();
 
-        $exercise=array();
-        foreach ($questions as $question)
-        {
-            $question['label']=htmlspecialchars($question['label']);//html_entity_decode(
+        $exercise = array();
+        foreach ($questions as $question) {
+            $question['label'] = htmlspecialchars($question['label']);//html_entity_decode(
             //escape quotes and html entity quotes
-            $question['content']=str_replace(array('&quot;',"&apos;",'"',"'"),array('&amp;quot&semi;','&amp;apos&semi;','&quot;',"&apos;"),$question['content']);
+            $question['content'] = str_replace(array('&quot;', "&apos;", '"', "'"), array('&amp;quot&semi;', '&amp;apos&semi;', '&quot;', "&apos;"), $question['content']);
             array_push($exercise, $question);
         }
 
@@ -233,7 +195,9 @@ class Database
         $statement->execute([$questionId]);
         $question = $statement->fetch();
 
-        $exercise = array_map(function($val) { return htmlspecialchars($val); }, $question);
+        $exercise = array_map(function ($val) {
+            return htmlspecialchars($val);
+        }, $question);
 
         return $exercise;
     }
@@ -366,9 +330,11 @@ class Database
         $statement->execute();
         $questionTypes = $statement->fetchAll();
 
-        $exercise=array();
+        $exercise = array();
         foreach ($questionTypes as $question)
-            array_push($exercise,array_map(function($val) { return htmlspecialchars($val); }, $question));
+            array_push($exercise, array_map(function ($val) {
+                return htmlspecialchars($val);
+            }, $question));
 
         return $exercise;
     }
@@ -392,7 +358,7 @@ class Database
         $exercises = $statement->fetchAll(PDO::FETCH_CLASS);
 
         foreach ($exercises as $exercise)
-            $exercise->name=htmlspecialchars($exercise->name);
+            $exercise->name = htmlspecialchars($exercise->name);
 
         return $exercises;
     }
@@ -440,7 +406,7 @@ class Database
 
         foreach ($exercises as $exercise)
             foreach ($exercise as $data)
-                $data->name=htmlspecialchars($data->name);
+                $data->name = htmlspecialchars($data->name);
 
         return $exercises;
     }
@@ -494,8 +460,8 @@ class Database
         $question = $statement->fetch();
 
 
-        foreach ($question as $key=>$data)
-            $question[$key]=htmlspecialchars($data);
+        foreach ($question as $key => $data)
+            $question[$key] = htmlspecialchars($data);
 
 
         return $question;
@@ -541,7 +507,7 @@ class Database
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_CLASS);
 
-        return self::usersQuestionsOfExercise($data,true);
+        return self::usersQuestionsOfExercise($data, true);
     }
 
     /**
@@ -563,7 +529,7 @@ class Database
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_CLASS); //return an array with id, name, question, answer
 
-        return self::usersQuestionsOfExercise($data,true);
+        return self::usersQuestionsOfExercise($data, true);
     }
 
     /**
@@ -571,7 +537,7 @@ class Database
      * @param $obj <- array of objects with id, name and question with answer
      * @return $users <- array objects with questions and answers by user
      */
-    private static function usersQuestionsOfExercise($obj, bool $encode=false)
+    private static function usersQuestionsOfExercise($obj, bool $encode = false)
     {
         $users = array();
         $lastID = '0';
@@ -592,7 +558,7 @@ class Database
             }
             $user->question[$index] = new stdClass();//our question contain label and answer object
             $user->question[$index]->label = htmlspecialchars($value->question);
-            if($encode)
+            if ($encode)
                 $user->question[$index]->answer = htmlspecialchars($value->answer);
             else
                 $user->question[$index]->answer = $value->answer;

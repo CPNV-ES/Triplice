@@ -28,8 +28,15 @@ class ExerciseModel
         // expected input :
         // * title : string, length <= 50
         if (mb_strlen($exerciseName) <= self::MAX_NAME_LENGTH) {
-            $exerciseId = Database::createExercise($exerciseName);
-            return $exerciseId;
+            $pdo = Database::dbConnection();
+            $query =
+                'INSERT INTO exercises(name, fkExerciseStatus)
+            VALUES (?, 1)
+            ;';
+            $pdo->prepare($query)->execute([$exerciseName]);
+
+            return self::getExerciseId($exerciseName);
+
         } else {
             throw new Exception('Name too long');
         }
@@ -101,6 +108,29 @@ class ExerciseModel
     public static function getAnsweringExercises()
     {
         return Database::getAnsweringExercises();
+    }
+
+    /**
+     * get the id of an exercise
+     * @param string $exerciseName name of the exercise
+     * @return int id of the exercise
+     */
+    public static function getExerciseId($exerciseName)
+    {
+        $pdo = Database::dbConnection();
+
+        $query =
+            'SELECT idExercise 
+            FROM exercises
+            WHERE exercises.name = ?
+            ORDER by idExercise DESC
+            LIMIT 1
+            ;';
+        $statement = $pdo->prepare($query);
+        $statement->execute([$exerciseName]);
+        $exerciseId = $statement->fetch()["idExercise"];
+
+        return $exerciseId;
     }
 
     /**
