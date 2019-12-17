@@ -105,6 +105,16 @@ class ExerciseModel
     }
 
     /**
+     * Get all answers of an exercise
+     * @param int $exerciseId id of the exercise
+     * @return array answers of the exercise
+     */
+    public static function getAnswers($exerciseId)
+    {
+        return Database::getResultsExercise($exerciseId);
+    }
+
+    /**
      * @param int $exerciseId id of the exercise we want the take
      * @param int $takeId id of the take we want to get
      * @return array questions of the take with answers

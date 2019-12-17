@@ -503,7 +503,7 @@ class Database
 
     /**
      * Get all answers of exercise
-     * @param $id
+     * @param int $id id of the exercise
      * @return array all answers of specific exercise
      */
     public static function getResultsExercise($id)

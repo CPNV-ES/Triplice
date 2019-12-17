@@ -276,15 +276,15 @@ class ExerciseController extends Controller
     }
 
     /**
-     * returns to view which questions were answered by user
+     * renders the view displaying all answers to an exercise
      * @param $params (questionId)
      */
     static function resultsByExercise($params)
     {
         $params->exerciseId = $params->exercise;
-        $params->exercise = Database::getExercise($params->exerciseId)['name'];
-        $params->questions = Database::getQuestions($params->exerciseId);
-        $params->results = Database::getResultsExercise($params->exerciseId);
+        $params->exercise = ExerciseModel::getExercise($params->exerciseId)['name'];
+        $params->questions = ExerciseModel::getQuestions($params->exerciseId);
+        $params->results = ExerciseModel::getAnswers($params->exerciseId);
         View::render("Exercise/ResultByExercise", $params);
     }
 
