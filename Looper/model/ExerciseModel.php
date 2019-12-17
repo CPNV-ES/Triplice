@@ -115,6 +115,17 @@ class ExerciseModel
     }
 
     /**
+     * search on database all answers for a specific question
+     * @param $idExercise
+     * @param $idQuestion
+     * @return object array with users and their answer for the question
+     */
+    public static function getAnswersByQuestion($idExercise, $idQuestion)
+    {
+        return Database::getResultsByQuestion($idExercise, $idQuestion);
+    }
+
+    /**
      * @param int $exerciseId id of the exercise we want the take
      * @param int $takeId id of the take we want to get
      * @return array questions of the take with answers

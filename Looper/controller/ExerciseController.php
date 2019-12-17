@@ -296,9 +296,9 @@ class ExerciseController extends Controller
     {
         $params->questionId = $params->results;
         $params->exerciseId = $params->exercise;
-        $params->exercise = Database::getExercise($params->exerciseId)['name'];
-        $params->question = Database::getQuestionName($params->questionId);
-        $params->results = Database::getResultsByQuestion($params->exerciseId, $params->results);
+        $params->exercise = ExerciseModel::getExercise($params->exerciseId)['name'];
+        $params->question = QuestionModel::getName($params->questionId);
+        $params->results = ExerciseModel::getAnswersByQuestion($params->exerciseId, $params->results);
         View::render("Exercise/ResultByQuestion", $params);
     }
 

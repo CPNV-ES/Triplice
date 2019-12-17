@@ -17,6 +17,16 @@ class QuestionModel
     }
 
     /**
+     * Get the name of a question
+     * @param int $questionId id of the question
+     * @return string the name of the question
+     */
+    public static function getName($questionId)
+    {
+        return Database::getQuestionName($questionId);
+    }
+
+    /**
      * Create a new question
      *
      * @param string $exerciseId id of the exercise
