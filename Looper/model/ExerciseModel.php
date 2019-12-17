@@ -76,6 +76,15 @@ class ExerciseModel
     }
 
     /**
+     * Get all exercises
+     * @return array with all exercises by status
+     */
+    public static function getExercises()
+    {
+        return Database::getAllExercises();
+    }
+
+    /**
      * Get an exercise with its status
      * @param int $exerciseId id of the exercise
      * @return object exercise with status
@@ -235,6 +244,15 @@ class ExerciseModel
         //update the order
         QuestionModel::UpdateQuestionOrder($current["order"], $current["idQuestion"]);
         QuestionModel::UpdateQuestionOrder($other["order"], $other["idQuestion"]);
+    }
+
+    /**
+     * delete an exercise
+     * @param int $exerciseId id of the exercise
+     */
+    public static function deleteExercise($exerciseId)
+    {
+        Database::deleteExercise($exerciseId);
     }
 
     /**

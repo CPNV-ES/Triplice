@@ -9,10 +9,10 @@ class ManageController extends Controller
      */
     static function index()
     {
-        $params->exercises = Database::getAllExercises();
+        $params->exercises = ExerciseModel::getExercises();
         foreach ($params->exercises['Building'] as $exercise)
         {
-                $exercise->count=Database::questionsCount($exercise->id);
+                $exercise->count=ExerciseModel::questionsCount($exercise->id);
         }
         return view::render("Exercise/Manage",$params);
     }
@@ -35,7 +35,7 @@ class ManageController extends Controller
         }
 
         // delete the exercise
-        Database::deleteExercise($exerciseId);
+        ExerciseModel::deleteExercise($exerciseId);
 
         // redirect to manage page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
@@ -60,7 +60,7 @@ class ManageController extends Controller
             return self::error($params);
         }
 
-        Database::modifyExerciseStatus($exerciseId, 3);
+        ExerciseModel::updateExerciseStatus($exerciseId, 3);
 
         // redirect to the manage page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
