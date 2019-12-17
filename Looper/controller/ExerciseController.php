@@ -289,7 +289,7 @@ class ExerciseController extends Controller
     }
 
     /**
-     * return to view with all answers by question
+     * renders the view displaying all answers of a question
      * @param $params (questionId)
      */
     static function resultsByQuestion($params)
@@ -303,15 +303,15 @@ class ExerciseController extends Controller
     }
 
     /**
-     * return to view  with answers of user for exercise
+     * renders the view displaying all answers of a take
      * @param $params (user id)
      */
     static function resultsByUser($params)
     {
         $params->userId = $params->user;
         $params->exerciseId = $params->exercise;
-        $params->exercise = Database::getExercise($params->exerciseId)['name'];
-        $params->results = Database::getResultsByUser($params->exerciseId, $params->userId);
+        $params->exercise = ExerciseModel::getExercise($params->exerciseId)['name'];
+        $params->results = ExerciseModel::getResultsByTake($params->exerciseId, $params->userId);
         View::render("Exercise/ResultByUser", $params);
     }
 
