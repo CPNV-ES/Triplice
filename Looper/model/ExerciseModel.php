@@ -113,9 +113,9 @@ class ExerciseModel
             FROM Exercises
             INNER JOIN Exercisestatus 
                 ON idExerciseStatus=fkExerciseStatus 
-            WHERE `status` LIKE '" . $exerciseStatus[$i]->status . "';";
+            WHERE `status` LIKE ?;";
             $statement = $pdo->prepare($query);
-            $statement->execute();
+            $statement->execute([$exerciseStatus[$i]->status]);
             //save all exercises with the same status on array
             $exercises[$exerciseStatus[$i]->status] = $statement->fetchAll(PDO::FETCH_CLASS);
 
@@ -279,9 +279,9 @@ class ExerciseModel
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
                     INNER JOIN exercises on exercises.idExercise = questions.fkExercise
-                    WHERE exercises.idExercise=$exerciseId ORDER BY id,`order`";
+                    WHERE exercises.idExercise=? ORDER BY id,`order`";
         $statement = $pdo->prepare($query);
-        $statement->execute();
+        $statement->execute([$exerciseId]);
         $data = $statement->fetchAll(PDO::FETCH_CLASS);
 
         return self::usersQuestionsOfExercise($data);
@@ -343,9 +343,9 @@ class ExerciseModel
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
                     INNER JOIN exercises on exercises.idExercise = questions.fkExercise
-                    WHERE exercises.idExercise=$idExercise and questions.idQuestion=$idQuestion ORDER BY id";
+                    WHERE exercises.idExercise=? and questions.idQuestion=? ORDER BY id";
         $statement = $pdo->prepare($query);
-        $statement->execute();
+        $statement->execute([$idExercise, $idQuestion]);
         $data = $statement->fetchAll(PDO::FETCH_CLASS);
 
         return self::usersQuestionsOfExercise($data, true);
@@ -365,9 +365,9 @@ class ExerciseModel
                     INNER JOIN questions on answers.fkQuestion = questions.idQuestion
                     INNER JOIN takes ON takes.idTake = answers.fkTake
                     INNER JOIN exercises on exercises.idExercise = questions.fkExercise
-                    WHERE exercises.idExercise=$idExercise and takes.idTake=$idUser ORDER BY id";
+                    WHERE exercises.idExercise=? and takes.idTake=? ORDER BY id";
         $statement = $pdo->prepare($query);
-        $statement->execute();
+        $statement->execute([$idExercise, $idUser]);
         $data = $statement->fetchAll(PDO::FETCH_CLASS); //return an array with id, name, question, answer
 
         return self::usersQuestionsOfExercise($data, true);

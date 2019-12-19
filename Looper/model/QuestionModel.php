@@ -42,9 +42,9 @@ class QuestionModel
         $query =
             "SELECT label
             FROM questions
-            WHERE idQuestion=$questionId;";
+            WHERE idQuestion=?;";
         $statement = $pdo->prepare($query);
-        $statement->execute();
+        $statement->execute([$questionId]);
         $question = $statement->fetch();
 
         foreach ($question as $key => $data) {
@@ -65,7 +65,6 @@ class QuestionModel
      */
     public static function createQuestion($exerciseId, $label, $minimumLength, $idAnswerType)
     {
-        // TODO verify if $idAnswerType corresponds to a valid answer type
         // Data validation
         if (
             is_numeric($exerciseId) &&
@@ -101,11 +100,10 @@ class QuestionModel
      */
     public static function updateQuestion($idQuestionToModify, $label, $minimumLength, $idAnswerType)
     {
-        // TODO verify if $idAnswerType corresponds to a valid answer type
         // Data validation
         if (
             is_numeric($idQuestionToModify) &&
-            !is_null(Database::getQuestion($idQuestionToModify)) &&
+            !is_null(QuestionModel::getQuestion($idQuestionToModify)) &&
             is_string($label) &&
             mb_strlen($label) <= self::MAX_LABEL_LENGTH &&
             is_numeric($minimumLength) &&
