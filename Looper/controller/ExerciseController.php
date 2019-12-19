@@ -65,7 +65,6 @@ class ExerciseController extends Controller
                     // new question : add it
                     QuestionModel::createQuestion($exerciseId, $label, $minimumLength, $_POST['idAnswerType']);
                 } else {
-                    // TODO : verify if the question belongs to the exercise (probably use the exerciseController)
                     // existing question : update it
                     QuestionModel::updateQuestion(
                         $_POST['idQuestionToModify'], $label, $minimumLength, $_POST['idAnswerType']
@@ -173,7 +172,7 @@ class ExerciseController extends Controller
                 $params = new stdClass();
                 $params->error = "Answer does not exist";
                 $params->message =
-                    'That answer does not exist. <a href="/exercise/take">Take en exercise</a>.';
+                    'That answer does not exist. <a href="/exercise/take">Take an exercise</a>.';
                 return self::error($params);
             }
 
@@ -244,12 +243,9 @@ class ExerciseController extends Controller
         // Get the questions from the exercise
         $exerciseQuestions = ExerciseModel::getQuestions($exerciseId);
 
-        var_dump($exerciseQuestions);
-
         // Get the answers and the questions of the take
         $questionsWithAnswers = ExerciseModel::getQuestionsAndAnswers($exerciseId, $takeId);
 
-        // TODO move to model
         // Update the answer, after a few checks
         // Iterate on the original answers and not the $_POST data, because we cannot trust the $_POST
         foreach ($questionsWithAnswers as $questionWithAnswer) {
