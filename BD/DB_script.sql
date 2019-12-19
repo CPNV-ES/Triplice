@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS `triplice`.`exercises` (
   CONSTRAINT `fk_exercises_exerciseStatus1`
     FOREIGN KEY (`fkExerciseStatus`)
     REFERENCES `triplice`.`exerciseStatus` (`idExerciseStatus`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 
@@ -52,7 +52,8 @@ CREATE TABLE IF NOT EXISTS `triplice`.`questionTypes` (
 CREATE TABLE IF NOT EXISTS `triplice`.`questions` (
   `idQuestion` INT NOT NULL AUTO_INCREMENT,
   `label` TEXT NOT NULL,
-  `minimumLength` INT NOT NULL DEFAULT 0,
+  `minimumLength` INT NOT NULL DEFAULT 1,
+  `order` INT NOT NULL,
   `fkExercise` INT NOT NULL,
   `fkQuestionType` INT NOT NULL,
   PRIMARY KEY (`idQuestion`),
@@ -64,8 +65,8 @@ CREATE TABLE IF NOT EXISTS `triplice`.`questions` (
   CONSTRAINT `fk_questions_questionTypes1`
     FOREIGN KEY (`fkQuestionType`)
     REFERENCES `triplice`.`questionTypes` (`idQuestionType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 
@@ -91,11 +92,11 @@ CREATE TABLE IF NOT EXISTS `triplice`.`answers` (
   CONSTRAINT `fk_answers_questions1`
     FOREIGN KEY (`fkQuestion`)
     REFERENCES `triplice`.`questions` (`idQuestion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_answers_takes1`
     FOREIGN KEY (`fkTake`)
     REFERENCES `triplice`.`takes` (`idTake`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );

@@ -2,6 +2,9 @@
 
 use http\Params;
 
+require_once "model/ExerciseModel.php";
+require_once "model/QuestionModel.php";
+
 class ExerciseController extends Controller
 {
     /**
@@ -17,20 +20,20 @@ class ExerciseController extends Controller
      */
     static function newExercise()
     {
-        // expected input :
-        // * title : string, length <= 50
-        if (isset($_POST["title"]) and strlen($_POST["title"]) <= 50) {
-            $exerciseName = $_POST["title"];
-            $exerciseId = Database::createExercise($exerciseName);
-
-            // redirect to modify page
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
-            exit();
-        } else {
-            $params = [];
-            $params->message = 'Invalid inputs.';
-            self::error($params);
+        try {
+            // create the exercise
+            $exerciseId = ExerciseModel::createExercise($_POST["title"]);
+        } catch (Exception $exception) {
+            // Display error page if problem when creating the exercise
+            $params = new stdClass();
+            $params->error = "Invalid exercise name";
+            $params->message = 'Please enter an exercise name<br><a href="/exercise/create">Back</a>';
+            return self::error($params);
         }
+
+        // redirect to modify page
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
+        exit();
     }
 
     /**
@@ -42,32 +45,36 @@ class ExerciseController extends Controller
     {
         $exerciseId = $params->exercise;
 
-        // delete/modify question if the action has been selected
+        // Check if we are allowed to modify the exercise
+        if (!ExerciseModel::isModifiable($exerciseId)) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to modify this exercise";
+            $params->message =
+                '<a href="/">Home</a>.';
+            return self::error($params);
+        }
+
+        // modify/create question if the action has been selected
         if (isset($_POST['label']) and isset($_POST['minimumLength'])) {
 
             $label = $_POST['label'];
             $minimumLength = $_POST['minimumLength'];
 
-            // expected input :
-            // * label : string, length <= 50
-            // * minimumLength : int, accepted length of answers
-            // * idQuestionToModify : int, id of an existing question, optional
-            if (strlen($label) <= 50 && 0 < $minimumLength && $minimumLength <= 250) {
-                // TODO verify exerciseId is int, is the id of a question, and is the id of the selected question
-                // TODO verify idAnswerType
+            try {
                 if (!isset($_POST['idQuestionToModify'])) {
                     // new question : add it
-                    Database::addQuestion($exerciseId, $label, $minimumLength, $_POST['idAnswerType']);
+                    QuestionModel::createQuestion($exerciseId, $label, $minimumLength, $_POST['idAnswerType']);
                 } else {
                     // existing question : update it
-                    Database::modifyQuestion(
+                    QuestionModel::updateQuestion(
                         $_POST['idQuestionToModify'], $label, $minimumLength, $_POST['idAnswerType']
                     );
                 }
-            } else {
-                $params = [];
-                $params->message = 'Invalid inputs.';
-                self::error($params);
+            } catch (Exception $exception) {
+                $params = new stdClass();
+                $params->error = "Invalid inputs.";
+                $params->message = "<a href='/exercise/$exerciseId/modify'>Go Back</a>";
+                return self::error($params);
             }
 
             // redirect to modify page, to avoid resending post at the refresh of the page
@@ -75,16 +82,18 @@ class ExerciseController extends Controller
             exit();
         }
 
+
+        // check if there is a question to modify
         $params->modifyQuestion = False;
         if (isset($params->question)) {
             $questionId = $params->question;
             $params->modifyQuestion = True;
-            $params->questionToModify = Database::getQuestion($questionId);
+            $params->questionToModify = QuestionModel::getQuestion($questionId);
         }
 
-        $params->exercise = Database::getExercise($exerciseId);
-        $params->questions = Database::getQuestions($exerciseId);
-        $params->questionTypes = Database::getQuestionTypes();
+        $params->exercise = ExerciseModel::getExercise($exerciseId);
+        $params->questions = ExerciseModel::getQuestions($exerciseId);
+        $params->questionTypes = QuestionModel::getQuestionTypes();
 
         View::render("Exercise/Modify", $params);
     }
@@ -97,7 +106,16 @@ class ExerciseController extends Controller
     {
         $exerciseId = $params->exercise;
         $questionId = $params->question;
-        Database::deleteQuestion($questionId);
+
+        try {
+            ExerciseModel::deleteQuestion($exerciseId, $questionId);
+        } catch (Exception $exception) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to delete this question";
+            $params->message =
+                '<a href="/">Home</a>.';
+            return self::error($params);
+        }
 
         // redirect to modify page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
@@ -112,20 +130,18 @@ class ExerciseController extends Controller
     static function completeExercise($params)
     {
         $exerciseId = $params->exercise;
-        $questionsCount = Database::questionsCount($exerciseId);
 
-        if ($questionsCount > 0) {
-            // update exercise status to 'answering'
-            Database::modifyExerciseStatus($exerciseId, 2);
-
-            // redirect to modify page
-            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
-            exit();
-        } else {
-            // redirect to modify page
+        try {
+            ExerciseModel::completeExercise($exerciseId);
+        } catch (Exception $exception) {
+            // redirect to modify exercise page
             header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/modify");
             exit();
         }
+
+        // redirect to manage page
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
+        exit();
     }
 
     /**
@@ -135,17 +151,35 @@ class ExerciseController extends Controller
     static function takeExercise($params)
     {
         $exerciseId = $params->exercise;
-        $exercise = Database::getExercise($exerciseId);
+        $exercise = ExerciseModel::getExerciseWithStatus($exerciseId);
 
+        // Check if the exercise has a status that allows answers
+        if ($exercise['status'] != 'Answering') {
+            $params = new stdClass();
+            $params->error = "You are not allowed to answer to this exercise !";
+            $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
+            return self::error($params);
+        }
+
+        // Check if we are updating answers
         $updateAnswer = false;
-        $questions = null;
         if (isset($params->answer)) {
             $takeId = $params->answer;
-            $questions = Database::getQuestionsAndAnswers($takeId);
+
+            try {
+                $questions = ExerciseModel::getQuestionsAndAnswers($exerciseId, $takeId);
+            } catch (Exception $exception) {
+                $params = new stdClass();
+                $params->error = "Answer does not exist";
+                $params->message =
+                    'That answer does not exist. <a href="/exercise/take">Take an exercise</a>.';
+                return self::error($params);
+            }
+
             $updateAnswer = true;
             $params->takeId = $takeId;
         } else {
-            $questions = Database::getQuestions($exerciseId);
+            $questions = ExerciseModel::getQuestions($exerciseId);
         }
 
         $params->exerciseName = $exercise['name'];
@@ -160,32 +194,77 @@ class ExerciseController extends Controller
      */
     static function take()
     {
-        return View::render("Take", Database::getAnsweringExercises());
+        return View::render("Take", ExerciseModel::getAnsweringExercises());
     }
 
+    /**
+     * Submit the answers to an exercise. Use the POST data to create the answers to the exercise.
+     * @param $params contains exercise, the id of the exercise
+     */
     static function submitAnswer($params)
     {
         $exerciseId = $params->exercise;
 
-        $idTake = Database::createTake();
-
-        // create the submitted answers
-        foreach ($_POST as $idQuestion => $answer) {
-            Database::createAnswer($answer, $idTake, $idQuestion);
+        // Check if the exercise has a status that allows answers
+        $exercise = ExerciseModel::getExerciseWithStatus($exerciseId);
+        if ($exercise['status'] != 'Answering') {
+            $params = new stdClass();
+            $params->error = "You are not allowed to answer to this exercise !";
+            $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
+            return self::error($params);
         }
 
-        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $idTake . "/edit");
+        // create the take
+        $takeId = ExerciseModel::createTake($exerciseId, $_POST);
+
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $takeId . "/edit");
         exit();
     }
-
+    
+    /**
+     * Edit the answers from a specific take
+     * @param $params contains exercise, the id of the exercise, and answer, the id of the take
+     * @throws Exception
+     */
     static function editAnswer($params)
     {
         $exerciseId = $params->exercise;
         $takeId = $params->answer;
 
-        // create the submitted answers
-        foreach ($_POST as $idAnswer => $answer) {
-            Database::updateAnswer($answer, $idAnswer);
+        // Check if the exercise has a status that allows answers
+        $exercise = ExerciseModel::getExerciseWithStatus($exerciseId);
+        if ($exercise['status'] != 'Answering') {
+            $params = new stdClass();
+            $params->error = "You are not allowed to answer to this exercise !";
+            $params->message = 'Please select an exercise from the <a href="/exercise/take">Take page</a>.';
+            return self::error($params);
+        }
+
+        // Get the questions from the exercise
+        $exerciseQuestions = ExerciseModel::getQuestions($exerciseId);
+
+        // Get the answers and the questions of the take
+        $questionsWithAnswers = ExerciseModel::getQuestionsAndAnswers($exerciseId, $takeId);
+
+        // Update the answer, after a few checks
+        // Iterate on the original answers and not the $_POST data, because we cannot trust the $_POST
+        foreach ($questionsWithAnswers as $questionWithAnswer) {
+            // check if the answer really belongs to the exercise (if the form is not broken, it should)
+            $isInExercise = false;
+            foreach ($exerciseQuestions as $question) {
+                if ($question['idQuestion'] == $questionWithAnswer['idQuestion']) {
+                    $isInExercise = true;
+                    // once we have found the question, we don't need to continue the iteration
+                    break;
+                }
+            }
+
+            // Check if a new answer to the question has been submitted (if the form is not broken, it should)
+            $answerId = $questionWithAnswer['idAnswer'];
+            if ($isInExercise && isset($_POST[$answerId])) {
+                $answer = $_POST[$answerId];
+                AnswerModel::updateAnswer($answer, $answerId);
+            }
         }
 
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/" . $exerciseId . "/answer/" . $takeId . "/edit");
@@ -193,43 +272,56 @@ class ExerciseController extends Controller
     }
 
     /**
-     * returns to view which questions were answered by user
+     * renders the view displaying all answers to an exercise
      * @param $params (questionId)
      */
     static function resultsByExercise($params)
     {
         $params->exerciseId = $params->exercise;
-        $params->exercise = Database::getExercise($params->exerciseId)['name'];
-        $params->questions = Database::getQuestions($params->exerciseId);
-        $params->results = Database::getResultsExercise($params->exerciseId);
+        $params->exercise = ExerciseModel::getExercise($params->exerciseId)['name'];
+        $params->questions = ExerciseModel::getQuestions($params->exerciseId);
+        $params->results = ExerciseModel::getAnswers($params->exerciseId);
         View::render("Exercise/ResultByExercise", $params);
     }
 
     /**
-     * return to view with all answers by question
+     * renders the view displaying all answers of a question
      * @param $params (questionId)
      */
     static function resultsByQuestion($params)
     {
         $params->questionId = $params->results;
         $params->exerciseId = $params->exercise;
-        $params->exercise = Database::getExercise($params->exerciseId)['name'];
-        $params->question = Database::getQuestionName($params->questionId);
-        $params->results = Database::getResultsByQuestion($params->exerciseId, $params->results);
+        $params->exercise = ExerciseModel::getExercise($params->exerciseId)['name'];
+        $params->question = QuestionModel::getName($params->questionId);
+        $params->results = ExerciseModel::getAnswersByQuestion($params->exerciseId, $params->results);
         View::render("Exercise/ResultByQuestion", $params);
     }
 
     /**
-     * return to view  with answers of user for exercise
+     * renders the view displaying all answers of a take
      * @param $params (user id)
      */
     static function resultsByUser($params)
     {
         $params->userId = $params->user;
         $params->exerciseId = $params->exercise;
-        $params->exercise = Database::getExercise($params->exerciseId)['name'];
-        $params->results = Database::getResultsByUser($params->exerciseId, $params->userId);
+        $params->exercise = ExerciseModel::getExercise($params->exerciseId)['name'];
+        $params->results = ExerciseModel::getResultsByTake($params->exerciseId, $params->userId);
         View::render("Exercise/ResultByUser", $params);
     }
 
+    /**
+     * when user modify order question on modify page
+     *
+     * @param $params get by url
+     */
+    static function order($params)
+    {
+        $model = new ExerciseModel($params);
+        $model->OrderQuestion($_SERVER["REQUEST_URI"]);
+
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/exercise/$params->exercise/modify/");
+        exit();
+    }
 }

@@ -30,15 +30,15 @@ VALUES
 -- ----------------------------------
 -- Create questions for exercises
 -- ----------------------------------
-INSERT INTO questions(`label`,fkExercise,fkQuestionType) 
+INSERT INTO questions(`label`,fkExercise,fkQuestionType,`order`) 
 VALUES
-	("(a+b)(a-b)=",1,3),
-	("1+1=",2,1),
-	("5/0=",2,1),
-	("14+1",2,1),
-	("Que feriez-vous si vous pouviez voler?",3,2),
-	("Que faut-il savoir pour marcher?",3,2),
-	("Quel âge a Pierre s'il est né le 06.05.1998 et que nous sommes le 05.10.2019",3,1);
+	("(a+b)(a-b)=",1,3,1),
+	("1+1=",2,1,1),
+	("5/0=",2,1,2),
+	("14+1",2,1,3),
+	("Que feriez-vous si vous pouviez voler?",3,2,1),
+	("Que faut-il savoir pour marcher?",3,2,2),
+	("Quel âge a Pierre s'il est né le 06.05.1998 et que nous sommes le 05.10.2019",3,1,3);
 	
 -- ----------------------------------
 -- Takes status

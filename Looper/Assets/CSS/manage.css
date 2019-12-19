@@ -42,7 +42,8 @@ Color by section
   justify-content: space-between;
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
-  border-bottom: #e1e1e1 1px solid; }
+  border-bottom: #e1e1e1 1px solid;
+  word-wrap: break-word; }
 
 .ico {
   color: #9b4dca; }

@@ -12,6 +12,8 @@ Router::add("/exercise/newExercise", "ExerciseController@newExercise");
 Router::add("/exercise/id/modify", "ExerciseController@modify");
 Router::add("/exercise/id/question/id/delete", "ExerciseController@deleteQuestion");
 Router::add("/exercise/id/question/id/modify", "ExerciseController@modify");
+Router::add("/exercise/id/order/id/up", "ExerciseController@order");
+Router::add("/exercise/id/order/id/down", "ExerciseController@order");
 
 // Manage exercise
 Router::add("/manage", "ManageController@index");

@@ -1,5 +1,7 @@
 <?php
 
+require_once "model/ExerciseModel.php";
+
 class ManageController extends Controller
 {
     /**
@@ -7,10 +9,10 @@ class ManageController extends Controller
      */
     static function index()
     {
-        $params->exercises = Database::getAllExercises();
+        $params->exercises = ExerciseModel::getExercises();
         foreach ($params->exercises['Building'] as $exercise)
         {
-                $exercise->count=Database::questionsCount($exercise->id);
+                $exercise->count=ExerciseModel::questionsCount($exercise->id);
         }
         return view::render("Exercise/Manage",$params);
     }
@@ -21,9 +23,19 @@ class ManageController extends Controller
      */
     static function deleteExercise($params)
     {
-        // delete the exercise
         $exerciseId = $params->exercise;
-        Database::deleteExercise($exerciseId);
+
+        // Check if we are allowed to delete the exercise
+        if (ExerciseModel::isAnswering($exerciseId) ) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to delete this exercise. Close it first.";
+            $params->message =
+                '<a href="/Manage">Manage exercises</a>.';
+            return self::error($params);
+        }
+
+        // delete the exercise
+        ExerciseModel::deleteExercise($exerciseId);
 
         // redirect to manage page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
@@ -38,7 +50,17 @@ class ManageController extends Controller
     {
         // update exercise status to 'answering'
         $exerciseId = $params->exercise;
-        Database::modifyExerciseStatus($exerciseId, 3);
+
+        // Check if we are allowed to close the exercise
+        if (!ExerciseModel::isAnswering($exerciseId)) {
+            $params = new stdClass();
+            $params->error = "You are not allowed to close this exercise.";
+            $params->message =
+                '<a href="/Manage">Manage exercises</a>.';
+            return self::error($params);
+        }
+
+        ExerciseModel::updateExerciseStatus($exerciseId, 3);
 
         // redirect to the manage page
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/manage");
