@@ -28,7 +28,7 @@ dire quelle méthode de quel contrôleur vous souhaitez appeler. \
 Exemple, nous voulons faire que quand nous écrivons `notresite.ch/home`,
 nous sommes redirigés sur la page d'accueil. 
 
-Il va donc falloir écrire pour la route `/home` la ligne suivante:
+Il va donc falloir écrire pour la route `/home` la ligne suivante :
 
 ```php 
 Router::add("/home", "HomeController@index"); 
@@ -37,7 +37,7 @@ Router::add("/home", "HomeController@index");
 HomeController est le contrôleur de la page principale et index est une méthode dans ce contrôleur,
 le @ sert de séparateur entre la méthode et le contrôleur.
 
-si vous souhaitez passer des données par l'intermédiaire des liens, comme des id ou du texte, il vous 
+Si vous souhaitez passer des données par l'intermédiaire des liens, comme des id ou du texte, il vous 
 suffit de créer des routes comme dans l'exemple suivant:
 
 ```php 
@@ -45,9 +45,9 @@ Router::add("/question/id/valeur/text", "ExerciseController@exemple");
 ```
 Ici, nous répérons l'id de la question et la valeur que l'utilisateur a rentré, ce qui ressemblerai à : `notresite.ch/question/3/valeur/un%20%exemple`.
 
-Les valeurs seront sauvegardées dans les mot précédent le mot clé, ce qui vous permettra de facilement récupèrer ses valeurs.
+Les valeurs seront associées au mot qui les précéde dans la route, la valeur id sera donc dans question, ce qui vous permettra de facilement récupèrer ses valeurs.
 
-Au niveau de la méthode, vous devez mettre que vous attendez des paramètres, ce qui vous permettra de récupérer les donnez:
+Au niveau de la méthode, vous devez mettre que vous attendez des paramètres, ce qui vous permettra de récupérer les donnez :
 
 ```php
 public function exemple($paramsOfUrl)
@@ -67,9 +67,9 @@ Router::run();
 
 Elle ajoute toutes nos views dans le gabarit, ce qui signifie que nous n'avons pas à recoder à chaque fois les parties qui seront identiques sur chaque page, comme par exemple un menu.
 
-dans les contrôleurs il suffit d'ajouter une des lignes suivantes:
+Dans les contrôleurs il suffit d'ajouter une des lignes suivantes:
 
-Si vous avez des variables à transmettre à votre vue il faudra faire:
+Si vous avez des variables à transmettre à votre vue il faudra faire :
 
 ```php
 View::render("Home", $params);
@@ -80,11 +80,11 @@ Si vous n'avez pas besoin de transmettre d'informations, il suffit juste de fair
 View::render("Home");
 ```
 
-dans les paramètres de la méthode `render`, vous n'avez pas besoin de dire où se situe le fichier, car il est défini dans la librairie par l'intermédiaire de la variable `$dir`, de même que pour l'extention .php dans la variable `$ext`.
+Dans les paramètres de la méthode `render`, vous n'avez pas besoin de dire où se situe le fichier, car il est défini dans la librairie par l'intermédiaire de la variable `$dir`, de même que pour l'l'extension .php dans la variable `$ext`.
 
-Si votre vue se situe dans un sous répertoire à `View`, vous n'avez qu'à écrire : `Mon Répertoir/Mon fichier`.
+Si votre vue se situe dans un sous répertoire à `View`, vous n'avez qu'à écrire : `Mon répertoire/Mon fichier`.
 
 
 ## wiki Français / French
-Si vous souhaitez plus d'informations sur notre projet, nous possèdons un wiki:
+Si vous souhaitez plus d'informations sur notre projet, nous possédons un wiki :
 https://github.com/CPNV-ES/Triplice/wiki
